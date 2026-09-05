@@ -47,7 +47,23 @@
       pointer-events: none;
     }
     .rocket svg { display: block; margin: 0 auto; }
-    /* Rauchspur */
+    .message {
+      position: fixed;
+      top: 10%;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 1.5rem;
+      color: #ffd43b;
+      text-shadow: 0 0 10px rgba(255, 212, 59, 0.7);
+      opacity: 0;
+      transition: opacity 0.5s ease-out;
+      z-index: 200;
+      pointer-events: none;
+      text-align: center;
+    }
+    .message.show {
+      opacity: 1;
+    }
     .smoke {
       position: fixed;
       width: 18px;
@@ -89,6 +105,7 @@
         <circle cx="50" cy="14" r="3" fill="#ffd43b"/>
       </svg>
     </div>
+    <div id="message" class="message"></div>
     <a href="jahreskostenkalkulation.html" class="btn" style="display:inline-block; text-decoration:none; margin-top:20px;">📊 Jahreskostenkalkulation</a>
   </div>
   <script>
@@ -104,12 +121,29 @@
     setInterval(updateClock, 1000);
     function launchRocket() {
       const rocket = document.getElementById('rocket');
+      const message = document.getElementById('message');
+      
       rocket.classList.remove('launch');
       void rocket.offsetWidth;
       rocket.classList.add('launch');
       spawnSmokeTrail(rocket);
-      setTimeout(() => { rocket.classList.remove('launch'); }, 4000);
       clearStars();
+      
+      // Botschaft "Liebt euch" wenn Rakete den höchsten Punkt erreicht (nach 4s)
+      setTimeout(() => {
+        message.textContent = 'Liebt euch ❤️';
+        message.classList.add('show');
+        
+        // Nach 3 Sekunden wieder ausblenden
+        setTimeout(() => {
+          message.classList.remove('show');
+        }, 3000);
+      }, 4000);
+
+      // Rakete-Animation beenden und zurücksetzen
+      setTimeout(() => { 
+        rocket.classList.remove('launch');
+      }, 4000);
     }
 
     function clearStars() {
