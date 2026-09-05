@@ -71,7 +71,7 @@
     .btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(102,126,234,0.6); }
     @keyframes flyAcross {
       0% { transform: translate(0, 0) scale(1); opacity: 1; }
-      100% { transform: translate(400px, -400px) scale(0.7); opacity: 0; }
+      100% { transform: translate(0, -500px) scale(0.6); opacity: 0; }
     }
   </style>
 </head>
@@ -84,9 +84,6 @@
     <div class="clock" id="clock">--:--:--</div>
     <div class="date" id="date"></div>
     <div class="rocket" id="rocket" onclick="launchRocket()">🚀</div>
-    <br>
-    <button class="btn" onclick="launchRocket()">🚀 Rakete starten</button>
-    <p style="color: #6b7294; margin-top: 40px; font-size: 0.85rem;">Klicke auf die Rakete oder den Button zum Starten</p>
     <a href="jahreskostenkalkulation.html" class="btn" style="display:inline-block; text-decoration:none; margin-top:20px;">📊 Jahreskostenkalkulation</a>
   </div>
   <script>
