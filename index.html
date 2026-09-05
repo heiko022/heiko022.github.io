@@ -17,6 +17,24 @@
       justify-content: center;
       padding: 20px;
       overflow: hidden;
+      position: relative;
+    }
+    /* Sternenhimmel */
+    .stars {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .star {
+      position: absolute;
+      background: white;
+      border-radius: 50%;
+      animation: twinkle 2s ease-in-out infinite alternate;
+    }
+    @keyframes twinkle {
+      0% { opacity: 0.3; }
+      100% { opacity: 1; }
     }
     .container { text-align: center; max-width: 500px; width: 100%; }
     h1 { font-size: 1.8rem; margin-bottom: 30px; color: #a8b4ff; }
@@ -31,6 +49,21 @@
       margin: 0;
       z-index: 100;
       pointer-events: none;
+    }
+    /* Rauchspur */
+    .smoke {
+      position: fixed;
+      width: 18px;
+      height: 18px;
+      background: rgba(200, 200, 210, 0.5);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 99;
+      animation: smokeFade 1.5s ease-out forwards;
+    }
+    @keyframes smokeFade {
+      0% { transform: scale(1); opacity: 0.6; }
+      100% { transform: scale(3); opacity: 0; }
     }
     .btn {
       background: linear-gradient(135deg, #667eea, #764ba2);
@@ -47,6 +80,9 @@
   </style>
 </head>
 <body>
+  <!-- Sternenhimmel -->
+  <div class="stars" id="stars"></div>
+
   <div class="container">
     <h1>🚀 Startseite</h1>
     <div class="clock" id="clock">--:--:--</div>
@@ -73,8 +109,44 @@
       rocket.classList.remove('launch');
       void rocket.offsetWidth;
       rocket.classList.add('launch');
-      setTimeout(() => { rocket.classList.remove('launch'); }, 3000);
+      spawnSmokeTrail(rocket);
+      setTimeout(() => { rocket.classList.remove('launch'); }, 4000);
+      clearStars();
     }
+
+    function clearStars() {
+      const starsContainer = document.getElementById('stars');
+      starsContainer.innerHTML = '';
+      createStars();
+    }
+
+    function createStars() {
+      const starsContainer = document.getElementById('stars');
+      const count = 120;
+      for (let i = 0; i < count; i++) {
+        const star = document.createElement('div');
+        star.className = 'star';
+        star.style.left = Math.random() * 100 + '%';
+        star.style.top = Math.random() * 100 + '%';
+        star.style.width = (Math.random() * 2.5 + 1) + 'px';
+        star.style.height = star.style.width;
+        star.style.animationDelay = Math.random() * 2 + 's';
+        star.style.animationDuration = (Math.random() * 2 + 1.5) + 's';
+        starsContainer.appendChild(star);
+      }
+    }
+
+    function spawnSmokeTrail(rocket) {
+      const rocketRect = rocket.getBoundingClientRect();
+      const trail = document.createElement('div');
+      trail.className = 'smoke';
+      trail.style.left = (rocketRect.left + rocketRect.width / 2) + 'px';
+      trail.style.top = (rocketRect.top + rocketRect.height / 2) + 'px';
+      document.body.appendChild(trail);
+      setTimeout(() => trail.remove(), 1500);
+    }
+
+    createStars();
   </script>
 </body>
 </html>
