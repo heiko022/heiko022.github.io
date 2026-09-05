@@ -40,12 +40,13 @@
     h1 { font-size: 1.8rem; margin-bottom: 30px; color: #a8b4ff; }
     .clock { font-size: 4rem; font-weight: 300; letter-spacing: 4px; margin: 20px 0; font-variant-numeric: tabular-nums; text-shadow: 0 0 30px rgba(168,180,255,0.5); }
     .date { font-size: 1.2rem; color: #8892c0; margin-bottom: 40px; }
-    .rocket { font-size: 5rem; cursor: pointer; transition: transform 0.1s; margin: 40px 0; }
+    .rocket { cursor: pointer; transition: transform 0.1s; margin: 40px 0; display: flex; justify-content: center; }
     .rocket.launch {
       animation: flyAcross 4s ease-in forwards;
       z-index: 100;
       pointer-events: none;
     }
+    .rocket svg { display: block; margin: 0 auto; }
     /* Rauchspur */
     .smoke {
       position: fixed;
@@ -80,10 +81,14 @@
   <div class="stars" id="stars"></div>
 
   <div class="container">
-    <h1>🚀 Startseite</h1>
     <div class="clock" id="clock">--:--:--</div>
     <div class="date" id="date"></div>
-    <div class="rocket" id="rocket" onclick="launchRocket()">🚀</div>
+    <div class="rocket" id="rocket" onclick="launchRocket()">
+      <svg viewBox="0 0 100 30" width="80" height="auto" style="display:block; margin:0 auto;">
+        <path d="M10,25 L50,15 L90,25 L80,28 L20,28 Z" fill="#ff6b6b"/>
+        <circle cx="50" cy="14" r="3" fill="#ffd43b"/>
+      </svg>
+    </div>
     <a href="jahreskostenkalkulation.html" class="btn" style="display:inline-block; text-decoration:none; margin-top:20px;">📊 Jahreskostenkalkulation</a>
   </div>
   <script>
