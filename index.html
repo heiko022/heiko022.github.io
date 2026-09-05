@@ -23,7 +23,15 @@
     .clock { font-size: 4rem; font-weight: 300; letter-spacing: 4px; margin: 20px 0; font-variant-numeric: tabular-nums; text-shadow: 0 0 30px rgba(168,180,255,0.5); }
     .date { font-size: 1.2rem; color: #8892c0; margin-bottom: 40px; }
     .rocket { font-size: 5rem; cursor: pointer; transition: transform 0.1s; margin: 40px 0; }
-    .rocket.launch { animation: launch 3s ease-in forwards; }
+    .rocket.launch {
+      animation: flyAcross 4s ease-in forwards;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      margin: 0;
+      z-index: 100;
+      pointer-events: none;
+    }
     .btn {
       background: linear-gradient(135deg, #667eea, #764ba2);
       border: none; color: white; padding: 14px 36px;
@@ -32,10 +40,9 @@
       box-shadow: 0 4px 15px rgba(102,126,234,0.4);
     }
     .btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(102,126,234,0.6); }
-    @keyframes launch {
-      0% { transform: translateY(0); }
-      50% { transform: translateY(-120px); opacity: 1; }
-      100% { transform: translateY(-400px); opacity: 0; }
+    @keyframes flyAcross {
+      0% { top: 75%; left: 50%; transform: translate(-50%, 50%) scale(1); opacity: 1; }
+      100% { top: 5%; left: 80%; transform: translate(-50%, -50%) scale(0.7); opacity: 0; }
     }
   </style>
 </head>
