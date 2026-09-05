@@ -1,1 +1,72 @@
-
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rocket Start - Datum & Uhrzeit</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+      color: white;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      overflow: hidden;
+    }
+    .container { text-align: center; max-width: 500px; width: 100%; }
+    h1 { font-size: 1.8rem; margin-bottom: 30px; color: #a8b4ff; }
+    .clock { font-size: 4rem; font-weight: 300; letter-spacing: 4px; margin: 20px 0; font-variant-numeric: tabular-nums; text-shadow: 0 0 30px rgba(168,180,255,0.5); }
+    .date { font-size: 1.2rem; color: #8892c0; margin-bottom: 40px; }
+    .rocket { font-size: 5rem; cursor: pointer; transition: transform 0.1s; margin: 40px 0; }
+    .rocket.launch { animation: launch 3s ease-in forwards; }
+    .btn {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      border: none; color: white; padding: 14px 36px;
+      border-radius: 50px; font-size: 1.1rem; font-weight: 600;
+      cursor: pointer; margin: 20px 0; transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 4px 15px rgba(102,126,234,0.4);
+    }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(102,126,234,0.6); }
+    @keyframes launch {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-120px); opacity: 1; }
+      100% { transform: translateY(-400px); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🚀 Startseite</h1>
+    <div class="clock" id="clock">--:--:--</div>
+    <div class="date" id="date"></div>
+    <div class="rocket" id="rocket" onclick="launchRocket()">🚀</div>
+    <br>
+    <button class="btn" onclick="launchRocket()">🚀 Rakete starten</button>
+    <p style="color: #6b7294; margin-top: 40px; font-size: 0.85rem;">Klicke auf die Rakete oder den Button zum Starten</p>
+  </div>
+  <script>
+    function updateClock() {
+      const now = new Date();
+      document.getElementById('clock').textContent = now.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    }
+    function updateDate() {
+      const now = new Date();
+      document.getElementById('date').textContent = now.toLocaleDateString('de-DE', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+    }
+    updateClock(); updateDate();
+    setInterval(updateClock, 1000);
+    function launchRocket() {
+      const rocket = document.getElementById('rocket');
+      rocket.classList.remove('launch');
+      void rocket.offsetWidth;
+      rocket.classList.add('launch');
+      setTimeout(() => { rocket.classList.remove('launch'); }, 3000);
+    }
+  </script>
+</body>
+</html>
