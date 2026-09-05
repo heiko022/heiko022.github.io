@@ -43,10 +43,6 @@
     .rocket { font-size: 5rem; cursor: pointer; transition: transform 0.1s; margin: 40px 0; }
     .rocket.launch {
       animation: flyAcross 4s ease-in forwards;
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      margin: 0;
       z-index: 100;
       pointer-events: none;
     }
@@ -74,8 +70,8 @@
     }
     .btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(102,126,234,0.6); }
     @keyframes flyAcross {
-      0% { top: 75%; left: 50%; transform: translate(-50%, 50%) scale(1); opacity: 1; }
-      100% { top: 5%; left: 80%; transform: translate(-50%, -50%) scale(0.7); opacity: 0; }
+      0% { transform: translate(0, 0) scale(1); opacity: 1; }
+      100% { transform: translate(400px, -400px) scale(0.7); opacity: 0; }
     }
   </style>
 </head>
