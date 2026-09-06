@@ -103,6 +103,38 @@
       </div>
     </div>
 
+    <!-- WARMWASSER -->
+    <div class="section">
+      <div class="section-header"><span class="icon">🚿</span><span class="title">Warmwasser-Berechnung (Warmwasserzähler)</span></div>
+      <div class="section-body">
+        <div class="input-row">
+          <div class="form-group">
+            <label for="ww-menge">Gesamt-Warmwassermenge (m³/Jahr)</label>
+            <input type="number" id="ww-menge" placeholder="z.B. 150" min="0" step="0.1">
+          </div>
+          <div class="form-group">
+            <label for="ww-temp">Warmwassertemperatur (°C)</label>
+            <input type="number" id="ww-temp" value="60" min="40" max="70" step="1">
+          </div>
+          <div class="form-group">
+            <label for="ww-hu">Heizwert Hu (kWh/l)</label>
+            <input type="number" id="ww-hu" value="10" min="1" step="0.1">
+          </div>
+        </div>
+        <div class="section-total">
+          <span>Heizöl für Warmwasser (B = 2,5 × V × (t−10) ÷ Hu)</span>
+          <strong id="sum-ww">0,00 €</strong>
+        </div>
+        <p class="subtitle" style="margin:14px 0 8px;">Mieter-Verbrauch über Warmwasseruhr (m³)</p>
+        <table>
+          <thead><tr><th>Mieter</th><th style="width:150px">Warmwasseruhr (m³)</th><th style="width:130px">Öl (L)</th><th style="width:130px">Kosten</th><th style="width:80px">Anteil</th></tr></thead>
+          <tbody id="ww-mieter-body"></tbody>
+        </table>
+        <button class="btn btn-secondary" id="ww-add" type="button" style="margin-top:12px; flex:none; min-width:auto; padding:8px 16px;">+ Mieter hinzufügen</button>
+      </div>
+    </div>
+
+
     <!-- HEIZNEBENKOSTEN -->
     <div class="section">
       <div class="section-header"><span class="icon">🔧</span><span class="title">Heiznebenkosten / Betrieb</span></div>
@@ -148,6 +180,9 @@
     const detailDiv = document.getElementById('detailOutput');
     const sumOel = document.getElementById('sum-oel');
     const sumNk = document.getElementById('sum-nk');
+    const sumWw = document.getElementById('sum-ww');
+    const wwBody = document.getElementById('ww-mieter-body');
+    const wwAdd = document.getElementById('ww-add');
 
     function getObjektName() {
       return document.getElementById('objekt').value.trim() || 'Unbenanntes Objekt';
@@ -160,6 +195,57 @@
     }
     function fmtInt(n) {
       return n.toLocaleString('de-DE') + ' L';
+    }
+
+    // ---- Warmwasser-Mieter-Tabelle ----
+    function getWwParams() {
+      const menge = parseFloat(document.getElementById('ww-menge').value);
+      const temp = parseFloat(document.getElementById('ww-temp').value);
+      const hu = parseFloat(document.getElementById('ww-hu').value);
+      return { menge, temp: isNaN(temp) ? 60 : temp, hu: isNaN(hu) || hu <= 0 ? 10 : hu };
+    }
+    // Öl-Liter für eine Warmwassermenge V (m³): B = 2,5 × V × (t−10) ÷ Hu
+    function wwOelLiter(V, temp, hu) {
+      return 2.5 * V * (temp - 10) / hu;
+    }
+
+    let wwMieterCount = 0;
+    function addWwMieter(name) {
+      wwMieterCount++;
+      const tr = document.createElement('tr');
+      const idx = wwMieterCount;
+      tr.innerHTML = `
+        <td><input type="text" class="label-input" value="${name || ('Mieter ' + idx)}" style="font-weight:600;"></td>
+        <td class="amount"><input type="number" class="ww-mieter" step="0.1" min="0" placeholder="0"></td>
+        <td class="amount ww-out" id="ww-oel-${idx}">–</td>
+        <td class="amount ww-out" id="ww-kosten-${idx}">–</td>
+        <td class="amount ww-out" id="ww-anteil-${idx}">–</td>
+      `;
+      wwBody.appendChild(tr);
+      tr.querySelector('input.ww-mieter').addEventListener('input', updateWwMieter);
+      updateWwMieter();
+    }
+
+    function updateWwMieter() {
+      const { temp, hu } = getWwParams();
+      const preis = parseFloat(document.getElementById('preis').value) || 0;
+      const rows = Array.from(wwBody.querySelectorAll('tr'));
+      let sumV = 0;
+      rows.forEach(tr => {
+        const v = parseFloat(tr.querySelector('.ww-mieter').value);
+        if (!isNaN(v) && v > 0) sumV += v;
+      });
+      let sumOel = 0, sumKosten = 0;
+      rows.forEach(tr => {
+        const v = parseFloat(tr.querySelector('.ww-mieter').value) || 0;
+        const liter = v > 0 ? wwOelLiter(v, temp, hu) : 0;
+        const kosten = liter * preis;
+        const idx = tr.querySelector('.ww-out').id.split('-')[2];
+        tr.querySelector('#ww-oel-' + idx).textContent = v > 0 ? (Math.round(liter).toLocaleString('de-DE') + ' L') : '–';
+        tr.querySelector('#ww-kosten-' + idx).textContent = v > 0 ? fmt(kosten) : '–';
+        tr.querySelector('#ww-anteil-' + idx).textContent = sumV > 0 && v > 0 ? ((v / sumV * 100).toFixed(1) + ' %') : '–';
+        sumOel += liter; sumKosten += kosten;
+      });
     }
 
     function updateSums() {
@@ -177,6 +263,13 @@
         if (!isNaN(v) && v > 0) nk += v;
       });
       sumNk.textContent = fmt(nk);
+
+      // Warmwasser: Gesamt-B = Öl für die Gesamt-Warmwassermenge × Preis
+      const { menge, temp, hu } = getWwParams();
+      const wwOel = (menge && menge > 0) ? wwOelLiter(menge, temp, hu) : 0;
+      sumWw.textContent = fmt(wwOel * (preis || 0));
+
+      updateWwMieter();
     }
     document.addEventListener('input', updateSums);
 
@@ -184,6 +277,11 @@
       const verbrauch = parseFloat(document.getElementById('verbrauch').value);
       const preis = parseFloat(document.getElementById('preis').value);
       const oelKosten = (!isNaN(verbrauch) && verbrauch > 0 && !isNaN(preis) && preis > 0) ? verbrauch * preis : 0;
+
+      // Warmwasser-Kosten
+      const { menge, temp, hu } = getWwParams();
+      const wwOel = (menge && menge > 0) ? wwOelLiter(menge, temp, hu) : 0;
+      const wwKosten = wwOel * (preis || 0);
 
       const inputs = document.querySelectorAll('.cost-input');
       const items = [];
@@ -196,12 +294,12 @@
         }
       });
 
-      if (oelKosten <= 0 && items.length === 0) {
-        alert('Bitte Verbrauch und Ölpreis und/oder mindestens eine Heiznebenkosten-Position ausfüllen.');
+      if (oelKosten <= 0 && wwKosten <= 0 && items.length === 0) {
+        alert('Bitte Verbrauch/Ölpreis, Warmwassermenge und/oder mindestens eine Heiznebenkosten-Position ausfüllen.');
         return;
       }
 
-      const gesamt = oelKosten + nk;
+      const gesamt = oelKosten + wwKosten + nk;
 
       summaryDiv.innerHTML = `
         <div class="summary-card">
@@ -209,10 +307,14 @@
           <div class="label">Heizöl / JAHR</div>
         </div>
         <div class="summary-card">
+          <div class="value">${fmt(wwKosten)}</div>
+          <div class="label">Warmwasser</div>
+        </div>
+        <div class="summary-card">
           <div class="value">${fmt(nk)}</div>
           <div class="label">Heiznebenkosten</div>
         </div>
-        <div class="summary-card">
+        <div class="summary-card acc">
           <div class="value">${fmt(gesamt)}</div>
           <div class="label">GESAMT / JAHR</div>
         </div>
@@ -237,6 +339,37 @@
           </div>`;
       }
 
+      if (menge && menge > 0) {
+        // Mieter-Zeilen
+        let wwRows = '';
+        let mieterSumKosten = 0;
+        wwBody.querySelectorAll('tr').forEach(tr => {
+          const name = tr.querySelector('.label-input').value || 'Mieter';
+          const v = parseFloat(tr.querySelector('.ww-mieter').value) || 0;
+          if (v > 0) {
+            const liter = wwOelLiter(v, temp, hu);
+            const kosten = liter * (preis || 0);
+            const pct = menge > 0 ? (v / menge * 100).toFixed(1) : 0;
+            wwRows += `<tr><td>${name}</td><td class="amount">${v.toFixed(1).replace('.', ',')} m³</td><td class="amount">${Math.round(liter).toLocaleString('de-DE')} L</td><td class="amount">${fmt(kosten)}</td><td class="amount">${pct} %</td></tr>`;
+            mieterSumKosten += kosten;
+          }
+        });
+        detailHTML += `<div class="detail-section"><h4>Warmwasser-Berechnung (B = 2,5 × V × (t−10) ÷ Hu)</h4>
+          <table>
+            <thead><tr><th>Position</th><th style="width:120px">Wert</th><th style="width:120px">Betrag</th></tr></thead>
+            <tbody>
+              <tr><td>Warmwassermenge gesamt</td><td class="amount">${menge.toFixed(1).replace('.', ',')} m³</td><td class="amount"></td></tr>
+              <tr><td>Temperatur / Heizwert</td><td class="amount">${temp} °C / ${hu} kWh/l</td><td class="amount"></td></tr>
+              <tr><td>Heizöl für Warmwasser</td><td class="amount">${Math.round(wwOel).toLocaleString('de-DE')} L</td><td class="amount">${fmt(wwKosten)}</td></tr>
+            </tbody>
+          </table>`;
+        if (wwRows) {
+          detailHTML += `<p style="margin:10px 0 4px;font-size:0.85rem;color:#374151;">Mieter-Aufteilung (Warmwasseruhr):</p>
+          <table><thead><tr><th>Mieter</th><th style="width:100px">Verbrauch</th><th style="width:100px">Öl</th><th style="width:110px">Kosten</th><th style="width:80px">Anteil</th></tr></thead><tbody>${wwRows}</tbody></table>`;
+        }
+        detailHTML += `</div>`;
+      }
+
       if (items.length > 0) {
         let rows = '';
         items.forEach(item => {
@@ -256,6 +389,7 @@
           <div style="margin-top:8px; font-size:0.85rem; opacity:0.8; display:flex; gap:20px; flex-wrap:wrap;">
             <span>Ø Monat: <strong>${fmt(gesamt/12)}</strong></span>
             <span>Heizöl: <strong>${fmt(oelKosten)}</strong></span>
+            <span>Warmwasser: <strong>${fmt(wwKosten)}</strong></span>
             <span>Neben: <strong>${fmt(nk)}</strong></span>
           </div>
         </div>
@@ -270,11 +404,20 @@
       document.getElementById('jahr').value = new Date().getFullYear();
       document.getElementById('verbrauch').value = '';
       document.getElementById('preis').value = '';
+      document.getElementById('ww-menge').value = '';
+      document.getElementById('ww-temp').value = 60;
+      document.getElementById('ww-hu').value = 10;
       document.querySelectorAll('.cost-input').forEach(inp => inp.value = '');
+      wwBody.innerHTML = '';
+      wwMieterCount = 0;
+      addWwMieter('Mieter 1');
       resultsDiv.classList.remove('show');
       updateSums();
     }
 
+    // Start mit einem Mieter
+    addWwMieter('Mieter 1');
+    wwAdd.addEventListener('click', () => addWwMieter());
     berechnenBtn.addEventListener('click', calculate);
     resetBtn.addEventListener('click', resetAll);
     printBtn.addEventListener('click', () => window.print());
