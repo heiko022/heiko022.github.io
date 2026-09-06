@@ -37,6 +37,8 @@
 
     .cost-input { width: 100%; padding: 8px 10px; border: 1px solid #d1d5db; border-radius: 6px; background: #fff; font-size: 0.9rem; transition: border 0.2s; text-align: right; }
     .cost-input:focus { outline: none; border-color: #3b82f6; box-shadow: 0 0 0 2px rgba(59,130,246,0.15); }
+    .label-input { width: 100%; padding: 8px 10px; border: 1px solid #d1d5db; border-radius: 6px; background: #fff; font-size: 0.9rem; transition: border 0.2s; color: #1a1a2e; }
+    .label-input:focus { outline: none; border-color: #3b82f6; box-shadow: 0 0 0 2px rgba(59,130,246,0.15); }
 
     .actions { display: flex; gap: 10px; flex-wrap: wrap; margin: 20px 0; }
     .btn { background: #16213e; color: #fff; border: none; padding: 12px 28px; border-radius: 10px; font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: background 0.2s, transform 0.15s; flex: 1 1 auto; min-width: 140px; }
@@ -100,10 +102,10 @@
             <tr><td>Heizkosten</td><td class="amount"><input type="number" class="cost-input" placeholder="0" min="0" step="0.01" data-group="alle" data-label="Heizkosten"></td></tr>
             <tr><td>Hausmeister</td><td class="amount"><input type="number" class="cost-input" placeholder="0" min="0" step="0.01" data-group="alle" data-label="Hausmeister"></td></tr>
             <tr><td>Schornsteinfeger</td><td class="amount"><input type="number" class="cost-input" placeholder="0" min="0" step="0.01" data-group="alle" data-label="Schornsteinfeger"></td></tr>
-            <tr><td>Sonstige Kosten 1</td><td class="amount"><input type="number" class="cost-input" placeholder="0" min="0" step="0.01" data-group="alle" data-label="Sonstige Kosten 1"></td></tr>
-            <tr><td>Sonstige Kosten 2</td><td class="amount"><input type="number" class="cost-input" placeholder="0" min="0" step="0.01" data-group="alle" data-label="Sonstige Kosten 2"></td></tr>
-            <tr><td>Sonstige Kosten 3</td><td class="amount"><input type="number" class="cost-input" placeholder="0" min="0" step="0.01" data-group="alle" data-label="Sonstige Kosten 3"></td></tr>
-            <tr><td>Sonstige Kosten 4</td><td class="amount"><input type="number" class="cost-input" placeholder="0" min="0" step="0.01" data-group="alle" data-label="Sonstige Kosten 4"></td></tr>
+            <tr><td><input type="text" class="label-input" value="Sonstige Kosten 1" data-for="sonstige1" style="font-weight:600;"></td><td class="amount"><input type="number" class="cost-input" id="sonstige1" placeholder="0" min="0" step="0.01" data-group="alle" data-label="Sonstige Kosten 1"></td></tr>
+            <tr><td><input type="text" class="label-input" value="Sonstige Kosten 2" data-for="sonstige2" style="font-weight:600;"></td><td class="amount"><input type="number" class="cost-input" id="sonstige2" placeholder="0" min="0" step="0.01" data-group="alle" data-label="Sonstige Kosten 2"></td></tr>
+            <tr><td><input type="text" class="label-input" value="Sonstige Kosten 3" data-for="sonstige3" style="font-weight:600;"></td><td class="amount"><input type="number" class="cost-input" id="sonstige3" placeholder="0" min="0" step="0.01" data-group="alle" data-label="Sonstige Kosten 3"></td></tr>
+            <tr><td><input type="text" class="label-input" value="Sonstige Kosten 4" data-for="sonstige4" style="font-weight:600;"></td><td class="amount"><input type="number" class="cost-input" id="sonstige4" placeholder="0" min="0" step="0.01" data-group="alle" data-label="Sonstige Kosten 4"></td></tr>
           </tbody>
         </table>
         <div class="section-total"><span>Summe</span><strong id="sum-gesamt">0,00 €</strong></div>
@@ -160,6 +162,15 @@
     }
 
     document.addEventListener('input', updateSum);
+
+    // Sonstige: Textfeld aktualisiert data-label live
+    document.querySelectorAll('.label-input').forEach(li => {
+      li.addEventListener('input', () => {
+        const cost = document.getElementById(li.dataset.for);
+        if (cost) cost.dataset.label = li.value || 'Sonstige Kosten';
+      });
+    });
+
 
     function calculate() {
       const inputs = document.querySelectorAll('.cost-input');
