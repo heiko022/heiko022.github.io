@@ -105,10 +105,7 @@
           <thead><tr><th>Kostenposition</th><th style="width:120px">Jahresbetrag (€)</th></tr></thead>
           <tbody>
             <tr><td>Grundsteuer</td><td class="amount"><input type="number" class="cost-input" placeholder="0" min="0" step="0.01" data-group="steuern" data-label="Grundsteuer"></td></tr>
-            <tr><td>Gewerbesteuer (falls gewerblich)</td><td class="amount"><input type="number" class="cost-input" placeholder="0" min="0" step="0.01" data-group="steuern" data-label="Gewerbesteuer"></td></tr>
-            <tr><td>Einkommensteuer (Anteil, z.B. 25 %)</td><td class="amount"><input type="number" class="cost-input" placeholder="0" min="0" step="0.01" data-group="steuern" data-label="Einkommensteuer"></td></tr>
-            <tr><td>Umsatzsteuer (falls umsatzsteuerpflichtig)</td><td class="amount"><input type="number" class="cost-input" placeholder="0" min="0" step="0.01" data-group="steuern" data-label="Umsatzsteuer"></td></tr>
-            <tr><td>Wassergebühren / Trinkwasser (Stadt)</td><td class="amount"><input type="number" class="cost-input" placeholder="0" min="0" step="0.01" data-group="steuern" data-label="Wassergebühren Stadt"></td></tr>
+                                                <tr><td>Wassergebühren / Trinkwasser</td><td class="amount"><input type="number" class="cost-input" placeholder="0" min="0" step="0.01" data-group="steuern" data-label="Wassergebühren"></td></tr>
           </tbody>
         </table>
         <div class="section-total"><span>Summe Steuern & Gebühren</span><strong id="sum-steuern">0,00 €</strong></div>
@@ -127,18 +124,11 @@
         <table>
           <thead><tr><th>Kostenposition</th><th style="width:120px">Jahresbetrag (€)</th></tr></thead>
           <tbody>
-            <tr><td>Strom – Allgemein (Treppenhaus, Außenlicht, Aufzug)</td><td class="amount"><input type="number" class="cost-input" placeholder="0" min="0" step="0.01" data-group="nk" data-label="Strom Allgemein"></td></tr>
-            <tr><td>Warmwasser – Anteil</td><td class="amount"><input type="number" class="cost-input" placeholder="0" min="0" step="0.01" data-group="nk" data-label="Warmwasser"></td></tr>
-            <tr><td>Kaltwasser / Wasserversorgung</td><td class="amount"><input type="number" class="cost-input" placeholder="0" min="0" step="0.01" data-group="nk" data-label="Wasserversorgung"></td></tr>
+                                    <tr><td>Kaltwasser / Wasserversorgung</td><td class="amount"><input type="number" class="cost-input" placeholder="0" min="0" step="0.01" data-group="nk" data-label="Wasserversorgung"></td></tr>
             <tr><td>Abwasser / Abwassergebühren</td><td class="amount"><input type="number" class="cost-input" placeholder="0" min="0" step="0.01" data-group="nk" data-label="Abwasser"></td></tr>
-            <tr><td>Müll / Abfallentsorgung (Restmüll, Papier, Bio, Gelber Sack)</td><td class="amount"><input type="number" class="cost-input" placeholder="0" min="0" step="0.01" data-group="nk" data-label="Müllentsorgung"></td></tr>
-            <tr><td>Gebäudeversicherung (Feuer, Elementar, Natur)</td><td class="amount"><input type="number" class="cost-input" placeholder="0" min="0" step="0.01" data-group="nk" data-label="Gebäudeversicherung"></td></tr>
-            <tr><td>Verwaltung / Hausgeld</td><td class="amount"><input type="number" class="cost-input" placeholder="0" min="0" step="0.01" data-group="nk" data-label="Verwaltung"></td></tr>
-            <tr><td>Instandhaltung / Reparaturreserve (z.B. 1–2 €/kW)</td><td class="amount"><input type="number" class="cost-input" placeholder="0" min="0" step="0.01" data-group="nk" data-label="Instandhaltung"></td></tr>
-            <tr><td>Hausreinigung / Treppenhausreinigung</td><td class="amount"><input type="number" class="cost-input" placeholder="0" min="0" step="0.01" data-group="nk" data-label="Hausreinigung"></td></tr>
-            <tr><td>Gartenpflege / Außenanlagen</td><td class="amount"><input type="number" class="cost-input" placeholder="0" min="0" step="0.01" data-group="nk" data-label="Gartenpflege"></td></tr>
-            <tr><td>Aufzug – Wartung (falls vorhanden)</td><td class="amount"><input type="number" class="cost-input" placeholder="0" min="0" step="0.01" data-group="nk" data-label="Aufzug"></td></tr>
-          </tbody>
+            <tr><td>Müll / Abfallentsorgung</td><td class="amount"><input type="number" class="cost-input" placeholder="0" min="0" step="0.01" data-group="nk" data-label="Müllentsorgung"></td></tr>
+            <tr><td>Gebäudeversicherung</td><td class="amount"><input type="number" class="cost-input" placeholder="0" min="0" step="0.01" data-group="nk" data-label="Gebäudeversicherung"></td></tr>
+                                                                      </tbody>
         </table>
         <div class="section-total"><span>Summe Nutzungs- & Betriebskosten</span><strong id="sum-nk">0,00 €</strong></div>
       </div>
@@ -156,12 +146,8 @@
         <table>
           <thead><tr><th>Kostenposition</th><th style="width:120px">Jahresbetrag (€)</th></tr></thead>
           <tbody>
-            <tr><td>Heizkosten (Gas / Öl / Fernwärme)</td><td class="amount"><input type="number" class="cost-input" placeholder="0" min="0" step="0.01" data-group="heizung" data-label="Heizung"></td></tr>
-            <tr><td>Wärmepumpe / Solarthermie Betrieb</td><td class="amount"><input type="number" class="cost-input" placeholder="0" min="0" step="0.01" data-group="heizung" data-label="Wärmepumpe"></td></tr>
-            <tr><td>Heizungs-Wartung / Servicevertrag</td><td class="amount"><input type="number" class="cost-input" placeholder="0" min="0" step="0.01" data-group="heizung" data-label="Heizungswartung"></td></tr>
-            <tr><td>Heizungsmodernisierung / Sanierung (amortisiert)</td><td class="amount"><input type="number" class="cost-input" placeholder="0" min="0" step="0.01" data-group="heizung" data-label="Heizung Sanierung"></td></tr>
-            <tr><td>Strom für Heizung / Pumpen</td><td class="amount"><input type="number" class="cost-input" placeholder="0" min="0" step="0.01" data-group="heizung" data-label="Heizstrom"></td></tr>
-          </tbody>
+            <tr><td>Heizkosten</td><td class="amount"><input type="number" class="cost-input" placeholder="0" min="0" step="0.01" data-group="heizung" data-label="Heizung"></td></tr>
+                                                          </tbody>
         </table>
         <div class="section-total"><span>Summe Heizung & Energie</span><strong id="sum-heizung">0,00 €</strong></div>
       </div>
@@ -179,14 +165,8 @@
         <table>
           <thead><tr><th>Kostenposition</th><th style="width:120px">Jahresbetrag (€)</th></tr></thead>
           <tbody>
-            <tr><td>Hausmeister / Servicekraft</td><td class="amount"><input type="number" class="cost-input" placeholder="0" min="0" step="0.01" data-group="immobilie" data-label="Hausmeister"></td></tr>
-            <tr><td>Internet / Telefon (Gemeinschaft)</td><td class="amount"><input type="number" class="cost-input" placeholder="0" min="0" step="0.01" data-group="immobilie" data-label="Internet"></td></tr>
-            <tr><td>Antennenanlage / Satellit</td><td class="amount"><input type="number" class="cost-input" placeholder="0" min="0" step="0.01" data-group="immobilie" data-label="Antenne"></td></tr>
-            <tr><td>Allgemeine Beleuchtung Außen</td><td class="amount"><input type="number" class="cost-input" placeholder="0" min="0" step="0.01" data-group="immobilie" data-label="Außenbeleuchtung"></td></tr>
-            <tr><td>Schornsteinfeger</td><td class="amount"><input type="number" class="cost-input" placeholder="0" min="0" step="0.01" data-group="immobilie" data-label="Schornsteinfeger"></td></tr>
-            <tr><td>Wartung Feuerlöscher</td><td class="amount"><input type="number" class="cost-input" placeholder="0" min="0" step="0.01" data-group="immobilie" data-label="Feuerlöscher"></td></tr>
-            <tr><td>Gebrauchsgegenstände (Glühbirnen, Türschilder etc.)</td><td class="amount"><input type="number" class="cost-input" placeholder="0" min="0" step="0.01" data-group="immobilie" data-label="Gebrauchsgegenstände"></td></tr>
-          </tbody>
+            <tr><td>Hausmeister</td><td class="amount"><input type="number" class="cost-input" placeholder="0" min="0" step="0.01" data-group="immobilie" data-label="Hausmeister"></td></tr>
+                                                                                  </tbody>
         </table>
         <div class="section-total"><span>Summe Immobilie & Infrastruktur</span><strong id="sum-immobilie">0,00 €</strong></div>
       </div>
@@ -204,7 +184,7 @@
         <table>
           <thead><tr><th>Kostenposition</th><th style="width:120px">Jahresbetrag (€)</th></tr></thead>
           <tbody>
-            <tr><td>Sonstige Kosten 1 (z.B. Parkgebühren, Gartenabfälle)</td><td class="amount"><input type="number" class="cost-input" placeholder="0" min="0" step="0.01" data-group="sonstige" data-label="Sonstige 1"></td></tr>
+            <tr><td>Sonstige Kosten 1</td><td class="amount"><input type="number" class="cost-input" placeholder="0" min="0" step="0.01" data-group="sonstige" data-label="Sonstige 1"></td></tr>
             <tr><td>Sonstige Kosten 2</td><td class="amount"><input type="number" class="cost-input" placeholder="0" min="0" step="0.01" data-group="sonstige" data-label="Sonstige 2"></td></tr>
             <tr><td>Sonstige Kosten 3</td><td class="amount"><input type="number" class="cost-input" placeholder="0" min="0" step="0.01" data-group="sonstige" data-label="Sonstige 3"></td></tr>
             <tr><td>Sonstige Kosten 4</td><td class="amount"><input type="number" class="cost-input" placeholder="0" min="0" step="0.01" data-group="sonstige" data-label="Sonstige 4"></td></tr>
