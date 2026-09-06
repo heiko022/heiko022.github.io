@@ -83,10 +83,6 @@
         <input type="text" id="objekt" placeholder="z.B. Musterstraße 42, 10115 Berlin">
       </div>
       <div class="form-group">
-        <label for="mietspiegel">Mietpreis (kW)</label>
-        <input type="text" id="mietspiegel" placeholder="z.B. 12,50 €/kW">
-      </div>
-      <div class="form-group">
         <label for="jahr">Berechnungsjahr</label>
         <input type="number" id="jahr" value="2026" min="2020" max="2035" style="width:100%; padding:10px 12px; border:1px solid #d1d5db; border-radius:8px; background:#fff; font-size:0.95rem;">
       </div>
@@ -221,7 +217,6 @@
     function resetAll() {
       document.querySelectorAll('.cost-input').forEach(inp => inp.value = '');
       document.getElementById('objekt').value = '';
-      document.getElementById('mietspiegel').value = '';
       document.getElementById('jahr').value = new Date().getFullYear();
       resultsDiv.classList.remove('show');
       updateSum();
