@@ -75,7 +75,7 @@
 <body>
   <div class="container">
     <h1>📋 Jahreskostenkalkulation – Mietobjekt</h1>
-    <p class="subtitle">Alle jährlichen Kosten positioniert, gruppiert und summiert.</p>
+    <p class="subtitle">Alle jährlichen Kosten summiert.</p>
 
     <div class="header-row">
       <div class="form-group">
@@ -92,105 +92,26 @@
       </div>
     </div>
 
-    <!-- STEUER -->
     <div class="section open">
-      <div class="section-header" onclick="toggleSection(this)">
-        <span class="icon">💰</span>
-        <span class="title">Steuern & öffentliche Gebühren</span>
-        <span class="badge" id="badge-steuern">0</span>
-        <span class="toggle">▼</span>
-      </div>
-      <div class="section-body">
+      <div class="section-body" style="display:block;">
         <table>
           <thead><tr><th>Kostenposition</th><th style="width:120px">Jahresbetrag (€)</th></tr></thead>
           <tbody>
-            <tr><td>Grundsteuer</td><td class="amount"><input type="number" class="cost-input" placeholder="0" min="0" step="0.01" data-group="steuern" data-label="Grundsteuer"></td></tr>
-                                                <tr><td>Wassergebühren / Trinkwasser</td><td class="amount"><input type="number" class="cost-input" placeholder="0" min="0" step="0.01" data-group="steuern" data-label="Wassergebühren"></td></tr>
+            <tr><td>Grundsteuer</td><td class="amount"><input type="number" class="cost-input" placeholder="0" min="0" step="0.01" data-group="alle" data-label="Grundsteuer"></td></tr>
+            <tr><td>Wassergebühren / Trinkwasser</td><td class="amount"><input type="number" class="cost-input" placeholder="0" min="0" step="0.01" data-group="alle" data-label="Wassergebühren / Trinkwasser"></td></tr>
+            <tr><td>Kaltwasser / Wasserversorgung</td><td class="amount"><input type="number" class="cost-input" placeholder="0" min="0" step="0.01" data-group="alle" data-label="Kaltwasser / Wasserversorgung"></td></tr>
+            <tr><td>Abwasser / Abwassergebühren</td><td class="amount"><input type="number" class="cost-input" placeholder="0" min="0" step="0.01" data-group="alle" data-label="Abwasser / Abwassergebühren"></td></tr>
+            <tr><td>Müll / Abfallentsorgung</td><td class="amount"><input type="number" class="cost-input" placeholder="0" min="0" step="0.01" data-group="alle" data-label="Müll / Abfallentsorgung"></td></tr>
+            <tr><td>Gebäudeversicherung</td><td class="amount"><input type="number" class="cost-input" placeholder="0" min="0" step="0.01" data-group="alle" data-label="Gebäudeversicherung"></td></tr>
+            <tr><td>Heizkosten</td><td class="amount"><input type="number" class="cost-input" placeholder="0" min="0" step="0.01" data-group="alle" data-label="Heizkosten"></td></tr>
+            <tr><td>Hausmeister</td><td class="amount"><input type="number" class="cost-input" placeholder="0" min="0" step="0.01" data-group="alle" data-label="Hausmeister"></td></tr>
+            <tr><td>Sonstige Kosten 1</td><td class="amount"><input type="number" class="cost-input" placeholder="0" min="0" step="0.01" data-group="alle" data-label="Sonstige Kosten 1"></td></tr>
+            <tr><td>Sonstige Kosten 2</td><td class="amount"><input type="number" class="cost-input" placeholder="0" min="0" step="0.01" data-group="alle" data-label="Sonstige Kosten 2"></td></tr>
+            <tr><td>Sonstige Kosten 3</td><td class="amount"><input type="number" class="cost-input" placeholder="0" min="0" step="0.01" data-group="alle" data-label="Sonstige Kosten 3"></td></tr>
+            <tr><td>Sonstige Kosten 4</td><td class="amount"><input type="number" class="cost-input" placeholder="0" min="0" step="0.01" data-group="alle" data-label="Sonstige Kosten 4"></td></tr>
           </tbody>
         </table>
-        <div class="section-total"><span>Summe Steuern & Gebühren</span><strong id="sum-steuern">0,00 €</strong></div>
-      </div>
-    </div>
-
-    <!-- NK -->
-    <div class="section open">
-      <div class="section-header" onclick="toggleSection(this)">
-        <span class="icon">🏢</span>
-        <span class="title">Nutzungs- & Betriebskosten (NK)</span>
-        <span class="badge" id="badge-nk">0</span>
-        <span class="toggle">▼</span>
-      </div>
-      <div class="section-body">
-        <table>
-          <thead><tr><th>Kostenposition</th><th style="width:120px">Jahresbetrag (€)</th></tr></thead>
-          <tbody>
-                                    <tr><td>Kaltwasser / Wasserversorgung</td><td class="amount"><input type="number" class="cost-input" placeholder="0" min="0" step="0.01" data-group="nk" data-label="Wasserversorgung"></td></tr>
-            <tr><td>Abwasser / Abwassergebühren</td><td class="amount"><input type="number" class="cost-input" placeholder="0" min="0" step="0.01" data-group="nk" data-label="Abwasser"></td></tr>
-            <tr><td>Müll / Abfallentsorgung</td><td class="amount"><input type="number" class="cost-input" placeholder="0" min="0" step="0.01" data-group="nk" data-label="Müllentsorgung"></td></tr>
-            <tr><td>Gebäudeversicherung</td><td class="amount"><input type="number" class="cost-input" placeholder="0" min="0" step="0.01" data-group="nk" data-label="Gebäudeversicherung"></td></tr>
-                                                                      </tbody>
-        </table>
-        <div class="section-total"><span>Summe Nutzungs- & Betriebskosten</span><strong id="sum-nk">0,00 €</strong></div>
-      </div>
-    </div>
-
-    <!-- HEIZUNG -->
-    <div class="section open">
-      <div class="section-header" onclick="toggleSection(this)">
-        <span class="icon">🔥</span>
-        <span class="title">Heizung & Energie</span>
-        <span class="badge" id="badge-heizung">0</span>
-        <span class="toggle">▼</span>
-      </div>
-      <div class="section-body">
-        <table>
-          <thead><tr><th>Kostenposition</th><th style="width:120px">Jahresbetrag (€)</th></tr></thead>
-          <tbody>
-            <tr><td>Heizkosten</td><td class="amount"><input type="number" class="cost-input" placeholder="0" min="0" step="0.01" data-group="heizung" data-label="Heizung"></td></tr>
-                                                          </tbody>
-        </table>
-        <div class="section-total"><span>Summe Heizung & Energie</span><strong id="sum-heizung">0,00 €</strong></div>
-      </div>
-    </div>
-
-    <!-- IMMOBILIEN -->
-    <div class="section open">
-      <div class="section-header" onclick="toggleSection(this)">
-        <span class="icon">🏠</span>
-        <span class="title">Immobilie & Infrastruktur</span>
-        <span class="badge" id="badge-immobilie">0</span>
-        <span class="toggle">▼</span>
-      </div>
-      <div class="section-body">
-        <table>
-          <thead><tr><th>Kostenposition</th><th style="width:120px">Jahresbetrag (€)</th></tr></thead>
-          <tbody>
-            <tr><td>Hausmeister</td><td class="amount"><input type="number" class="cost-input" placeholder="0" min="0" step="0.01" data-group="immobilie" data-label="Hausmeister"></td></tr>
-                                                                                  </tbody>
-        </table>
-        <div class="section-total"><span>Summe Immobilie & Infrastruktur</span><strong id="sum-immobilie">0,00 €</strong></div>
-      </div>
-    </div>
-
-    <!-- SONSTIGE -->
-    <div class="section open">
-      <div class="section-header" onclick="toggleSection(this)">
-        <span class="icon">➕</span>
-        <span class="title">Sonstige Kosten</span>
-        <span class="badge" id="badge-sonstige">0</span>
-        <span class="toggle">▼</span>
-      </div>
-      <div class="section-body">
-        <table>
-          <thead><tr><th>Kostenposition</th><th style="width:120px">Jahresbetrag (€)</th></tr></thead>
-          <tbody>
-            <tr><td>Sonstige Kosten 1</td><td class="amount"><input type="number" class="cost-input" placeholder="0" min="0" step="0.01" data-group="sonstige" data-label="Sonstige 1"></td></tr>
-            <tr><td>Sonstige Kosten 2</td><td class="amount"><input type="number" class="cost-input" placeholder="0" min="0" step="0.01" data-group="sonstige" data-label="Sonstige 2"></td></tr>
-            <tr><td>Sonstige Kosten 3</td><td class="amount"><input type="number" class="cost-input" placeholder="0" min="0" step="0.01" data-group="sonstige" data-label="Sonstige 3"></td></tr>
-            <tr><td>Sonstige Kosten 4</td><td class="amount"><input type="number" class="cost-input" placeholder="0" min="0" step="0.01" data-group="sonstige" data-label="Sonstige 4"></td></tr>
-          </tbody>
-        </table>
-        <div class="section-total"><span>Summe Sonstige</span><strong id="sum-sonstige">0,00 €</strong></div>
+        <div class="section-total"><span>Summe</span><strong id="sum-gesamt">0,00 €</strong></div>
       </div>
     </div>
 
@@ -212,27 +133,6 @@
   </div>
 
 <script>
-  // Toggle sections
-  function toggleSection(header) {
-    const section = header.parentElement;
-    section.classList.toggle('open');
-    updateBadges();
-  }
-
-  function updateBadges() {
-    document.querySelectorAll('.section').forEach(s => {
-      const badge = s.querySelector('.badge');
-      if (!badge) return;
-      const group = s.querySelector('.section-body .cost-input')?.dataset.group;
-      if (!group) return;
-      const inputs = s.querySelectorAll(`.cost-input[data-group="${group}"]`);
-      const count = Array.from(inputs).filter(inp => parseFloat(inp.value) > 0).length;
-      badge.textContent = count;
-    });
-  }
-
-  document.addEventListener('input', updateBadges);
-
   document.addEventListener('DOMContentLoaded', () => {
     const berechnenBtn = document.getElementById('berechnen');
     const resetBtn = document.getElementById('resetBtn');
@@ -240,6 +140,7 @@
     const resultsDiv = document.getElementById('results');
     const summaryDiv = document.getElementById('summary');
     const detailDiv = document.getElementById('detailOutput');
+    const sumSpan = document.getElementById('sum-gesamt');
 
     function getObjektName() {
       return document.getElementById('objekt').value.trim() || 'Unbenanntes Objekt';
@@ -253,96 +154,63 @@
       return n.toFixed(2).replace('.', ',') + ' €';
     }
 
-    function calculate() {
-      const sections = document.querySelectorAll('.section');
-      const sectionData = [];
-      let grandTotal = 0;
+    function updateSum() {
+      const inputs = document.querySelectorAll('.cost-input');
+      let total = 0;
+      inputs.forEach(inp => {
+        const v = parseFloat(inp.value);
+        if (!isNaN(v) && v > 0) total += v;
+      });
+      sumSpan.textContent = formatCurrency(total);
+    }
 
-      sections.forEach(section => {
-        const group = section.querySelector('.cost-input')?.dataset.group;
-        if (!group) return;
-        const inputs = section.querySelectorAll(`.cost-input[data-group="${group}"]`);
-        const items = [];
-        let sectionSum = 0;
-        inputs.forEach(inp => {
-          const val = parseFloat(inp.value);
-          if (!isNaN(val) && val > 0) {
-            items.push({ label: inp.dataset.label || 'Kosten', amount: val });
-            sectionSum += val;
-          }
-        });
-        if (items.length > 0) {
-          grandTotal += sectionSum;
-          const title = section.querySelector('.title')?.textContent || 'Sonstige';
-          sectionData.push({ title, items, sum: sectionSum });
+    document.addEventListener('input', updateSum);
+
+    function calculate() {
+      const inputs = document.querySelectorAll('.cost-input');
+      const items = [];
+      let total = 0;
+      inputs.forEach(inp => {
+        const v = parseFloat(inp.value);
+        if (!isNaN(v) && v > 0) {
+          items.push({ label: inp.dataset.label || 'Kosten', amount: v });
+          total += v;
         }
       });
 
-      if (sectionData.length === 0) {
+      if (items.length === 0) {
         alert('Bitte mindestens eine Kostenposition mit Betrag ausfüllen.');
         return;
       }
 
-      // Summary cards
-      const maxSection = sectionData.reduce((a, b) => a.sum > b.sum ? a : b);
-      const sumPercent = (v) => (grandTotal > 0 ? (v / grandTotal * 100) : 0);
-
-      let summaryHTML = '';
-      sectionData.forEach(sd => {
-        const pct = sumPercent(sd.sum);
-        summaryHTML += `
-          <div class="summary-card">
-            <div class="value">${formatCurrency(sd.sum)}</div>
-            <div class="label">${sd.title}</div>
-          </div>
-        `;
-      });
-      summaryHTML += `
-        <div class="summary-card" style="background: #0f172a;">
-          <div class="value">${formatCurrency(grandTotal)}</div>
+      summaryDiv.innerHTML = `
+        <div class="summary-card">
+          <div class="value">${formatCurrency(total)}</div>
           <div class="label">GESAMT / JAHR</div>
         </div>
-        <div class="summary-card" style="background: #1e3a5f;">
-          <div class="value">${formatCurrency(grandTotal / 12)}</div>
+        <div class="summary-card">
+          <div class="value">${formatCurrency(total / 12)}</div>
           <div class="label">Ø / MONAT</div>
         </div>
       `;
-      summaryDiv.innerHTML = summaryHTML;
 
-      // Detail breakdown
-      let detailHTML = '';
-      sectionData.forEach(sd => {
-        detailHTML += `
-          <div class="detail-section">
-            <h4>${sd.title} – ${formatCurrency(sd.sum)} (${sumPercent(sd.sum).toFixed(1)} %)</h4>
-            <div class="breakdown-bar"><div class="bar" style="width:${sumPercent(sd.sum)}%; background:#3b82f6;"></div></div>
-            <table>
-              <thead><tr><th>Position</th><th style="width:120px">Betrag</th><th>Anteil</th></tr></thead>
-              <tbody>
-        `;
-        sd.items.forEach(item => {
-          const pct = sd.sum > 0 ? (item.amount / sd.sum * 100).toFixed(1) : 0;
-          detailHTML += `<tr><td>${item.label}</td><td class="amount">${formatCurrency(item.amount)}</td><td>${pct} %</td></tr>`;
-        });
-        detailHTML += `
-              </tbody>
-            </table>
-          </div>
-        `;
+      let detailHTML = `<div class="detail-section"><h4>Positionen</h4><table><thead><tr><th>Position</th><th style="width:120px">Betrag</th><th>Anteil</th></tr></thead><tbody>`;
+      items.forEach(item => {
+        const pct = total > 0 ? (item.amount / total * 100).toFixed(1) : 0;
+        detailHTML += `<tr><td>${item.label}</td><td class="amount">${formatCurrency(item.amount)}</td><td>${pct} %</td></tr>`;
       });
+      detailHTML += `</tbody></table></div>`;
 
-      // Total row
       detailHTML += `
         <div class="detail-section" style="background:#16213e; color:#fff; padding:14px; border-radius:12px;">
           <h4 style="color:#fff;">Gesamtsumme – Jahreskosten ${getYear()}</h4>
           <div style="display:flex; justify-content:space-between; align-items:center; margin-top:8px;">
-            <span style="font-size:1.8rem; font-weight:700;">${formatCurrency(grandTotal)}</span>
+            <span style="font-size:1.8rem; font-weight:700;">${formatCurrency(total)}</span>
             <span style="opacity:0.7; font-size:0.85rem;">Objekt: ${getObjektName()}</span>
           </div>
           <div style="margin-top:8px; font-size:0.85rem; opacity:0.8; display:flex; gap:20px; flex-wrap:wrap;">
-            <span>Ø Monat: <strong>${formatCurrency(grandTotal/12)}</strong></span>
-            <span>Positionen: <strong>${sectionData.reduce((a,s) => a + s.items.length, 0)}</strong></span>
-            <span>Gruppen: <strong>${sectionData.length}</strong></span>
+            <span>Ø Monat: <strong>${formatCurrency(total/12)}</strong></span>
+            <span>Positionen: <strong>${items.length}</strong></span>
           </div>
         </div>
       `;
@@ -357,7 +225,7 @@
       document.getElementById('mietspiegel').value = '';
       document.getElementById('jahr').value = new Date().getFullYear();
       resultsDiv.classList.remove('show');
-      updateBadges();
+      updateSum();
     }
 
     berechnenBtn.addEventListener('click', calculate);
