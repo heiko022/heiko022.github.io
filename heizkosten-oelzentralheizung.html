@@ -32,8 +32,6 @@
     .input-row input[type=number] { width: 100%; padding: 10px 12px; border: 1px solid #d1d5db; border-radius: 8px; background: #fff; font-size: 0.95rem; }
     .input-row input[type=number]:focus { outline: none; border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59,130,246,0.15); }
 
-    .cost-input { width: 100%; padding: 8px 10px; border: 1px solid #d1d5db; border-radius: 6px; background: #fff; font-size: 0.9rem; transition: border 0.2s; text-align: right; }
-    .cost-input:focus { outline: none; border-color: #3b82f6; box-shadow: 0 0 0 2px rgba(59,130,246,0.15); }
 
     .section-total { background: #f9fafb; padding: 8px 12px; border-radius: 8px; margin-top: 8px; font-size: 0.9rem; color: #6b7280; display: flex; justify-content: space-between; align-items: center; }
     .section-total strong { color: #16213e; font-size: 1rem; }
@@ -135,24 +133,6 @@
     </div>
 
 
-    <!-- HEIZNEBENKOSTEN -->
-    <div class="section">
-      <div class="section-header"><span class="icon">🔧</span><span class="title">Heiznebenkosten / Betrieb</span></div>
-      <div class="section-body">
-        <table>
-          <thead><tr><th>Kostenposition</th><th style="width:120px">Jahresbetrag (€)</th></tr></thead>
-          <tbody>
-            <tr><td>Strom für Heizung / Pumpen</td><td class="amount"><input type="number" class="cost-input" placeholder="0" min="0" step="0.01" data-label="Strom Heizung"></td></tr>
-            <tr><td>Wartung / Servicevertrag</td><td class="amount"><input type="number" class="cost-input" placeholder="0" min="0" step="0.01" data-label="Wartung"></td></tr>
-            <tr><td>Schornsteinfeger</td><td class="amount"><input type="number" class="cost-input" placeholder="0" min="0" step="0.01" data-label="Schornsteinfeger"></td></tr>
-            <tr><td>Kaminkehrer / Abgasmessung</td><td class="amount"><input type="number" class="cost-input" placeholder="0" min="0" step="0.01" data-label="Abgasmessung"></td></tr>
-            <tr><td>Öltank-Versicherung</td><td class="amount"><input type="number" class="cost-input" placeholder="0" min="0" step="0.01" data-label="Öltank-Versicherung"></td></tr>
-          </tbody>
-        </table>
-        <div class="section-total"><span>Summe Heiznebenkosten</span><strong id="sum-nk">0,00 €</strong></div>
-      </div>
-    </div>
-
     <div class="actions">
       <button class="btn" id="berechnen" type="button">🔥 Heizkosten berechnen</button>
       <button class="btn btn-secondary" id="resetBtn" type="button">🔄 Reset</button>
@@ -179,7 +159,6 @@
     const summaryDiv = document.getElementById('summary');
     const detailDiv = document.getElementById('detailOutput');
     const sumOel = document.getElementById('sum-oel');
-    const sumNk = document.getElementById('sum-nk');
     const sumWw = document.getElementById('sum-ww');
     const wwBody = document.getElementById('ww-mieter-body');
     const wwAdd = document.getElementById('ww-add');
@@ -257,13 +236,6 @@
       }
       sumOel.textContent = fmt(oel);
 
-      let nk = 0;
-      document.querySelectorAll('.cost-input').forEach(inp => {
-        const v = parseFloat(inp.value);
-        if (!isNaN(v) && v > 0) nk += v;
-      });
-      sumNk.textContent = fmt(nk);
-
       // Warmwasser: Gesamt-B = Öl für die Gesamt-Warmwassermenge × Preis
       const { menge, temp, hu } = getWwParams();
       const wwOel = (menge && menge > 0) ? wwOelLiter(menge, temp, hu) : 0;
@@ -283,23 +255,12 @@
       const wwOel = (menge && menge > 0) ? wwOelLiter(menge, temp, hu) : 0;
       const wwKosten = wwOel * (preis || 0);
 
-      const inputs = document.querySelectorAll('.cost-input');
-      const items = [];
-      let nk = 0;
-      inputs.forEach(inp => {
-        const v = parseFloat(inp.value);
-        if (!isNaN(v) && v > 0) {
-          items.push({ label: inp.dataset.label || 'Kosten', amount: v });
-          nk += v;
-        }
-      });
-
-      if (oelKosten <= 0 && wwKosten <= 0 && items.length === 0) {
-        alert('Bitte Verbrauch/Ölpreis, Warmwassermenge und/oder mindestens eine Heiznebenkosten-Position ausfüllen.');
+      if (oelKosten <= 0 && wwKosten <= 0) {
+        alert('Bitte Verbrauch/Ölpreis und/oder Warmwassermenge ausfüllen.');
         return;
       }
 
-      const gesamt = oelKosten + wwKosten + nk;
+      const gesamt = oelKosten + wwKosten;
 
       summaryDiv.innerHTML = `
         <div class="summary-card">
@@ -309,10 +270,6 @@
         <div class="summary-card">
           <div class="value">${fmt(wwKosten)}</div>
           <div class="label">Warmwasser</div>
-        </div>
-        <div class="summary-card">
-          <div class="value">${fmt(nk)}</div>
-          <div class="label">Heiznebenkosten</div>
         </div>
         <div class="summary-card acc">
           <div class="value">${fmt(gesamt)}</div>
@@ -370,15 +327,6 @@
         detailHTML += `</div>`;
       }
 
-      if (items.length > 0) {
-        let rows = '';
-        items.forEach(item => {
-          const pct = gesamt > 0 ? (item.amount / gesamt * 100).toFixed(1) : 0;
-          rows += `<tr><td>${item.label}</td><td class="amount">${fmt(item.amount)}</td><td class="amount">${pct} %</td></tr>`;
-        });
-        detailHTML += `<div class="detail-section"><h4>Heiznebenkosten</h4><table><thead><tr><th>Position</th><th style="width:120px">Betrag</th><th style="width:120px">Anteil</th></tr></thead><tbody>${rows}</tbody></table></div>`;
-      }
-
       detailHTML += `
         <div class="detail-section" style="background:#16213e; color:#fff; padding:14px; border-radius:12px;">
           <h4 style="color:#fff;">Gesamtsumme Heizkosten ${getYear()}</h4>
@@ -390,7 +338,6 @@
             <span>Ø Monat: <strong>${fmt(gesamt/12)}</strong></span>
             <span>Heizöl: <strong>${fmt(oelKosten)}</strong></span>
             <span>Warmwasser: <strong>${fmt(wwKosten)}</strong></span>
-            <span>Neben: <strong>${fmt(nk)}</strong></span>
           </div>
         </div>
       `;
@@ -407,7 +354,6 @@
       document.getElementById('ww-menge').value = '';
       document.getElementById('ww-temp').value = 60;
       document.getElementById('ww-hu').value = 10;
-      document.querySelectorAll('.cost-input').forEach(inp => inp.value = '');
       wwBody.innerHTML = '';
       wwMieterCount = 0;
       addWwMieter('Mieter 1');
