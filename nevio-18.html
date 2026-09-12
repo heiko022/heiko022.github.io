@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nevio wird 18! - Countdown mit Herzschlag</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --ink: #10101a;
+    --yellow: #ffd93d;
+    --red: #ff3b5c;
+    --blue: #2d7dff;
+    --paper: #fffdf5;
+  }
+
+  body {
+    font-family: 'Comic Neue', 'Comic Sans MS', 'Trebuchet MS', sans-serif;
+    background: var(--yellow);
+    color: var(--ink);
+    min-height: 100vh;
+    padding: 16px 12px 40px;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  /* Halftone-Rasterpapier */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background-image: radial-gradient(var(--ink) 1.5px, transparent 1.6px);
+    background-size: 12px 12px;
+    opacity: 0.14;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Action-Strahlen im Hintergrund */
+  .rays {
+    position: fixed;
+    left: 50%;
+    top: 0;
+    width: 160vmax;
+    height: 160vmax;
+    transform: translateX(-50%);
+    background: repeating-conic-gradient(from 0deg, rgba(255,255,255,0.55) 0deg 9deg, rgba(255,255,255,0) 9deg 18deg);
+    opacity: 0.35;
+    pointer-events: none;
+    z-index: 0;
+    animation: spin 90s linear infinite;
+  }
+  @keyframes spin { to { transform: translateX(-50%) rotate(360deg); } }
+
+  .strip {
+    position: relative;
+    z-index: 1;
+    max-width: 640px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .panel {
+    background: var(--paper);
+    border: 4px solid var(--ink);
+    border-radius: 6px;
+    box-shadow: 8px 8px 0 var(--ink);
+    padding: 18px 16px;
+    position: relative;
+  }
+
+  /* --- Titel-Panel --- */
+  .title-panel {
+    text-align: center;
+    transform: rotate(-1deg);
+    padding-top: 44px;
+  }
+  .burst {
+    position: absolute;
+    top: -30px;
+    right: -12px;
+    width: 92px;
+    height: 92px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Bangers', 'Comic Sans MS', cursive;
+    font-size: 2.6rem;
+    color: #fff;
+    transform: rotate(12deg);
+    background: var(--red);
+    border: 4px solid var(--ink);
+    clip-path: polygon(50% 0%, 61% 20%, 83% 10%, 78% 33%, 100% 38%, 80% 53%, 98% 70%, 74% 72%, 78% 95%, 56% 82%, 42% 100%, 36% 79%, 12% 90%, 20% 66%, 0% 58%, 22% 44%, 4% 26%, 29% 27%);
+    text-shadow: 2px 2px 0 var(--ink);
+    animation: wobble 2.4s ease-in-out infinite;
+  }
+  @keyframes wobble {
+    0%, 100% { transform: rotate(12deg) scale(1); }
+    50% { transform: rotate(4deg) scale(1.07); }
+  }
+
+  h1 {
+    font-family: 'Bangers', 'Comic Sans MS', cursive;
+    font-size: clamp(2.4rem, 12vw, 4.2rem);
+    letter-spacing: 2px;
+    line-height: 0.95;
+    color: var(--red);
+    -webkit-text-stroke: 2px var(--ink);
+    text-stroke: 2px var(--ink);
+    text-shadow: 4px 4px 0 var(--yellow);
+    margin-bottom: 10px;
+  }
+  .sub {
+    font-size: 0.98rem;
+    font-weight: 700;
+    line-height: 1.45;
+  }
+  .sub .tag {
+    display: inline-block;
+    background: var(--blue);
+    color: #fff;
+    border: 3px solid var(--ink);
+    border-radius: 4px;
+    padding: 2px 9px;
+    margin: 3px 2px 0;
+    transform: rotate(-2deg);
+    box-shadow: 3px 3px 0 var(--ink);
+    font-size: 0.86rem;
+  }
+
+  /* --- Herz-Panel --- */
+  .heart-panel {
+    transform: rotate(1deg);
+    text-align: center;
+    padding-bottom: 14px;
+  }
+  .heart-wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 6px 0 2px;
+  }
+  .heart-wrap svg {
+    width: clamp(110px, 34vw, 160px);
+    height: auto;
+    transform-origin: 50% 55%;
+    animation: beat 1.25s cubic-bezier(.2,.8,.3,1) infinite;
+    filter: drop-shadow(4px 5px 0 var(--ink));
+  }
+  @keyframes beat {
+    0%   { transform: scale(1); }
+    12%  { transform: scale(1.17); }
+    24%  { transform: scale(1.02); }
+    36%  { transform: scale(1.11); }
+    58%  { transform: scale(1); }
+    100% { transform: scale(1); }
+  }
+  .bp {
+    font-family: 'Bangers', 'Comic Sans MS', cursive;
+    font-size: 1.5rem;
+    letter-spacing: 1px;
+    color: var(--red);
+    -webkit-text-stroke: 0.8px var(--ink);
+  }
+  .ecg {
+    width: 100%;
+    height: 62px;
+    margin-top: 4px;
+  }
+  .ecg-line {
+    fill: none;
+    stroke: var(--red);
+    stroke-width: 3.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dasharray: 1200;
+    stroke-dashoffset: 1200;
+    animation: ecgmove 1.25s linear infinite;
+  }
+  @keyframes ecgmove {
+    0%   { stroke-dashoffset: 1200; }
+    100% { stroke-dashoffset: 0; }
+  }
+  .ecg-dot { fill: var(--ink); animation: beat 1.25s cubic-bezier(.2,.8,.3,1) infinite; transform-origin: center; }
+
+  /* Sprechblase */
+  .bubble {
+    position: relative;
+    display: inline-block;
+    margin-top: 16px;
+    background: #fff;
+    border: 4px solid var(--ink);
+    border-radius: 20px;
+    padding: 10px 16px;
+    font-weight: 700;
+    font-size: 1rem;
+    max-width: 92%;
+    box-shadow: 4px 4px 0 var(--ink);
+  }
+  .bubble::after {
+    content: "";
+    position: absolute;
+    bottom: -20px;
+    left: 46px;
+    width: 0;
+    height: 0;
+    border: 10px solid transparent;
+    border-top-color: var(--ink);
+    border-bottom: 0;
+  }
+  .bubble::before {
+    content: "";
+    position: absolute;
+    bottom: -13px;
+    left: 50px;
+    width: 0;
+    height: 0;
+    border: 7px solid transparent;
+    border-top-color: #fff;
+    border-bottom: 0;
+    z-index: 2;
+  }
+
+  /* --- Countdown --- */
+  .cd-panel { transform: rotate(-1deg); }
+  .cd-title {
+    font-family: 'Bangers', 'Comic Sans MS', cursive;
+    font-size: 1.35rem;
+    letter-spacing: 1px;
+    text-align: center;
+    background: var(--ink);
+    color: var(--yellow);
+    display: inline-block;
+    padding: 3px 14px;
+    border-radius: 4px;
+    transform: rotate(-1.5deg);
+    margin: 0 auto 14px;
+    display: table;
+  }
+  .cd-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+  }
+  .cd-cell {
+    background: #fff;
+    border: 4px solid var(--ink);
+    border-radius: 6px;
+    box-shadow: 4px 4px 0 var(--ink);
+    padding: 10px 2px 8px;
+    text-align: center;
+  }
+  .cd-cell .num {
+    font-family: 'Bangers', 'Comic Sans MS', cursive;
+    font-size: clamp(1.7rem, 9vw, 2.6rem);
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+    color: var(--blue);
+    -webkit-text-stroke: 1px var(--ink);
+  }
+  .cd-cell.sec .num { color: var(--red); }
+  .cd-cell .lbl {
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-top: 4px;
+    text-transform: uppercase;
+  }
+
+  /* --- Fortschritt --- */
+  .bar {
+    height: 30px;
+    border: 4px solid var(--ink);
+    border-radius: 20px;
+    background: #fff;
+    overflow: hidden;
+    position: relative;
+  }
+  .fill {
+    height: 100%;
+    width: 0%;
+    background: repeating-linear-gradient(45deg, var(--red) 0 12px, #ff7a90 12px 24px);
+    border-right: 4px solid var(--ink);
+    transition: width 0.6s ease-out;
+  }
+  .plabel {
+    text-align: center;
+    font-weight: 700;
+    font-size: 0.9rem;
+    margin-top: 8px;
+  }
+  .plabel b { color: var(--red); font-size: 1.05rem; }
+
+  /* --- Buttons --- */
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: center;
+  }
+  .btn {
+    font-family: 'Bangers', 'Comic Sans MS', cursive;
+    font-size: 1.25rem;
+    letter-spacing: 1px;
+    background: var(--blue);
+    color: #fff;
+    border: 4px solid var(--ink);
+    border-radius: 8px;
+    box-shadow: 5px 5px 0 var(--ink);
+    padding: 11px 20px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: transform 0.12s, box-shadow 0.12s;
+    transform: rotate(-1deg);
+    display: inline-block;
+    text-align: center;
+  }
+  .btn.gelb { background: var(--yellow); color: var(--ink); transform: rotate(1deg); }
+  .btn:active, .btn.on { transform: translate(5px, 5px) rotate(0deg); box-shadow: 0 0 0 var(--ink); }
+
+  .hinweis {
+    text-align: center;
+    font-size: 0.82rem;
+    font-weight: 700;
+    opacity: 0.75;
+    margin-top: 4px;
+  }
+
+  /* Party-Modus */
+  body.party { animation: partybg 0.8s steps(2) infinite; }
+  @keyframes partybg {
+    0% { background: var(--yellow); }
+    100% { background: #ff9ecb; }
+  }
+  .confetti {
+    position: fixed;
+    top: -20px;
+    width: 12px;
+    height: 18px;
+    border: 2px solid var(--ink);
+    z-index: 50;
+    pointer-events: none;
+    animation: fall linear forwards;
+  }
+  @keyframes fall {
+    to { transform: translateY(110vh) rotate(720deg); }
+  }
+
+  @media (max-width: 380px) {
+    .cd-cell .lbl { font-size: 0.6rem; letter-spacing: 0.5px; }
+    .panel { padding: 14px 12px; }
+  }
+</style>
+</head>
+<body>
+<div class="rays"></div>
+
+<div class="strip">
+
+  <div class="panel title-panel">
+    <div class="burst">18</div>
+    <h1>NEVIO WIRD 18!</h1>
+    <p class="sub">
+      Geboren am <span class="tag">27.07.2009</span><br>
+      Der große Tag: <span class="tag">27.07.2027</span>
+    </p>
+  </div>
+
+  <div class="panel heart-panel">
+    <div class="heart-wrap">
+      <svg viewBox="0 0 100 92" aria-hidden="true">
+        <path d="M50 88 C 8 58, 2 30, 22 15 C 37 4, 48 14, 50 22 C 52 14, 63 4, 78 15 C 98 30, 92 58, 50 88 Z"
+              fill="#ff3b5c" stroke="#10101a" stroke-width="5" stroke-linejoin="round"/>
+        <path d="M28 30 C 33 22, 41 20, 45 24" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" opacity="0.85"/>
+      </svg>
+    </div>
+    <div class="bp" id="bp">HERZSCHLAG: 1 SCHLAG / SEK</div>
+
+    <svg class="ecg" viewBox="0 0 600 70" preserveAspectRatio="none" aria-hidden="true">
+      <polyline class="ecg-line" points="0,35 60,35 78,35 88,12 98,58 108,35 180,35 198,35 208,12 218,58 228,35 300,35 318,35 328,12 338,58 348,35 420,35 438,35 448,12 458,58 468,35 540,35 558,35 568,12 578,58 588,35 600,35"/>
+      <circle class="ecg-dot" id="ecgdot" cx="0" cy="35" r="6"/>
+    </svg>
+
+    <div class="bubble" id="bubble">Jeder Schlag bringt Nevio näher an die 18!</div>
+  </div>
+
+  <div class="panel cd-panel">
+    <div class="cd-title">COUNTDOWN BIS ZUM 18. GEBURTSTAG</div>
+    <div class="cd-grid">
+      <div class="cd-cell"><div class="num" id="d">--</div><div class="lbl">Tage</div></div>
+      <div class="cd-cell"><div class="num" id="h">--</div><div class="lbl">Stunden</div></div>
+      <div class="cd-cell"><div class="num" id="m">--</div><div class="lbl">Minuten</div></div>
+      <div class="cd-cell sec"><div class="num" id="s">--</div><div class="lbl">Sekunden</div></div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="bar"><div class="fill" id="fill"></div></div>
+    <div class="plabel" id="plabel">Fortschritt des 18. Lebensjahres: <b>--</b></div>
+    <div class="hinweis" id="hinweis">Alter heute: --</div>
+  </div>
+
+  <div class="row">
+    <button class="btn gelb" id="sound" type="button">🔊 Herzschlag hören</button>
+    <a class="btn" href="index.html">⬅️ Zur Startseite</a>
+  </div>
+
+  <div class="hinweis">Made with ❤️ für Nevio</div>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  var GEBURT = new Date(2009, 6, 27, 0, 0, 0);   // 27.07.2009
+  var ZIEL   = new Date(2027, 6, 27, 0, 0, 0);   // 18. Geburtstag: 27.07.2027
+
+  var el = {
+    d: document.getElementById('d'),
+    h: document.getElementById('h'),
+    m: document.getElementById('m'),
+    s: document.getElementById('s'),
+    fill: document.getElementById('fill'),
+    plabel: document.getElementById('plabel'),
+    hinweis: document.getElementById('hinweis'),
+    bubble: document.getElementById('bubble'),
+    ecgdot: document.getElementById('ecgdot')
+  };
+
+  var SPRUECHE = [
+    "Jeder Schlag bringt Nevio näher an die 18!",
+    "Herz an, Countdown läuft — bald bist du erwachsen, Nevio!",
+    "Das Herz weiß genau: 27.07.2027 wird gefeiert!",
+    "Lub-dub, lub-dub ... noch ein bisschen Geduld!",
+    "Ein Herzschlag für jeden Tag, der dich älter macht.",
+    "18 Jahre Nevio — das wird ein Fest!"
+  ];
+  var spruchIdx = 0;
+
+  function pad(n) { return n < 10 ? '0' + n : '' + n; }
+
+  function geburtstagInJahr(jahr) { return new Date(jahr, 6, 27, 0, 0, 0); }
+
+  function startParty() {
+    document.body.classList.add('party');
+    var farben = ['#ff3b5c', '#2d7dff', '#ffd93d', '#22c55e', '#ffffff'];
+    var i;
+    for (i = 0; i < 90; i++) {
+      (function (n) {
+        setTimeout(function () {
+          var c = document.createElement('div');
+          c.className = 'confetti';
+          c.style.left = (Math.random() * 96) + 'vw';
+          c.style.background = farben[Math.floor(Math.random() * farben.length)];
+          c.style.animationDuration = (2.2 + Math.random() * 2.2) + 's';
+          document.body.appendChild(c);
+          setTimeout(function () { c.remove(); }, 5000);
+        }, n * 60);
+      })(i);
+    }
+  }
+
+  var partyStarted = false;
+
+  function tick() {
+    var jetzt = new Date();
+    var rest = ZIEL - jetzt;
+
+    if (rest <= 0) {
+      el.d.textContent = '00'; el.h.textContent = '00';
+      el.m.textContent = '00'; el.s.textContent = '00';
+      el.fill.style.width = '100%';
+      el.plabel.innerHTML = '<b>NEVIO IST 18! 🎉</b>';
+      el.hinweis.textContent = 'Herzlichen Glückwunsch, Nevio!';
+      el.bubble.textContent = '🎉 HAPPY BIRTHDAY, NEVIO! 18! 🎉';
+      if (!partyStarted) { partyStarted = true; startParty(); }
+      return;
+    }
+
+    var sek = Math.floor(rest / 1000);
+    var tage = Math.floor(sek / 86400);
+    var std = Math.floor((sek % 86400) / 3600);
+    var min = Math.floor((sek % 3600) / 60);
+    var s2 = sek % 60;
+
+    el.d.textContent = tage;
+    el.h.textContent = pad(std);
+    el.m.textContent = pad(min);
+    el.s.textContent = pad(s2);
+
+    // Fortschritt: vom letzten Geburtstag bis zum 18.
+    var letzter = geburtstagInJahr(ZIEL.getFullYear() - 1);
+    var pct = (jetzt - letzter) / (ZIEL - letzter) * 100;
+    if (pct < 0) pct = 0;
+    if (pct > 100) pct = 100;
+    el.fill.style.width = pct.toFixed(2) + '%';
+    el.plabel.innerHTML = 'Fortschritt des 18. Lebensjahres: <b>' + pct.toFixed(1).replace('.', ',') + ' %</b>';
+
+    // Alter in Jahren
+    var alterJ = jetzt.getFullYear() - GEBURT.getFullYear();
+    var hatteGeb = (jetzt.getMonth() > 6) || (jetzt.getMonth() === 6 && jetzt.getDate() >= 27);
+    if (!hatteGeb) alterJ--;
+    var tageAlt = Math.floor((jetzt - GEBURT) / 86400000);
+    el.hinweis.textContent = 'Nevio ist heute ' + alterJ + ' Jahre alt (' + tageAlt.toLocaleString('de-DE') + ' Tage jung).';
+
+    // Sprechblase alle 6 Sekunden wechseln
+    if (sek % 6 === 0 && document.body.dataset.lastBubble !== String(sek)) {
+      document.body.dataset.lastBubble = String(sek);
+      spruchIdx = (spruchIdx + 1) % SPRUECHE.length;
+      el.bubble.textContent = SPRUECHE[spruchIdx];
+    }
+  }
+
+  // EKG-Punkt wandert synchron zum Sekundentakt
+  function dotPos() {
+    var t = new Date();
+    var frac = (t.getMilliseconds() % 1000) / 1000 + t.getSeconds();
+    var x = (frac % 3) / 3 * 600;
+    el.ecgdot.setAttribute('cx', x.toFixed(1));
+  }
+
+  tick();
+  setInterval(tick, 1000);
+
+  function raf() { dotPos(); requestAnimationFrame(raf); }
+  raf();
+
+  // Optionaler Herzschlag-Ton (nur nach Klick, WebAudio)
+  var audioCtx = null, loopTimer = null;
+  var soundBtn = document.getElementById('sound');
+
+  function thump(zeit, freq, dauer, laut) {
+    var o = audioCtx.createOscillator();
+    var g = audioCtx.createGain();
+    o.type = 'sine';
+    o.frequency.setValueAtTime(freq, zeit);
+    o.frequency.exponentialRampToValueAtTime(freq * 0.45, zeit + dauer);
+    g.gain.setValueAtTime(0.0001, zeit);
+    g.gain.exponentialRampToValueAtTime(laut, zeit + 0.02);
+    g.gain.exponentialRampToValueAtTime(0.0001, zeit + dauer);
+    o.connect(g).connect(audioCtx.destination);
+    o.start(zeit);
+    o.stop(zeit + dauer + 0.05);
+  }
+
+  function schlag() {
+    var t = audioCtx.currentTime;
+    thump(t, 90, 0.16, 0.35);
+    thump(t + 0.22, 65, 0.22, 0.22);
+  }
+
+  soundBtn.addEventListener('click', function () {
+    if (!audioCtx) {
+      var AC = window.AudioContext || window.webkitAudioContext;
+      if (!AC) { soundBtn.textContent = '🔇 Ton nicht verfügbar'; return; }
+      audioCtx = new AC();
+    }
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+    if (loopTimer) {
+      clearInterval(loopTimer);
+      loopTimer = null;
+      soundBtn.classList.remove('on');
+      soundBtn.textContent = '🔊 Herzschlag hören';
+    } else {
+      schlag();
+      loopTimer = setInterval(schlag, 1250);
+      soundBtn.classList.add('on');
+      soundBtn.textContent = '🔇 Herzschlag aus';
+    }
+  });
+})();
+</script>
+</body>
+</html>
