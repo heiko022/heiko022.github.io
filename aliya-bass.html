@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aliya - Bass Mode | Geburtstags-Countdown</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bungee&family=Rubik:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #06060c;
+    --pink: #ff2bd1;
+    --cyan: #00f0ff;
+    --violet: #8a2bff;
+    --lime: #b6ff3d;
+    --ink: #000;
+  }
+
+  body {
+    font-family: 'Rubik', system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: #fff;
+    min-height: 100vh;
+    padding: 18px 14px 50px;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  /* Neon-Glow Hintergrund */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: -20%;
+    background:
+      radial-gradient(circle at 20% 15%, rgba(255,43,209,0.35), transparent 55%),
+      radial-gradient(circle at 85% 30%, rgba(0,240,255,0.30), transparent 55%),
+      radial-gradient(circle at 50% 95%, rgba(138,43,255,0.35), transparent 60%);
+    filter: blur(20px);
+    pointer-events: none;
+    z-index: 0;
+    animation: pulseBg 4.8s ease-in-out infinite;
+  }
+  @keyframes pulseBg {
+    0%, 100% { opacity: 0.75; }
+    50% { opacity: 1; }
+  }
+
+  /* Scanlines für den Club-Look */
+  body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(to bottom, rgba(255,255,255,0.045) 0 1px, transparent 1px 4px);
+    pointer-events: none;
+    z-index: 2;
+    opacity: 0.7;
+  }
+
+  .wrap {
+    position: relative;
+    z-index: 3;
+    max-width: 660px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .card {
+    background: rgba(10, 10, 22, 0.82);
+    border: 3px solid var(--cyan);
+    border-radius: 18px;
+    padding: 20px 16px;
+    box-shadow: 0 0 24px rgba(0,240,255,0.28), inset 0 0 30px rgba(138,43,255,0.18);
+    backdrop-filter: blur(6px);
+    position: relative;
+  }
+  .card.pink { border-color: var(--pink); box-shadow: 0 0 24px rgba(255,43,209,0.30), inset 0 0 30px rgba(255,43,209,0.14); }
+  .card.violet { border-color: var(--violet); box-shadow: 0 0 24px rgba(138,43,255,0.32), inset 0 0 30px rgba(0,240,255,0.12); }
+
+  /* --- Hero --- */
+  .hero { text-align: center; overflow: hidden; }
+  .hero .kicker {
+    font-family: 'Bungee', 'Rubik', sans-serif;
+    font-size: 0.78rem;
+    letter-spacing: 3px;
+    color: var(--lime);
+    text-shadow: 0 0 10px rgba(182,255,61,0.8);
+    margin-bottom: 6px;
+  }
+  .hero h1 {
+    font-family: 'Bungee', 'Rubik', sans-serif;
+    font-size: clamp(2.6rem, 16vw, 5rem);
+    line-height: 1;
+    letter-spacing: 2px;
+    background: linear-gradient(180deg, #fff 10%, var(--cyan) 45%, var(--pink) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    filter: drop-shadow(0 0 12px rgba(0,240,255,0.75)) drop-shadow(0 0 26px rgba(255,43,209,0.5));
+    animation: flicker 6s infinite;
+  }
+  @keyframes flicker {
+    0%, 92%, 100% { opacity: 1; }
+    93% { opacity: 0.55; }
+    94% { opacity: 1; }
+    96% { opacity: 0.7; }
+    97% { opacity: 1; }
+  }
+  .hero .sub { margin-top: 12px; font-size: 0.95rem; font-weight: 600; color: #cfd6ff; }
+  .hero .sub b { color: #fff; }
+  .badge-18 {
+    display: inline-block;
+    margin-top: 14px;
+    font-family: 'Bungee', sans-serif;
+    font-size: 1rem;
+    padding: 6px 14px;
+    border-radius: 999px;
+    color: #06060c;
+    background: var(--lime);
+    box-shadow: 0 0 18px rgba(182,255,61,0.75);
+    transform: rotate(-2deg);
+  }
+
+  /* --- Bass-Speaker --- */
+  .bass { display: flex; flex-direction: column; align-items: center; }
+  .speaker {
+    width: clamp(140px, 44vw, 190px);
+    height: clamp(140px, 44vw, 190px);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(circle at 50% 50%, #171728 0%, #0a0a14 70%);
+    border: 4px solid var(--pink);
+    box-shadow: 0 0 30px rgba(255,43,209,0.55), inset 0 0 40px rgba(0,240,255,0.20);
+    position: relative;
+  }
+  .cone {
+    width: 74%;
+    height: 74%;
+    border-radius: 50%;
+    background: radial-gradient(circle at 50% 42%, #33334d 0%, #14141f 55%, #05050a 100%);
+    border: 3px solid #2b2b45;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: thump 0.5s cubic-bezier(.25,.9,.3,1) infinite;
+  }
+  .cone::after {
+    content: "";
+    width: 26%;
+    height: 26%;
+    border-radius: 50%;
+    background: var(--cyan);
+    box-shadow: 0 0 18px var(--cyan);
+    animation: capGlow 0.5s ease-in-out infinite alternate;
+  }
+  @keyframes thump {
+    0%   { transform: scale(1); }
+    30%  { transform: scale(1.11); }
+    55%  { transform: scale(0.97); }
+    100% { transform: scale(1); }
+  }
+  @keyframes capGlow {
+    from { opacity: 0.55; transform: scale(0.92); }
+    to   { opacity: 1;    transform: scale(1.08); }
+  }
+  .rings { position: absolute; inset: -10px; border-radius: 50%; pointer-events: none; }
+  .rings span {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    border: 2px solid var(--cyan);
+    animation: ring 1.5s ease-out infinite;
+  }
+  .rings span:nth-child(2) { animation-delay: 0.5s; }
+  .rings span:nth-child(3) { animation-delay: 1s; }
+  @keyframes ring {
+    0%   { transform: scale(0.85); opacity: 0.75; }
+    100% { transform: scale(1.45); opacity: 0; }
+  }
+  .basslabel {
+    font-family: 'Bungee', sans-serif;
+    margin-top: 16px;
+    font-size: 1rem;
+    letter-spacing: 2px;
+    color: var(--cyan);
+    text-shadow: 0 0 12px rgba(0,240,255,0.8);
+  }
+
+  /* VU-Meter */
+  .vu { display: flex; align-items: flex-end; gap: 3px; height: 54px; margin-top: 16px; width: 100%; }
+  .vu i {
+    flex: 1;
+    background: linear-gradient(to top, var(--violet), var(--pink), var(--cyan));
+    border-radius: 2px 2px 0 0;
+    height: 20%;
+    animation: bounce 0.8s ease-in-out infinite alternate;
+  }
+  @keyframes bounce { from { height: 12%; } to { height: 100%; } }
+
+  /* --- Countdown --- */
+  .cd-title {
+    font-family: 'Bungee', sans-serif;
+    font-size: 0.95rem;
+    letter-spacing: 1.5px;
+    text-align: center;
+    color: var(--lime);
+    text-shadow: 0 0 10px rgba(182,255,61,0.7);
+    margin-bottom: 14px;
+  }
+  .cd-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+  .cell {
+    background: rgba(0,0,0,0.55);
+    border: 2px solid var(--violet);
+    border-radius: 12px;
+    padding: 12px 2px 9px;
+    text-align: center;
+    box-shadow: inset 0 0 18px rgba(138,43,255,0.35);
+  }
+  .cell .num {
+    font-family: 'Bungee', sans-serif;
+    font-size: clamp(1.5rem, 8vw, 2.3rem);
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+    color: #fff;
+    text-shadow: 0 0 12px var(--pink), 0 0 26px var(--violet);
+  }
+  .cell.sec .num { text-shadow: 0 0 12px var(--cyan), 0 0 26px var(--cyan); }
+  .cell .lbl {
+    margin-top: 6px;
+    font-size: 0.62rem;
+    font-weight: 800;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: #9fb0d8;
+  }
+  .zieldatum { text-align: center; font-size: 0.86rem; color: #b9c3e8; margin-top: 12px; font-weight: 600; }
+  .zieldatum b { color: var(--lime); }
+
+  /* Fortschritt */
+  .bar {
+    margin-top: 16px;
+    height: 16px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.08);
+    border: 2px solid var(--violet);
+    overflow: hidden;
+  }
+  .fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--cyan), var(--pink));
+    box-shadow: 0 0 14px var(--pink);
+    transition: width 0.6s ease-out;
+  }
+  .plabel { text-align: center; font-size: 0.8rem; color: #b9c3e8; margin-top: 8px; font-weight: 600; }
+  .plabel b { color: #fff; }
+
+  /* --- We Love Bass Banner --- */
+  .banner {
+    text-align: center;
+    font-family: 'Bungee', sans-serif;
+    font-size: clamp(1.3rem, 7.5vw, 2rem);
+    line-height: 1.2;
+    padding: 18px 10px;
+    color: #06060c;
+    background: repeating-linear-gradient(45deg, var(--pink) 0 16px, #ff7ae0 16px 32px);
+    border: 3px dashed #fff;
+    border-radius: 14px;
+    text-shadow: 2px 2px 0 rgba(255,255,255,0.6);
+    letter-spacing: 1px;
+  }
+  .banner small { display: block; font-family: 'Rubik', sans-serif; font-size: 0.72rem; font-weight: 800; letter-spacing: 2px; margin-top: 8px; color: #1b0030; }
+
+  /* --- Filow Box --- */
+  .fankarte h2 {
+    font-family: 'Bungee', sans-serif;
+    font-size: 1.1rem;
+    color: var(--cyan);
+    text-shadow: 0 0 12px rgba(0,240,255,0.8);
+    margin-bottom: 4px;
+  }
+  .fankarte .who { font-size: 0.85rem; color: #9fb0d8; margin-bottom: 12px; font-weight: 600; }
+  .fankarte ul { list-style: none; display: flex; flex-direction: column; gap: 9px; }
+  .fankarte li {
+    font-size: 0.9rem;
+    line-height: 1.45;
+    padding-left: 26px;
+    position: relative;
+  }
+  .fankarte li::before {
+    content: "♪";
+    position: absolute;
+    left: 0;
+    top: 0;
+    color: var(--pink);
+    font-weight: 800;
+    text-shadow: 0 0 10px rgba(255,43,209,0.9);
+  }
+  .fankarte li b { color: var(--lime); }
+  .links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
+  .chip {
+    font-family: 'Bungee', sans-serif;
+    font-size: 0.72rem;
+    letter-spacing: 1px;
+    text-decoration: none;
+    color: #06060c;
+    background: var(--cyan);
+    border-radius: 999px;
+    padding: 9px 15px;
+    box-shadow: 0 0 16px rgba(0,240,255,0.6);
+    transition: transform 0.12s;
+  }
+  .chip.pink { background: var(--pink); box-shadow: 0 0 16px rgba(255,43,209,0.6); }
+  .chip.lime { background: var(--lime); box-shadow: 0 0 16px rgba(182,255,61,0.6); }
+  .chip:active { transform: scale(0.95); }
+  .quelle { font-size: 0.68rem; color: #6f7ba3; margin-top: 12px; }
+
+  /* --- Buttons --- */
+  .row { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
+  .btn {
+    font-family: 'Bungee', sans-serif;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    border: 3px solid #fff;
+    border-radius: 999px;
+    padding: 14px 22px;
+    color: #fff;
+    background: linear-gradient(135deg, var(--violet), var(--pink));
+    box-shadow: 0 0 22px rgba(255,43,209,0.6);
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+    transition: transform 0.12s, box-shadow 0.12s;
+  }
+  .btn.cyan { background: linear-gradient(135deg, #0077ff, var(--cyan)); color: #04121a; box-shadow: 0 0 22px rgba(0,240,255,0.6); }
+  .btn.on { box-shadow: 0 0 34px rgba(182,255,61,0.9); border-color: var(--lime); }
+  .btn:active { transform: scale(0.96); }
+
+  .hinweis { text-align: center; font-size: 0.72rem; color: #6f7ba3; }
+
+  /* --- Party --- */
+  body.party { animation: partyFlash 0.6s steps(2) infinite; }
+  @keyframes partyFlash {
+    0%   { background: #06060c; }
+    100% { background: #1a0030; }
+  }
+  .confetti {
+    position: fixed;
+    top: -24px;
+    width: 10px;
+    height: 16px;
+    z-index: 60;
+    pointer-events: none;
+    animation: fall linear forwards;
+  }
+  @keyframes fall {
+    to { transform: translateY(115vh) rotate(900deg); }
+  }
+
+  @media (max-width: 380px) {
+    .cell .lbl { font-size: 0.56rem; letter-spacing: 0.5px; }
+    .card { padding: 16px 12px; }
+    .fankarte li { font-size: 0.85rem; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="card pink hero">
+    <div class="kicker">HAPPY BASS-DAY</div>
+    <h1>ALIYA</h1>
+    <div class="sub">Willkommen in deinem <b>Bass-Universum</b> 🔊<br>Geboren am <b>03.11.2006</b></div>
+    <div class="badge-18" id="nextAge">NÄCHSTER GEBURTSTAG: --</div>
+  </div>
+
+  <div class="card bass">
+    <div class="speaker">
+      <div class="rings"><span></span><span></span><span></span></div>
+      <div class="cone"></div>
+    </div>
+    <div class="basslabel">WE LOVE BASS</div>
+    <div class="vu" id="vu"></div>
+  </div>
+
+  <div class="card violet">
+    <div class="cd-title" id="cdTitle">COUNTDOWN BIS ZUM NÄCHSTEN GEBURTSTAG</div>
+    <div class="cd-grid">
+      <div class="cell"><div class="num" id="d">--</div><div class="lbl">Tage</div></div>
+      <div class="cell"><div class="num" id="h">--</div><div class="lbl">Stunden</div></div>
+      <div class="cell"><div class="num" id="m">--</div><div class="lbl">Minuten</div></div>
+      <div class="cell sec"><div class="num" id="s">--</div><div class="lbl">Sekunden</div></div>
+    </div>
+    <div class="zieldatum" id="zieldatum">Ziel: <b>--</b></div>
+    <div class="bar"><div class="fill" id="fill"></div></div>
+    <div class="plabel" id="plabel">Lebensjahr-Fortschritt: <b>--</b></div>
+  </div>
+
+  <div class="banner">
+    WE ❤ BASS
+    <small>LAUT IST KEIN FEHLER, SONDERN EINE EINSTELLUNG</small>
+  </div>
+
+  <div class="card fankarte">
+    <h2>FILOW MODE</h2>
+    <div class="who">Felix Nier, geb. 16.02.2001 in Potsdam — Streamer, Rapper, Bass-Lieferant</div>
+    <ul>
+      <li><b>Twitch &amp; YouTube:</b> über 340.000 Follower auf Twitch, mehr als 230.000 Abos auf YouTube — Comedy, Let's Play und Musik live.</li>
+      <li><b>Musik seit 2022:</b> Album <b>„Icke"</b> (2024), Platz 28 der deutschen Albumcharts.</li>
+      <li><b>„Rasenschach" (2024):</b> in drei Stunden im Livestream gebaut, Platz 58 der deutschen Singlecharts, Gold in Österreich.</li>
+      <li><b>„Jiggy" mit Ikkimel (2025):</b> Platz 3 der deutschen Charts und <b>1Live Krone 2025</b> für „Bester Party Song".</li>
+      <li><b>Bass-Faktor:</b> Tracks wie <b>„Bass"</b> (2025, mit yani5000 &amp; fliggsy) und <b>„Super Sex Bass"</b> (2023) — passend zum We-Love-Bass-Shirt.</li>
+      <li><b>Award:</b> Hiphop.de Award 2024 als „Macher des Jahres".</li>
+    </ul>
+    <div class="links">
+      <a class="chip" href="https://www.twitch.tv/Filow" target="_blank" rel="noopener">TWITCH</a>
+      <a class="chip pink" href="https://www.youtube.com/Filow" target="_blank" rel="noopener">YOUTUBE</a>
+      <a class="chip lime" href="https://www.instagram.com/filow/" target="_blank" rel="noopener">INSTAGRAM</a>
+    </div>
+    <div class="quelle">Fakten nach Wikipedia (Stand 2025). Kanäle öffnen in einem neuen Tab.</div>
+  </div>
+
+  <div class="row">
+    <button class="btn" id="drop" type="button">💥 BASS-DROP</button>
+    <button class="btn cyan" id="beat" type="button">🎧 BEAT AN</button>
+  </div>
+
+  <div class="row">
+    <a class="btn cyan" href="index.html">⬅️ ZUR STARTSEITE</a>
+  </div>
+
+  <div class="hinweis">Gebaut für Aliya 💜 — Bass an, Welt aus.</div>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  var GEBURT_TAG = 3, GEBURT_MONAT = 10, GEBURT_JAHR = 2006; // 03.11.2006
+
+  var el = {
+    d: document.getElementById('d'),
+    h: document.getElementById('h'),
+    m: document.getElementById('m'),
+    s: document.getElementById('s'),
+    fill: document.getElementById('fill'),
+    plabel: document.getElementById('plabel'),
+    zieldatum: document.getElementById('zieldatum'),
+    cdTitle: document.getElementById('cdTitle'),
+    nextAge: document.getElementById('nextAge'),
+    vu: document.getElementById('vu')
+  };
+
+  function pad(n) { return n < 10 ? '0' + n : '' + n; }
+
+  function naechsterGeburtstag(jetzt) {
+    var d = new Date(jetzt.getFullYear(), GEBURT_MONAT, GEBURT_TAG, 0, 0, 0);
+    if (d.getTime() <= jetzt.getTime()) d = new Date(jetzt.getFullYear() + 1, GEBURT_MONAT, GEBURT_TAG, 0, 0, 0);
+    return d;
+  }
+
+  function startParty() {
+    document.body.classList.add('party');
+    var farben = ['#ff2bd1', '#00f0ff', '#b6ff3d', '#8a2bff', '#ffffff'];
+    var i;
+    for (i = 0; i < 100; i++) {
+      (function (n) {
+        setTimeout(function () {
+          var c = document.createElement('div');
+          c.className = 'confetti';
+          c.style.left = (Math.random() * 96) + 'vw';
+          c.style.background = farben[Math.floor(Math.random() * farben.length)];
+          c.style.animationDuration = (2.2 + Math.random() * 2.4) + 's';
+          document.body.appendChild(c);
+          setTimeout(function () { c.remove(); }, 5200);
+        }, n * 55);
+      })(i);
+    }
+  }
+
+  var partyStarted = false;
+
+  function tick() {
+    var jetzt = new Date();
+    var istGeburtstag = (jetzt.getMonth() === GEBURT_MONAT && jetzt.getDate() === GEBURT_TAG);
+    var ziel = istGeburtstag
+      ? new Date(jetzt.getFullYear(), GEBURT_MONAT, GEBURT_TAG, 0, 0, 0)
+      : naechsterGeburtstag(jetzt);
+    var rest = ziel.getTime() - jetzt.getTime();
+    if (rest < 0) rest = 0;
+
+    var sek = Math.floor(rest / 1000);
+    el.d.textContent = Math.floor(sek / 86400);
+    el.h.textContent = pad(Math.floor((sek % 86400) / 3600));
+    el.m.textContent = pad(Math.floor((sek % 3600) / 60));
+    el.s.textContent = pad(sek % 60);
+
+    var zielAlter = ziel.getFullYear() - GEBURT_JAHR;
+    if (istGeburtstag) {
+      el.cdTitle.textContent = 'ALLES GUTE ZUM ' + zielAlter + '. GEBURTSTAG, ALIYA!';
+      el.zieldatum.innerHTML = 'Heute ist es soweit: <b>' + ziel.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' }) + '</b> — Aliya wird <b>' + zielAlter + '</b>! 🎉';
+      el.nextAge.textContent = 'HEUTE: ' + zielAlter + ' JAHRE! 🎂';
+    } else {
+      el.cdTitle.textContent = 'COUNTDOWN BIS ZUM ' + zielAlter + '. GEBURTSTAG';
+      el.zieldatum.innerHTML = 'Ziel: <b>' + ziel.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' }) + '</b> — dann wird Aliya <b>' + zielAlter + '</b>!';
+      el.nextAge.textContent = 'NÄCHSTER GEBURTSTAG: ' + zielAlter + ' JAHRE';
+    }
+
+    // Fortschritt vom letzten Geburtstag bis zum nächsten
+    var letzter = new Date(ziel.getFullYear() - 1, GEBURT_MONAT, GEBURT_TAG, 0, 0, 0);
+    var pct = (jetzt.getTime() - letzter.getTime()) / (ziel.getTime() - letzter.getTime()) * 100;
+    if (pct < 0) pct = 0; if (pct > 100) pct = 100;
+    el.fill.style.width = pct.toFixed(2) + '%';
+    el.plabel.innerHTML = 'Lebensjahr-Fortschritt: <b>' + pct.toFixed(1).replace('.', ',') + ' %</b>';
+
+    if (istGeburtstag && !partyStarted) { partyStarted = true; startParty(); }
+  }
+
+  tick();
+  setInterval(tick, 1000);
+
+  // VU-Meter aufbauen
+  (function () {
+    var n = 26, i;
+    for (i = 0; i < n; i++) {
+      var b = document.createElement('i');
+      b.style.animationDelay = (Math.random() * 0.8).toFixed(2) + 's';
+      b.style.animationDuration = (0.45 + Math.random() * 0.75).toFixed(2) + 's';
+      el.vu.appendChild(b);
+    }
+  })();
+
+  // ---- WebAudio: Bass-Drop + Beat ----
+  var ctx = null, beatTimer = null, step = 0;
+
+  function audio() {
+    var AC = window.AudioContext || window.webkitAudioContext;
+    if (!ctx && AC) ctx = new AC();
+    if (ctx && ctx.state === 'suspended') ctx.resume();
+    return ctx;
+  }
+
+  function kick(t, laut) {
+    var o = ctx.createOscillator(), g = ctx.createGain();
+    o.type = 'sine';
+    o.frequency.setValueAtTime(150, t);
+    o.frequency.exponentialRampToValueAtTime(45, t + 0.18);
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.exponentialRampToValueAtTime(laut, t + 0.012);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + 0.26);
+    o.connect(g).connect(ctx.destination);
+    o.start(t); o.stop(t + 0.3);
+  }
+
+  function hat(t, laut) {
+    var len = Math.floor(ctx.sampleRate * 0.05);
+    var buf = ctx.createBuffer(1, len, ctx.sampleRate);
+    var data = buf.getChannelData(0), i;
+    for (i = 0; i < len; i++) data[i] = (Math.random() * 2 - 1) * (1 - i / len);
+    var src = ctx.createBufferSource(); src.buffer = buf;
+    var f = ctx.createBiquadFilter(); f.type = 'highpass'; f.frequency.value = 7000;
+    var g = ctx.createGain(); g.gain.value = laut;
+    src.connect(f).connect(g).connect(ctx.destination);
+    src.start(t);
+  }
+
+  function drop() {
+    if (!audio()) return;
+    var t = ctx.currentTime;
+    kick(t, 0.85);
+    var o = ctx.createOscillator(), g = ctx.createGain();
+    o.type = 'sine';
+    o.frequency.setValueAtTime(220, t);
+    o.frequency.exponentialRampToValueAtTime(32, t + 1.5);
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.exponentialRampToValueAtTime(0.55, t + 0.05);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + 1.6);
+    o.connect(g).connect(ctx.destination);
+    o.start(t); o.stop(t + 1.7);
+    var sp = document.querySelector('.cone');
+    if (sp) {
+      sp.style.animationDuration = '0.16s';
+      setTimeout(function () { sp.style.animationDuration = '0.5s'; }, 700);
+    }
+  }
+
+  function beatStep() {
+    if (!ctx) return;
+    var t = ctx.currentTime + 0.02;
+    kick(t, 0.6);
+    if (step % 2 === 1) hat(t + 0.115, 0.16);
+    step++;
+  }
+
+  var dropBtn = document.getElementById('drop');
+  var beatBtn = document.getElementById('beat');
+
+  dropBtn.addEventListener('click', drop);
+
+  beatBtn.addEventListener('click', function () {
+    if (!audio()) { beatBtn.textContent = '🔇 TON NICHT VERFÜGBAR'; return; }
+    if (beatTimer) {
+      clearInterval(beatTimer); beatTimer = null; step = 0;
+      beatBtn.classList.remove('on');
+      beatBtn.textContent = '🎧 BEAT AN';
+    } else {
+      beatStep();
+      beatTimer = setInterval(beatStep, 469); // ~128 BPM
+      beatBtn.classList.add('on');
+      beatBtn.textContent = '⏸ BEAT AUS';
+    }
+  });
+})();
+</script>
+</body>
+</html>
