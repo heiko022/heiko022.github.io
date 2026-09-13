@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Roboter &amp; Schwarzes Loch – 3D Comic</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  :root { --ink:#0b0b14; --paper:#fdf6e3; --accent:#ffd23f; --hot:#ff5c39; --cool:#63f9ff; }
+  html, body {
+    height:100%; overflow:hidden; background:#04050c; color:#fff;
+    font-family:'Comic Neue','Comic Sans MS',system-ui,sans-serif;
+    -webkit-tap-highlight-color:transparent;
+  }
+  #scene { position:fixed; inset:0; width:100%; height:100%; display:block; touch-action:none; }
+
+  /* Comic-Druckraster + Vignette */
+  .halftone {
+    position:fixed; inset:0; pointer-events:none; z-index:3; opacity:.15;
+    background-image:radial-gradient(rgba(0,0,0,.85) 1.1px, transparent 1.2px);
+    background-size:5px 5px; mix-blend-mode:multiply;
+  }
+  .vignette {
+    position:fixed; inset:0; pointer-events:none; z-index:2;
+    background:radial-gradient(circle at 62% 45%, rgba(0,0,0,0) 35%, rgba(2,2,8,.8) 100%);
+  }
+
+  /* HUD */
+  .hud { position:fixed; top:0; left:0; right:0; z-index:6; padding:14px 16px; pointer-events:none; }
+  h1 {
+    font-family:'Bangers','Comic Sans MS',cursive; font-size:clamp(1.45rem,7vw,3.2rem);
+    letter-spacing:1.5px; line-height:1; color:#fff;
+    -webkit-text-stroke:2.5px var(--ink);
+    text-shadow:4px 4px 0 var(--ink), 0 0 22px rgba(99,249,255,.45);
+    transform:rotate(-2deg);
+  }
+  h1 .hot { color:var(--hot); }
+  h1 .cool { color:var(--cool); }
+  .sub {
+    margin-top:7px; display:inline-block; background:var(--paper); color:var(--ink);
+    border:3px solid var(--ink); border-radius:10px; padding:3px 9px; font-weight:700;
+    font-size:clamp(.7rem,2.9vw,1rem); box-shadow:3px 3px 0 var(--ink); transform:rotate(-1deg);
+    max-width:92vw;
+  }
+
+  /* Fadenkreuz folgt dem Zeiger */
+  #reticle { position:fixed; left:0; top:0; width:44px; height:44px; margin:-22px 0 0 -22px; z-index:7; pointer-events:none; will-change:transform; }
+  #reticle .ring { position:absolute; inset:0; border:3px solid var(--accent); border-radius:50%; box-shadow:0 0 12px rgba(255,210,63,.85), inset 0 0 8px rgba(255,210,63,.5); }
+  #reticle .dot { position:absolute; left:50%; top:50%; width:7px; height:7px; margin:-3.5px 0 0 -3.5px; background:var(--accent); border:2px solid var(--ink); border-radius:50%; }
+  #reticle .cross { position:absolute; background:var(--accent); box-shadow:0 0 8px rgba(255,210,63,.85); }
+  #reticle .cross.h { left:-9px; right:-9px; top:50%; height:3px; margin-top:-1.5px; }
+  #reticle .cross.v { top:-9px; bottom:-9px; left:50%; width:3px; margin-left:-1.5px; }
+
+  /* Sprechblase */
+  #bubble {
+    position:fixed; left:0; top:0; z-index:8; pointer-events:none; width:max-content;
+    max-width:min(48vw,300px); background:var(--paper); color:var(--ink);
+    border:4px solid var(--ink); border-radius:16px; padding:8px 12px; font-weight:700;
+    font-size:clamp(.76rem,3.1vw,1.05rem); line-height:1.15; text-align:center;
+    box-shadow:5px 5px 0 var(--ink); transform:translate(-50%,-100%) rotate(-2deg); will-change:transform;
+  }
+  #bubble::after {
+    content:''; position:absolute; left:50%; bottom:-16px; margin-left:-10px;
+    border:10px solid transparent; border-top-color:var(--ink); border-bottom:0;
+  }
+
+  #holeLabel {
+    position:fixed; left:0; top:0; z-index:6; pointer-events:none;
+    font-family:'Bangers',cursive; font-size:clamp(.8rem,3.4vw,1.25rem); letter-spacing:1px;
+    color:var(--accent); -webkit-text-stroke:2px var(--ink);
+    text-shadow:3px 3px 0 var(--ink), 0 0 14px rgba(255,210,63,.7);
+    white-space:nowrap; transform:translate(-50%,-50%) rotate(-4deg);
+  }
+
+  .zap {
+    position:fixed; z-index:9; pointer-events:none; font-family:'Bangers',cursive;
+    font-size:clamp(1.4rem,7vw,2.6rem); color:var(--accent); -webkit-text-stroke:2.5px var(--ink);
+    text-shadow:3px 3px 0 var(--ink), 0 0 18px rgba(255,210,63,.9);
+    transform:translate(-50%,-50%) rotate(-8deg); animation:zapPop .6s ease-out forwards;
+  }
+  @keyframes zapPop {
+    0% { opacity:0; transform:translate(-50%,-50%) scale(.4) rotate(-8deg); }
+    30% { opacity:1; transform:translate(-50%,-50%) scale(1.15) rotate(-8deg); }
+    100% { opacity:0; transform:translate(-50%,-160%) scale(.95) rotate(6deg); }
+  }
+
+  /* Steuerleiste */
+  .bar {
+    position:fixed; left:0; right:0; bottom:0; z-index:10;
+    display:flex; gap:10px; flex-wrap:wrap; justify-content:center; align-items:center;
+    padding:12px 14px calc(12px + env(safe-area-inset-bottom));
+    background:linear-gradient(to top, rgba(4,5,12,.94), rgba(4,5,12,0));
+  }
+  .btn {
+    font-family:'Comic Neue','Comic Sans MS',sans-serif; font-weight:700;
+    font-size:clamp(.78rem,3.2vw,1rem); display:inline-block; text-decoration:none; cursor:pointer;
+    color:var(--ink); background:var(--paper); border:3px solid var(--ink); border-radius:12px;
+    padding:9px 14px; box-shadow:4px 4px 0 var(--ink); user-select:none;
+    transition:transform .08s, box-shadow .08s, background .15s;
+  }
+  .btn:hover { background:var(--accent); }
+  .btn:active { transform:translate(4px,4px); box-shadow:0 0 0 var(--ink); }
+  .btn.ghost { background:#11142a; color:#dfe8ff; border-color:#000; box-shadow:4px 4px 0 #000; }
+  .btn.ghost:hover { background:#1b2044; }
+
+  #status {
+    position:fixed; left:50%; top:50%; transform:translate(-50%,-50%); z-index:20;
+    font-weight:700; text-align:center; padding:12px 18px; background:var(--paper); color:var(--ink);
+    border:3px solid var(--ink); border-radius:12px; box-shadow:5px 5px 0 var(--ink);
+    font-size:.95rem; max-width:80vw;
+  }
+  #status.hide { display:none; }
+
+  /* Ohne WebGL: CSS-Comic-Welt */
+  #fallback { position:fixed; inset:0; z-index:1; display:none; }
+  body.no-webgl #fallback { display:block; }
+  body.no-webgl #scene { display:none; }
+  #fallback .sky {
+    position:absolute; inset:0;
+    background:
+      radial-gradient(1.6px 1.6px at 20% 30%, #fff, transparent),
+      radial-gradient(1.4px 1.4px at 70% 20%, #cfe4ff, transparent),
+      radial-gradient(1.8px 1.8px at 40% 70%, #ffe9c0, transparent),
+      radial-gradient(1.2px 1.2px at 85% 65%, #fff, transparent),
+      radial-gradient(1.5px 1.5px at 12% 85%, #dfe9ff, transparent),
+      radial-gradient(1.6px 1.6px at 55% 12%, #fff, transparent),
+      radial-gradient(circle at 62% 45%, #34206b 0%, #0a0a1f 45%, #04050c 100%);
+    animation:skyTwinkle 5s ease-in-out infinite alternate;
+  }
+  @keyframes skyTwinkle { from { filter:brightness(.85); } to { filter:brightness(1.2); } }
+  #fallback .hole {
+    position:absolute; left:62%; top:45%; width:26vmin; height:26vmin; margin:-13vmin 0 0 -13vmin;
+    border-radius:50%; background:#05060c; animation:holePulse 4s ease-in-out infinite alternate;
+  }
+  @keyframes holePulse {
+    from { box-shadow:0 0 0 5px #ff9a3c, 0 0 30px 8px rgba(255,120,40,.4), inset 0 0 30px #000; }
+    to { box-shadow:0 0 0 9px #ffd27a, 0 0 60px 22px rgba(255,170,80,.7), inset 0 0 30px #000; }
+  }
+  #fbot {
+    position:fixed; left:0; top:0; z-index:8; font-size:clamp(3rem,16vw,6rem); line-height:1;
+    filter:drop-shadow(4px 4px 0 #0b0b14); will-change:transform;
+  }
+</style>
+</head>
+<body>
+<canvas id="scene"></canvas>
+
+<div id="fallback" aria-hidden="true">
+  <div class="sky"></div>
+  <div class="hole"></div>
+</div>
+<div id="fbot" aria-hidden="true">🤖</div>
+
+<div class="vignette"></div>
+<div class="halftone"></div>
+
+<div class="hud">
+  <h1>ROBOT <span class="hot">vs.</span> SCHWARZES <span class="cool">LOCH</span></h1>
+  <span class="sub" id="hint">👆 Zeiger / Finger bewegen – der Roboter schaut hinterher</span>
+</div>
+
+<div id="reticle"><div class="cross h"></div><div class="cross v"></div><div class="ring"></div><div class="dot"></div></div>
+<div id="bubble">Hallo! Ich folge dir. 👋</div>
+<div id="holeLabel">⚠ SCHWARZES LOCH</div>
+
+<div class="bar">
+  <a href="index.html" class="btn">⬅ Startseite</a>
+  <button class="btn" id="btn-shot">⚡ Laser!</button>
+  <button class="btn ghost" id="btn-spin">🌀 Galaxie drehen</button>
+  <button class="btn ghost" id="btn-help">❓ Tipp</button>
+</div>
+
+<div id="status">Lade 3D-Welt …</div>
+
+<!-- Klassisches Skript: Zeiger-Verfolgung, Sprechblasen, ZAP – läuft immer, auch ohne WebGL -->
+<script>
+(function () {
+  var tracker = {
+    x: window.innerWidth * 0.5, y: window.innerHeight * 0.55,
+    shownX: window.innerWidth * 0.5, shownY: window.innerHeight * 0.55,
+    lastInput: performance.now() - 5000, idle: true, moved: 0, t: Math.random() * 10
+  };
+  window.__tracker = tracker;
+
+  var bubbleEl = document.getElementById('bubble');
+  var reticleEl = document.getElementById('reticle');
+  var fbotEl = document.getElementById('fbot');
+  var hintEl = document.getElementById('hint');
+  var statusEl = document.getElementById('status');
+  window.__ui = { hint: hintEl, status: statusEl };
+
+  var tips = [
+    'Hallo! Ich folge dir. 👋',
+    'Ich bin ein Roboter im Comic-Stil!',
+    'Boh, ein echt großes Loch … ⚫',
+    'Vorsicht, das zieht alles rein!',
+    'Klick mich – ich schieße Laser! ⚡',
+    'Die Sterne biegen sich um das Loch!',
+    'Ich schwebe, ich habe Raketenfüße 🚀'
+  ];
+  var tipIndex = 0, tipTime = performance.now();
+  window.__setTip = function (text) { bubbleEl.textContent = text; tipTime = performance.now(); };
+  window.__bubbleText = function () { return bubbleEl.textContent; };
+  window.__nextTip = function () { tipIndex = (tipIndex + 1) % tips.length; window.__setTip(tips[tipIndex]); };
+
+  function onPointer(e) {
+    if (typeof e.clientX !== 'number') return;
+    tracker.x = e.clientX; tracker.y = e.clientY;
+    tracker.lastInput = performance.now(); tracker.idle = false;
+    tracker.moved = Math.min(1, tracker.moved + 0.35);
+  }
+  window.addEventListener('pointermove', onPointer, { passive: true });
+  window.addEventListener('pointerdown', onPointer, { passive: true });
+  window.addEventListener('touchmove', function (e) {
+    if (e.touches && e.touches[0]) onPointer(e.touches[0]);
+  }, { passive: true });
+
+  var zaps = ['ZAP!', 'PENG!', 'KABOOM!', 'WOOSH!', 'ZAPP!'];
+  window.__bang = function (clientX, clientY, quiet) {
+    var el = document.createElement('div');
+    el.className = 'zap';
+    el.textContent = zaps[Math.floor(Math.random() * zaps.length)];
+    el.style.left = clientX + 'px';
+    el.style.top = clientY + 'px';
+    document.body.appendChild(el);
+    setTimeout(function () { el.remove(); }, 700);
+    if (!quiet) window.__setTip('Laser! ⚡');
+  };
+
+  function loop() {
+    var now = performance.now();
+    tracker.idle = (now - tracker.lastInput) > 3200;
+    if (tracker.idle) {
+      tracker.t += 0.010;
+      tracker.x = (0.5 + 0.38 * Math.sin(tracker.t * 0.9)) * window.innerWidth;
+      tracker.y = (0.5 + 0.30 * Math.sin(tracker.t * 1.35 + 1.1)) * window.innerHeight;
+    }
+    tracker.shownX += (tracker.x - tracker.shownX) * 0.22;
+    tracker.shownY += (tracker.y - tracker.shownY) * 0.22;
+    tracker.moved *= 0.94;
+
+    reticleEl.style.transform = 'translate(' + tracker.shownX.toFixed(1) + 'px,' + tracker.shownY.toFixed(1) + 'px)';
+    fbotEl.style.transform = 'translate(' + (tracker.shownX - window.innerWidth * 0.06).toFixed(1) + 'px,' +
+      (tracker.shownY - window.innerHeight * 0.08).toFixed(1) + 'px)';
+
+    if (!document.body.classList.contains('mode-3d')) {
+      bubbleEl.style.transform = 'translate(-50%,-100%) translate(' + tracker.shownX.toFixed(1) + 'px,' +
+        (tracker.shownY - window.innerHeight * 0.17).toFixed(1) + 'px) rotate(-2deg)';
+    } else if (now - tipTime > 6500) {
+      window.__nextTip();
+    }
+    requestAnimationFrame(loop);
+  }
+  requestAnimationFrame(loop);
+
+  // Falls die 3D-Bibliothek nicht lädt (offline): Comic-Fallback zeigen
+  window.__bootTimer = setTimeout(function () {
+    if (document.body.classList.contains('mode-3d')) return;
+    document.body.classList.add('no-webgl');
+    statusEl.textContent = '3D-Bibliothek lädt nicht – Comic-Fallback aktiv 🤖';
+    setTimeout(function () { statusEl.classList.add('hide'); }, 4500);
+  }, 9000);
+})();
+</script>
+
+<!-- 3D-Welt: Comic-Roboter + Sternengalaxie mit Schwarzem Loch -->
+<script type="importmap">
+{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js" } }
+</script>
+
+<script type="module">
+import * as THREE from 'three';
+
+const tracker = window.__tracker;
+const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+
+/* ---------- Helfer ---------- */
+function toonGradient(steps) {
+  const data = new Uint8Array(steps * 4);
+  for (let i = 0; i < steps; i++) {
+    const v = Math.round(((i + 1) / steps) * 255);
+    data[i * 4] = data[i * 4 + 1] = data[i * 4 + 2] = v;
+    data[i * 4 + 3] = 255;
+  }
+  const tex = new THREE.DataTexture(data, steps, 1, THREE.RedFormat);
+  tex.minFilter = THREE.NearestFilter;
+  tex.magFilter = THREE.NearestFilter;
+  tex.needsUpdate = true;
+  return tex;
+}
+
+function diskTexture() {
+  const s = 512, c = document.createElement('canvas');
+  c.width = c.height = s;
+  const ctx = c.getContext('2d');
+  for (let i = 0; i < 5200; i++) {
+    const a = Math.random() * Math.PI * 2;
+    const r = (0.22 + Math.pow(Math.random(), 0.7) * 0.28) * s;
+    const t = 1 - (r / (0.5 * s));
+    ctx.strokeStyle = 'rgba(255,' + Math.floor(150 + 105 * t) + ',' + Math.floor(60 + 130 * t) + ',' + (0.10 + Math.random() * 0.5) + ')';
+    ctx.lineWidth = 0.6 + Math.random() * 3.2;
+    ctx.beginPath();
+    ctx.arc(s / 2, s / 2, r, a, a + 0.05 + Math.random() * 0.35);
+    ctx.stroke();
+  }
+  ctx.globalCompositeOperation = 'destination-in';
+  const grad = ctx.createRadialGradient(s / 2, s / 2, 0.2 * s, s / 2, s / 2, 0.5 * s);
+  grad.addColorStop(0, 'rgba(0,0,0,0)');
+  grad.addColorStop(0.34, 'rgba(0,0,0,1)');
+  grad.addColorStop(1, 'rgba(0,0,0,0)');
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, s, s);
+  const tex = new THREE.CanvasTexture(c);
+  tex.colorSpace = THREE.SRGBColorSpace;
+  return tex;
+}
+
+function glowTexture() {
+  const s = 256, c = document.createElement('canvas');
+  c.width = c.height = s;
+  const ctx = c.getContext('2d');
+  const g = ctx.createRadialGradient(s / 2, s / 2, 0, s / 2, s / 2, s / 2);
+  g.addColorStop(0, 'rgba(255,240,200,1)');
+  g.addColorStop(0.25, 'rgba(255,180,80,0.7)');
+  g.addColorStop(0.55, 'rgba(160,90,255,0.22)');
+  g.addColorStop(1, 'rgba(0,0,0,0)');
+  ctx.fillStyle = g;
+  ctx.fillRect(0, 0, s, s);
+  const tex = new THREE.CanvasTexture(c);
+  tex.colorSpace = THREE.SRGBColorSpace;
+  return tex;
+}
+
+/* ---------- Zustand ---------- */
+let renderer, scene, camera, galaxyMat, diskGroup, photon, holeGroup, spaceGroup, laserLine;
+let robot, robotHead, robotEyes = [], robotArms = [], flameMat, antennaBall, holeLabelEl;
+let laserLife = 0, diskFlash = 0, spinBoost = 0, frames = 0;
+const tmpV = new THREE.Vector3();
+const tmpP = new THREE.Vector3();
+const par = { x: 0, y: 0 };
+const laserFrom = new THREE.Vector3();
+const laserTo = new THREE.Vector3();
+
+/* ---------- Roboter (Comic: Toon-Shading + dicke schwarze Outlines) ---------- */
+function buildRobot() {
+  const ink = new THREE.MeshBasicMaterial({ color: 0x0b0b14, side: THREE.BackSide });
+  const grad = toonGradient(4);
+  const matBody = new THREE.MeshToonMaterial({ color: 0xe8eefb, gradientMap: grad });
+  const matPanel = new THREE.MeshToonMaterial({ color: 0xff7a2a, gradientMap: grad });
+  const matDark = new THREE.MeshToonMaterial({ color: 0x1b1f33, gradientMap: grad });
+  const matEye = new THREE.MeshBasicMaterial({ color: 0x7ef9ff });
+  const matMouth = new THREE.MeshBasicMaterial({ color: 0xffd23f });
+  const matAnt = new THREE.MeshBasicMaterial({ color: 0xff5c39 });
+
+  const outline = (mesh, k) => {
+    const o = new THREE.Mesh(mesh.geometry, ink);
+    o.scale.multiplyScalar(k || 1.07);
+    mesh.add(o);
+    return mesh;
+  };
+  const box = (w, h, d, m, k) => outline(new THREE.Mesh(new THREE.BoxGeometry(w, h, d), m), k);
+
+  const root = new THREE.Group();
+
+  const torso = box(1.05, 1.0, 0.72, matBody, 1.07);
+  root.add(torso);
+  const chest = box(0.5, 0.42, 0.08, matPanel, 1.16);
+  chest.position.set(0, 0.06, 0.36);
+  root.add(chest);
+  const belt = box(1.08, 0.15, 0.75, matDark, 1.1);
+  belt.position.y = -0.52;
+  root.add(belt);
+
+  const head = new THREE.Group();
+  head.position.y = 0.95;
+  root.add(head);
+  head.add(box(1.3, 1.0, 0.95, matBody, 1.07));
+  const visor = box(1.06, 0.46, 0.1, matDark, 1.1);
+  visor.position.set(0, -0.02, 0.5);
+  head.add(visor);
+  const eyes = [];
+  const eyeGeo = new THREE.SphereGeometry(0.11, 16, 12);
+  [-0.3, 0.3].forEach((sx) => {
+    const eye = outline(new THREE.Mesh(eyeGeo, matEye), 1.15);
+    eye.position.set(sx, -0.02, 0.55);
+    head.add(eye);
+    eyes.push(eye);
+  });
+  const mouth = box(0.5, 0.1, 0.08, matMouth, 1.22);
+  mouth.position.set(0, -0.34, 0.5);
+  head.add(mouth);
+
+  const rod = outline(new THREE.Mesh(new THREE.CylinderGeometry(0.035, 0.035, 0.5, 8), matDark), 1.25);
+  rod.position.set(0.42, 0.68, 0);
+  head.add(rod);
+  const antenna = outline(new THREE.Mesh(new THREE.SphereGeometry(0.13, 16, 12), matAnt), 1.12);
+  antenna.position.set(0.42, 0.98, 0);
+  head.add(antenna);
+
+  const arms = [];
+  [-1, 1].forEach((sx) => {
+    const shoulder = outline(new THREE.Mesh(new THREE.SphereGeometry(0.2, 16, 12), matPanel), 1.12);
+    shoulder.position.set(sx * 0.68, 0.32, 0);
+    root.add(shoulder);
+    const arm = new THREE.Group();
+    arm.position.copy(shoulder.position);
+    root.add(arm);
+    const upper = box(0.24, 0.72, 0.24, matBody, 1.08);
+    upper.position.y = -0.36;
+    arm.add(upper);
+    const hand = outline(new THREE.Mesh(new THREE.SphereGeometry(0.18, 16, 12), matDark), 1.12);
+    hand.position.y = -0.78;
+    arm.add(hand);
+    arm.rotation.z = sx * 0.22;
+    arms.push(arm);
+  });
+
+  const nozzle = outline(new THREE.Mesh(new THREE.CylinderGeometry(0.42, 0.28, 0.34, 12), matDark), 1.06);
+  nozzle.position.y = -0.72;
+  root.add(nozzle);
+  const flame = new THREE.Mesh(
+    new THREE.ConeGeometry(0.3, 1.05, 10, 1, true),
+    new THREE.MeshBasicMaterial({ color: 0xffb347, transparent: true, opacity: 0.9, blending: THREE.AdditiveBlending, side: THREE.DoubleSide, depthWrite: false })
+  );
+  flame.rotation.x = Math.PI;
+  flame.position.y = -1.3;
+  root.add(flame);
+
+  root.scale.setScalar(0.92);
+  return { root, head, eyes, arms, flame, antenna };
+}
+
+/* ---------- Szene ---------- */
+function initScene() {
+  const canvas = document.getElementById('scene');
+  renderer = new THREE.WebGLRenderer({ canvas, antialias: true, powerPreference: 'high-performance' });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.8));
+  renderer.setSize(window.innerWidth, window.innerHeight, false);
+
+  scene = new THREE.Scene();
+  scene.fog = new THREE.FogExp2(0x04050c, 0.011);
+
+  camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 260);
+  camera.position.set(0, 1.25, 12.5);
+  camera.lookAt(0, 0.2, 0);
+
+  scene.add(new THREE.AmbientLight(0x8899ff, 1.2));
+  const key = new THREE.DirectionalLight(0xfff3d6, 1.55);
+  key.position.set(4, 6, 8);
+  scene.add(key);
+  const rim = new THREE.DirectionalLight(0x4ad9ff, 0.95);
+  rim.position.set(-6, -2, -5);
+  scene.add(rim);
+
+  spaceGroup = new THREE.Group();
+  spaceGroup.position.set(1.9, 0.55, -1.2);
+  scene.add(spaceGroup);
+
+  /* Galaxie: Partikel mit Gravitationslinse im Vertex-Shader */
+  const count = 13000;
+  const positions = new Float32Array(count * 3);
+  const colors = new Float32Array(count * 3);
+  const scales = new Float32Array(count);
+  const seeds = new Float32Array(count);
+  const radius = 13, branches = 4, spin = 1.05, randomness = 0.55, rp = 3.0;
+  const cIn = new THREE.Color(0xfff3cf), cMid = new THREE.Color(0xffa86b);
+  const cOut = new THREE.Color(0x6f7bff), cPink = new THREE.Color(0xff74c8);
+  const col = new THREE.Color();
+  for (let i = 0; i < count; i++) {
+    const i3 = i * 3;
+    const r = Math.pow(Math.random(), 1.35) * radius;
+    const angle = (i % branches) / branches * Math.PI * 2 + spin * r * 0.42;
+    const rand = (p, mag) => Math.pow(Math.random(), rp) * (Math.random() < 0.5 ? 1 : -1) * mag;
+    positions[i3] = Math.cos(angle) * r + rand(0, randomness * (r * 0.22 + 0.4));
+    positions[i3 + 1] = rand(0, randomness * 0.28);
+    positions[i3 + 2] = Math.sin(angle) * r + rand(0, randomness * 0.35);
+    const t = Math.min(1, r / radius);
+    if (t < 0.32) col.copy(cIn).lerp(cMid, t / 0.32);
+    else col.copy(cMid).lerp(Math.random() < 0.22 ? cPink : cOut, (t - 0.32) / 0.68);
+    colors[i3] = col.r; colors[i3 + 1] = col.g; colors[i3 + 2] = col.b;
+    scales[i] = 0.5 + Math.random() * 1.9;
+    seeds[i] = Math.random() * 6.283;
+  }
+  const galaxyGeo = new THREE.BufferGeometry();
+  galaxyGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+  galaxyGeo.setAttribute('aColor', new THREE.BufferAttribute(colors, 3));
+  galaxyGeo.setAttribute('aScale', new THREE.BufferAttribute(scales, 1));
+  galaxyGeo.setAttribute('aSeed', new THREE.BufferAttribute(seeds, 1));
+
+  galaxyMat = new THREE.ShaderMaterial({
+    uniforms: {
+      uTime: { value: 0 },
+      uSize: { value: 26 * Math.min(window.devicePixelRatio || 1, 1.8) },
+      uSpin: { value: 1.0 },
+      uLens: { value: 1.35 },
+      uFlash: { value: 0 }
+    },
+    vertexShader: [
+      'attribute vec3 aColor;',
+      'attribute float aScale;',
+      'attribute float aSeed;',
+      'uniform float uTime;',
+      'uniform float uSize;',
+      'uniform float uSpin;',
+      'uniform float uLens;',
+      'uniform float uFlash;',
+      'varying vec3 vColor;',
+      'varying float vSeed;',
+      'void main() {',
+      '  vec3 p = position;',
+      '  float r = length(p.xz) + 0.0001;',
+      '  vec2 dir = p.xz / r;',
+      '  float defl = uLens / (r * r + 0.55);',
+      '  p.xz += dir * defl * 1.7;',
+      '  float a = uSpin * uTime * (0.55 / (r + 1.1));',
+      '  float c = cos(a); float s = sin(a);',
+      '  p.xz = mat2(c, -s, s, c) * p.xz;',
+      '  vec4 mv = modelViewMatrix * vec4(p, 1.0);',
+      '  gl_Position = projectionMatrix * mv;',
+      '  float twinkle = 0.72 + 0.28 * sin(uTime * 2.1 + aSeed * 3.0);',
+      '  gl_PointSize = uSize * aScale * twinkle * (1.0 / max(0.001, -mv.z));',
+      '  vColor = aColor * (1.0 + uFlash * 1.6 * exp(-r * 0.35));',
+      '  vSeed = aSeed;',
+      '}'
+    ].join('\n'),
+    fragmentShader: [
+      'varying vec3 vColor;',
+      'varying float vSeed;',
+      'void main() {',
+      '  float d = length(gl_PointCoord - vec2(0.5));',
+      '  if (d > 0.5) discard;',
+      '  float alpha = smoothstep(0.5, 0.02, d);',
+      '  gl_FragColor = vec4(vColor, alpha);',
+      '}'
+    ].join('\n'),
+    transparent: true,
+    depthWrite: false,
+    blending: THREE.AdditiveBlending
+  });
+  const galaxy = new THREE.Points(galaxyGeo, galaxyMat);
+  galaxy.frustumCulled = false;
+  spaceGroup.add(galaxy);
+
+  /* Hintergrund-Sterne */
+  const bgCount = 2600;
+  const bgPos = new Float32Array(bgCount * 3);
+  for (let i = 0; i < bgCount; i++) {
+    const i3 = i * 3;
+    const rr = 45 + Math.random() * 65;
+    const th = Math.random() * Math.PI * 2;
+    const ph = Math.acos(2 * Math.random() - 1);
+    bgPos[i3] = rr * Math.sin(ph) * Math.cos(th);
+    bgPos[i3 + 1] = rr * Math.cos(ph) * 0.7;
+    bgPos[i3 + 2] = rr * Math.sin(ph) * Math.sin(th);
+  }
+  const bgGeo = new THREE.BufferGeometry();
+  bgGeo.setAttribute('position', new THREE.BufferAttribute(bgPos, 3));
+  scene.add(new THREE.Points(bgGeo, new THREE.PointsMaterial({
+    size: 0.5, color: 0xdfe9ff, transparent: true, opacity: 0.85, sizeAttenuation: true,
+    depthWrite: false, blending: THREE.AdditiveBlending
+  })));
+
+  /* Schwarzes Loch */
+  holeGroup = new THREE.Group();
+  spaceGroup.add(holeGroup);
+  holeGroup.add(new THREE.Mesh(new THREE.SphereGeometry(0.72, 48, 32), new THREE.MeshBasicMaterial({ color: 0x04050a })));
+
+  photon = new THREE.Group();
+  photon.add(new THREE.Mesh(new THREE.TorusGeometry(0.9, 0.022, 8, 128),
+    new THREE.MeshBasicMaterial({ color: 0xfff0b0, blending: THREE.AdditiveBlending, transparent: true, depthWrite: false })));
+  photon.add(new THREE.Mesh(new THREE.TorusGeometry(1.0, 0.055, 8, 128),
+    new THREE.MeshBasicMaterial({ color: 0xff9a3c, blending: THREE.AdditiveBlending, transparent: true, opacity: 0.3, depthWrite: false })));
+  holeGroup.add(photon);
+
+  const diskTex = diskTexture();
+  diskGroup = new THREE.Group();
+  const mkDisk = (inner, outer, opacity, mult) => {
+    const m = new THREE.Mesh(new THREE.RingGeometry(inner, outer, 96, 1), new THREE.MeshBasicMaterial({
+      map: diskTex, transparent: true, opacity, blending: THREE.AdditiveBlending, side: THREE.DoubleSide, depthWrite: false
+    }));
+    m.rotation.x = -Math.PI / 2;
+    m.userData.mult = mult;
+    return m;
+  };
+  diskGroup.add(mkDisk(1.0, 2.6, 0.95, 1.0));
+  diskGroup.add(mkDisk(1.6, 3.6, 0.4, -0.6));
+  diskGroup.rotation.z = 0.16;
+  holeGroup.add(diskGroup);
+
+  const glow = new THREE.Sprite(new THREE.SpriteMaterial({ map: glowTexture(), transparent: true, blending: THREE.AdditiveBlending, opacity: 0.7, depthWrite: false }));
+  glow.scale.set(9, 9, 1);
+  holeGroup.add(glow);
+
+  /* Roboter */
+  const parts = buildRobot();
+  robot = parts.root;
+  robotHead = parts.head;
+  robotEyes = parts.eyes;
+  robotArms = parts.arms;
+  flameMat = parts.flame.material;
+  antennaBall = parts.antenna;
+  robot.position.set(0, 0.2, 4.2);
+  scene.add(robot);
+  robot.userData.baseScale = 0.92 * robotFitScale();
+
+  /* Laser */
+  const lineGeo = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(), new THREE.Vector3(1, 0, 0)]);
+  laserLine = new THREE.Line(lineGeo, new THREE.LineBasicMaterial({ color: 0x9ffcff, transparent: true, opacity: 0, blending: THREE.AdditiveBlending }));
+  laserLine.frustumCulled = false;
+  scene.add(laserLine);
+
+  renderer.compile(scene, camera);
+  holeLabelEl = document.getElementById('holeLabel');
+}
+
+/* ---------- Projektion & Laser ---------- */
+function robotFitScale() {
+  const aspect = window.innerWidth / Math.max(1, window.innerHeight);
+  return clamp(0.5 + 0.5 * aspect, 0.62, 1.0);
+}
+
+function screenToWorld(clientX, clientY, z) {
+  const ndcX = (clientX / window.innerWidth) * 2 - 1;
+  const ndcY = -(clientY / window.innerHeight) * 2 + 1;
+  tmpV.set(ndcX, ndcY, 0.5).unproject(camera).sub(camera.position).normalize();
+  const dist = (z - camera.position.z) / tmpV.z;
+  return camera.position.clone().addScaledVector(tmpV, dist);
+}
+
+function placeOnScreen(worldVec, el, mode) {
+  const p = worldVec.clone().project(camera);
+  let x = (p.x * 0.5 + 0.5) * window.innerWidth;
+  let y = (-p.y * 0.5 + 0.5) * window.innerHeight;
+  const w = el.offsetWidth || 120;
+  const h = el.offsetHeight || 30;
+  if (mode === 'bubble') {
+    x = clamp(x, w / 2 + 8, window.innerWidth - w / 2 - 8);
+    y = Math.max(y, h + 16);
+    el.style.transform = 'translate(-50%,-100%) translate(' + x.toFixed(1) + 'px,' + y.toFixed(1) + 'px) rotate(-2deg)';
+  } else {
+    x = clamp(x, w / 2 + 6, window.innerWidth - w / 2 - 6);
+    y = clamp(y, h / 2 + 6, window.innerHeight - h / 2 - 6);
+    el.style.transform = 'translate(-50%,-50%) translate(' + x.toFixed(1) + 'px,' + y.toFixed(1) + 'px) rotate(-4deg)';
+  }
+  el.style.opacity = p.z < 1 ? '1' : '0';
+}
+
+function fireLaser(clientX, clientY) {
+  if (!robot) return;
+  robot.getWorldPosition(laserFrom);
+  laserFrom.y += 0.6;
+  laserFrom.z += 0.4;
+  laserTo.copy(screenToWorld(clientX, clientY, 1.5));
+  laserLife = 0.22;
+  diskFlash = 1;
+  spinBoost = Math.max(spinBoost, 0.55);
+}
+
+/* ---------- Interaktion ---------- */
+window.addEventListener('pointerdown', (e) => { fireLaser(e.clientX, e.clientY); window.__bang(e.clientX, e.clientY, true); }, { passive: true });
+document.getElementById('btn-shot').addEventListener('click', () => {
+  fireLaser(tracker.x, tracker.y);
+  window.__bang(tracker.x, tracker.y);
+});
+document.getElementById('btn-spin').addEventListener('click', () => {
+  spinBoost = 2.4;
+  window.__setTip('Galaxie-Boost! 🌀');
+});
+document.getElementById('btn-help').addEventListener('click', () => {
+  window.__ui.hint.textContent = '🖱️ Zeiger bewegen = Roboter folgt · 👋 Klick/Tap = Laser · Knöpfe unten';
+  window.__setTip('Einfach nur zeigen – ich schaue hin! 👀');
+});
+window.addEventListener('keydown', (e) => {
+  if (e.code === 'Space') {
+    e.preventDefault();
+    fireLaser(tracker.x, tracker.y);
+    window.__bang(tracker.x, tracker.y);
+  }
+});
+window.addEventListener('resize', () => {
+  if (!renderer) return;
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.8));
+  renderer.setSize(window.innerWidth, window.innerHeight, false);
+  galaxyMat.uniforms.uSize.value = 26 * Math.min(window.devicePixelRatio || 1, 1.8);
+});
+
+/* ---------- Animationsschleife ---------- */
+function animate() {
+  const now = performance.now();
+  const dt = Math.min(0.05, (now - (animate.last || now)) / 1000);
+  animate.last = now;
+  const t = now / 1000;
+  frames++;
+
+  // Parallaxe: die Galaxie wandert leicht mit dem Zeiger (Kamera bleibt fest,
+  // damit die Zeiger-Zuordnung des Roboters exakt bleibt und nicht zurückschwingt)
+  const nx = (tracker.shownX / window.innerWidth) * 2 - 1;
+  const ny = -(tracker.shownY / window.innerHeight) * 2 + 1;
+  par.x += (nx - par.x) * 0.055;
+  par.y += (ny - par.y) * 0.055;
+  spaceGroup.position.set(1.9 + par.x * 0.75, 0.55 + par.y * 0.45, -1.2);
+  spaceGroup.rotation.z = par.x * 0.03;
+
+  // Roboter folgt dem Zeiger – Zielpunkt so begrenzen, dass er ganz im Bild bleibt
+  const projFrac = (x, y, z) => {
+    const p = tmpP.set(x, y, z).project(camera);
+    return [p.x * 0.5 + 0.5, -p.y * 0.5 + 0.5];
+  };
+  const c0 = projFrac(robot.position.x, robot.position.y + 0.2, robot.position.z);
+  const cw = projFrac(robot.position.x + 0.9, robot.position.y + 0.2, robot.position.z);
+  const ch = projFrac(robot.position.x, robot.position.y + 1.05, robot.position.z);
+  const marginX = Math.min(0.34, Math.abs(cw[0] - c0[0]) + 0.03);
+  const marginTop = Math.min(0.34, Math.abs(ch[1] - c0[1]) * 2.15 + 0.05);
+  const marginBot = Math.min(0.34, Math.abs(c0[1] - ch[1]) * 1.85 + 0.04);
+  const sx = clamp(tracker.shownX / window.innerWidth, marginX, 1 - marginX) * window.innerWidth;
+  const sy = clamp(tracker.shownY / window.innerHeight, marginTop, 1 - marginBot) * window.innerHeight;
+  const aim = screenToWorld(sx, sy, robot.position.z);
+  const tx = aim.x;
+  const ty = aim.y;
+  robot.position.x += (tx - robot.position.x) * 0.09;
+  robot.position.y += (ty - robot.position.y) * 0.09;
+  const bob = Math.sin(t * 1.7) * 0.11;
+  const fitScale = 0.92 * robotFitScale();
+  const curScale = robot.scale.x + (fitScale - robot.scale.x) * 0.08;
+  robot.scale.setScalar(curScale);
+  robot.children[0].position.y = bob * 0.35;
+
+  const dx = tx - robot.position.x;
+  const dy = ty - robot.position.y;
+  const yaw = clamp(dx * 0.34, -0.8, 0.8);
+  const pitch = clamp(-dy * 0.28, -0.55, 0.55);
+  robot.rotation.y += (yaw - robot.rotation.y) * 0.14;
+  robot.rotation.x += (pitch * 0.3 - robot.rotation.x) * 0.12;
+  robot.rotation.z += (dx * 0.05 - robot.rotation.z) * 0.1;
+  robotHead.rotation.y += (yaw * 0.75 - robotHead.rotation.y) * 0.18;
+  robotHead.rotation.x += (pitch * 0.7 - robotHead.rotation.x) * 0.18;
+  robotEyes.forEach((eye, i) => {
+    eye.position.x = (i === 0 ? -0.3 : 0.3) + yaw * 0.1;
+    eye.position.y = -0.02 + pitch * 0.11;
+    const blink = Math.sin(t * 1.6 + i * 2.1) > 0.97 ? 0.25 : 1;
+    eye.scale.y = blink * (1 + 0.05 * Math.sin(t * 6 + i));
+  });
+  robotArms.forEach((arm, i) => {
+    const s = i === 0 ? -1 : 1;
+    arm.rotation.z = s * (0.22 + Math.sin(t * 1.9 + i * 1.4) * 0.16) - yaw * 0.45;
+    arm.rotation.x = Math.sin(t * 1.3 + i) * 0.18 + pitch * 0.45;
+  });
+  if (flameMat) flameMat.opacity = 0.72 + Math.sin(t * 22) * 0.18;
+  if (antennaBall) antennaBall.position.x = 0.42 + Math.sin(t * 2.2) * 0.05;
+
+  // Galaxie & Schwarzes Loch
+  galaxyMat.uniforms.uTime.value = t;
+  galaxyMat.uniforms.uFlash.value = diskFlash;
+  spinBoost *= 0.985;
+  galaxyMat.uniforms.uSpin.value = 1.0 + spinBoost * 2.0;
+  diskFlash *= 0.93;
+  diskGroup.children.forEach((m) => { m.rotation.z += dt * (0.35 + spinBoost) * m.userData.mult; });
+  photon.lookAt(camera.position);
+  holeGroup.scale.setScalar(1 + Math.sin(t * 2.4) * 0.02);
+
+  // Laser
+  if (laserLife > 0) {
+    laserLife -= dt;
+    laserLine.material.opacity = Math.max(0, laserLife * 5);
+    laserLine.geometry.setFromPoints([laserFrom, laserTo]);
+  } else {
+    laserLine.material.opacity = 0;
+  }
+
+  // Sprechblase + Label folgen der 3D-Projektion
+  placeOnScreen(new THREE.Vector3(robot.position.x, robot.position.y + 2.1 + bob, robot.position.z), document.getElementById('bubble'), 'bubble');
+  placeOnScreen(spaceGroup.localToWorld(new THREE.Vector3(-2.3, 2.5, 0)), holeLabelEl, 'label');
+
+  renderer.render(scene, camera);
+  requestAnimationFrame(animate);
+}
+
+/* ---------- Start ---------- */
+window.__dbg = () => ({
+  ready: !!(renderer && robot),
+  frames,
+  robot: robot ? [+robot.position.x.toFixed(3), +robot.position.y.toFixed(3)] : null,
+  bodyRot: robot ? [+robot.rotation.y.toFixed(3), +robot.rotation.x.toFixed(3)] : null,
+  headRot: robotHead ? [+robotHead.rotation.y.toFixed(3), +robotHead.rotation.x.toFixed(3)] : null,
+  eyeX: robotEyes.length ? +robotEyes[0].position.x.toFixed(3) : null,
+  mode: tracker.idle ? 'auto' : 'pointer',
+  spin: galaxyMat ? +galaxyMat.uniforms.uSpin.value.toFixed(2) : null,
+  laserOpacity: laserLine ? +laserLine.material.opacity.toFixed(2) : null,
+  tip: window.__bubbleText ? window.__bubbleText() : null,
+  robotScreen: robot ? [ +((new THREE.Vector3(robot.position.x, robot.position.y + 0.2, robot.position.z).project(camera)).x * 0.5 + 0.5).toFixed(3),
+                         +(-((new THREE.Vector3(robot.position.x, robot.position.y + 0.2, robot.position.z).project(camera)).y * 0.5) + 0.5).toFixed(3) ] : null,
+  bubbleRect: (() => { const b = document.getElementById('bubble').getBoundingClientRect(); return [+b.x.toFixed(0), +b.y.toFixed(0), +b.width.toFixed(0), +b.height.toFixed(0)]; })(),
+  holeScreen: (() => { const p = spaceGroup.position.clone().project(camera); return [+(p.x * 0.5 + 0.5).toFixed(3), +(-p.y * 0.5 + 0.5).toFixed(3)]; })()
+});
+
+try {
+  initScene();
+  clearTimeout(window.__bootTimer);
+  document.body.classList.add('mode-3d');
+  document.getElementById('status').classList.add('hide');
+} catch (err) {
+  document.body.classList.add('no-webgl');
+  clearTimeout(window.__bootTimer);
+  const s = document.getElementById('status');
+  s.textContent = '3D nicht verfügbar – Comic-Fallback aktiv 🤖';
+  setTimeout(() => s.classList.add('hide'), 5000);
+  throw err;
+}
+requestAnimationFrame(animate);
+</script>
+</body>
+</html>
