@@ -16,17 +16,12 @@
     <button onclick="loadNewRecipes()">Neue Rezepte laden</button>
     <div id="container"></div>
     <script>
-        // Full pool maintained in memory
         const allPool = [
-            { name: "Lachsfilet mit Ofengemüse", cal: 500, protein: 38, carbs: 15, fat: 20, ing: ["150g Lachsfilet", "200g Zucchini", "100g Karotten", "1EL Öl"], steps: "Ofen 200°C, 20 Min." },
-            { name: "Hähnchen-Brokkoli", cal: 450, protein: 40, carbs: 10, fat: 12, ing: ["150g Hähnchen", "200g Brokkoli", "1TL Soja"], steps: "Anbraten." },
-            { name: "Kichererbsen-Curry", cal: 420, protein: 18, carbs: 60, fat: 10, ing: ["200g Kichererbsen", "1 Paprika", "100ml Kokos"], steps: "Köcheln lassen." },
-            { name: "Vollkornpasta Pesto", cal: 480, protein: 15, carbs: 70, fat: 15, ing: ["80g Nudeln", "1 Zucchini", "2EL Pesto"], steps: "Kochen." },
-            { name: "Linsensalat Feta", cal: 390, protein: 20, carbs: 45, fat: 14, ing: ["150g Linsen", "50g Feta", "1 Gurke"], steps: "Mischen."},
-            { name: "Süßkartoffel Bowl", cal: 410, protein: 12, carbs: 55, fat: 10, ing: ["200g Süßkartoffel", "50g Kichererbsen", "2EL Hummus"], steps: "Rösten."},
-            { name: "Thunfisch Wrap", cal: 360, protein: 35, carbs: 30, fat: 10, ing: ["1 Vollkornwrap", "1 Dose Thunfisch", "1EL Quark"], steps: "Rollen."},
-            { name: "Tofu Wok", cal: 380, protein: 25, carbs: 20, fat: 15, ing: ["150g Tofu", "250g Wokgemüse", "1EL Soja"], steps: "Wok."},
-            { name: "Zucchini-Pfanne", cal: 300, protein: 10, carbs: 15, fat: 10, ing: ["300g Zucchini", "50g Tomate", "1EL Öl"], steps: "Anbraten."}
+            { name: "Lachsfilet mit Ofengemüse", cal: 500, protein: 38, carbs: 15, fat: 20, ing: ["150g Lachsfilet", "200g Zucchini", "100g Karotten", "1EL Öl"], steps: "1. Gemüse würfeln. 2. Mit Lachs auf ein Blech geben. 3. Bei 200°C für 20 Minuten backen." },
+            { name: "Hähnchen-Brokkoli", cal: 450, protein: 40, carbs: 10, fat: 12, ing: ["150g Hähnchen", "200g Brokkoli", "1TL Sojasauce"], steps: "1. Hähnchen anbraten. 2. Brokkoli bissfest dünsten. 3. Mit Sojasauce ablöschen." },
+            { name: "Kichererbsen-Curry", cal: 420, protein: 18, carbs: 60, fat: 10, ing: ["200g Kichererbsen", "1 Paprika", "100ml Kokosmilch"], steps: "1. Paprika anbraten. 2. Kichererbsen und Kokosmilch dazu. 3. 10 Min. köcheln lassen." },
+            { name: "Vollkornpasta Pesto", cal: 480, protein: 15, carbs: 70, fat: 15, ing: ["80g Vollkornnudeln", "1 Zucchini", "2EL Pesto"], steps: "1. Nudeln al dente kochen. 2. Zucchini hobeln. 3. Mit Pesto kurz durchschwenken." },
+            { name: "Linsensalat Feta", cal: 390, protein: 20, carbs: 45, fat: 14, ing: ["150g Linsen", "50g Feta", "1 Gurke"], steps: "1. Linsen kochen und abkühlen. 2. Gurke und Feta würfeln. 3. Alles vermengen." }
         ];
 
         let currentSelection = [];
@@ -38,8 +33,8 @@
             let html = '';
             currentSelection.forEach(r => {
                 html += `<div class="card"><h3>${r.name}</h3>
-                <p><b>Pro Portion:</b> ${r.cal} kcal | <b>Protein:</b> ${r.protein}g | <b>Kohlenhydrate:</b> ${r.carbs}g | <b>Fett:</b> ${r.fat}g</p>
-                <p><b>Zutaten (für ${p} Pers.):</b> ${r.ing.map(i => scale(i, p)).join(', ')}</p>
+                <p><b>Nährwerte:</b> ${r.cal} kcal | P: ${r.protein}g | KH: ${r.carbs}g | F: ${r.fat}g</p>
+                <p><b>Einkaufsliste:</b> ${r.ing.map(i => scale(i, p)).join(', ')}</p>
                 <p><b>Zubereitung:</b> ${r.steps}</p></div>`;
             });
             document.getElementById('container').innerHTML = html;
