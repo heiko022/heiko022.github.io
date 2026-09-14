@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Drift Racer</title>
+    <style>
+        body { margin: 0; overflow: hidden; background: #333; }
+        canvas { display: block; margin: 0 auto; background: #222; }
+        #instructions { color: white; text-align: center; font-family: sans-serif; }
+    </style>
+</head>
+<body>
+    <div id="instructions">Pfeiltasten zum Fahren/Driften</div>
+    <canvas id="gameCanvas"></canvas>
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight * 0.8;
+
+        let car = { x: 100, y: 100, angle: 0, speed: 0, accel: 0.1, friction: 0.98, turnSpeed: 0.05 };
+        let keys = {};
+
+        window.addEventListener('keydown', e => keys[e.code] = true);
+        window.addEventListener('keyup', e => keys[e.code] = false);
+
+        function update() {
+            if (keys['ArrowUp']) car.speed += car.accel;
+            if (keys['ArrowDown']) car.speed -= car.accel;
+            if (keys['ArrowLeft']) car.angle -= car.turnSpeed * (car.speed > 0 ? 1 : -1);
+            if (keys['ArrowRight']) car.angle += car.turnSpeed * (car.speed > 0 ? 1 : -1);
+            
+            car.speed *= car.friction;
+            car.x += Math.cos(car.angle) * car.speed;
+            car.y += Math.sin(car.angle) * car.speed;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.save();
+            ctx.translate(car.x, car.y);
+            ctx.rotate(car.angle);
+            ctx.fillStyle = 'red';
+            ctx.fillRect(-20, -10, 40, 20);
+            ctx.restore();
+            requestAnimationFrame(update);
+        }
+        update();
+    </script>
+</body>
+</html>
