@@ -31,8 +31,8 @@
             document.getElementById('recipes').innerHTML = dailyRecipes.map(r => `
                 <div class="card">
                     <h3>${r.name}</h3>
-                    <p><b>Kalorien:</b> ${r.cal * p} kcal | <b>Protein:</b> ${r.protein * p}g | <b>KH:</b> ${r.carbs * p}g | <b>Fett:</b> ${r.fat * p}g</p>
-                    <p><b>Zutaten:</b> ${r.ingredients.map(i => scale(i, p)).join(', ')}</p>
+                    <p><b>Pro Portion:</b> ${r.cal} kcal | <b>Protein:</b> ${r.protein}g | <b>KH:</b> ${r.carbs}g | <b>Fett:</b> ${r.fat}g</p>
+                    <p><b>Zutaten (für ${p} Pers.):</b> ${r.ingredients.map(i => scale(i, p)).join(', ')}</p>
                     <p><b>Zubereitung:</b> ${r.steps}</p>
                 </div>
             `).join('');
