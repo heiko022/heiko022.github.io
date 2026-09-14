@@ -1,44 +1,4 @@
 <!DOCTYPE html>
-<html>
-<head>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="manifest" href="manifest.json">
-    <title>Yazio Lite</title>
-    <style>
-        body { font-family: sans-serif; background: #e8f5e9; padding: 20px; }
-        .card { background: white; padding: 15px; margin: 10px 0; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        select { width: 100%; padding: 10px; font-size: 1.1em; border-radius: 5px; }
-    </style>
-</head>
-<body>
-    <h1>🍏 Yazio Lite</h1>
-    <label>Portionen:</label>
-    <select id="persons"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select>
-    <div id="recipes"></div>
-    <script>
-        const dailyRecipes = [
-            { name: "Griechischer Salat mit Feta", cal: 350, protein: 12, carbs: 15, fat: 25, ingredients: ["200g Gurke", "100g Tomate", "50g Feta", "1EL Olivenöl"], steps: "Alles klein schneiden und vermengen." },
-            { name: "Hähnchenbrust mit Brokkoli", cal: 450, protein: 40, carbs: 10, fat: 8, ingredients: ["150g Hähnchen", "200g Brokkoli", "1TL Gewürze"], steps: "Hähnchen anbraten, Brokkoli dünsten." },
-            { name: "Vollkorn-Linsencurry", cal: 400, protein: 20, carbs: 55, fat: 5, ingredients: ["100g Linsen", "100ml Kokosmilch", "1TL Currypulver"], steps: "Linsen kochen und würzen." }
-        ];
-
-        function scale(ing, p) {
-            return ing.replace(/(\d+)/g, (match) => parseInt(match) * p);
-        }
-
-        function updateRecipes() {
-            const p = parseInt(document.getElementById('persons').value);
-            document.getElementById('recipes').innerHTML = dailyRecipes.map(r => `
-                <div class="card">
-                    <h3>${r.name}</h3>
-                    <p><b>Pro Portion:</b> ${r.cal} kcal | <b>Protein:</b> ${r.protein}g | <b>KH:</b> ${r.carbs}g | <b>Fett:</b> ${r.fat}g</p>
-                    <p><b>Zutaten (für ${p} Pers.):</b> ${r.ingredients.map(i => scale(i, p)).join(', ')}</p>
-                    <p><b>Zubereitung:</b> ${r.steps}</p>
-                </div>
-            `).join('');
-        }
-        document.getElementById('persons').addEventListener('change', updateRecipes);
-        updateRecipes();
-    </script>
-</body>
-</html>
+<html><head><style>body{font-family:sans-serif; background:#e8f5e9; padding:20px;} .cat{color:#2e7d32;} .card{background:white; padding:10px; margin:10px 0; border-radius:10px;}</style></head>
+<body><h1>🍏 Tägliche Rezepte</h1>
+<h2 class="cat">Frühstück</h2><div class="card"><h3>Vollkornbrot mit Frischkäse</h3><p>280 kcal | P:11g | KH:35g | F:9g</p><p>Zutaten: 2 Scheiben Vollkornbrot, 50g Frischkäse, Radieschen</p><p>Zubereitung: Bestreichen und belegen.</p></div><h2 class="cat">Mittag</h2><div class="card"><h3>Vollkornpasta mit Pesto</h3><p>480 kcal | P:15g | KH:70g | F:15g</p><p>Zutaten: 80g Vollkornnudeln, 2EL Pesto, Tomaten</p><p>Zubereitung: Kochen und mischen.</p></div><h2 class="cat">Abend</h2><div class="card"><h3>Großer bunter Salat</h3><p>300 kcal | P:10g | KH:20g | F:15g</p><p>Zutaten: Salat mix, Gurke, Tomate, 1EL Olivenöl</p><p>Zubereitung: Schneiden und anmachen.</p></div></body></html>
