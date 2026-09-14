@@ -24,12 +24,17 @@
             { name: "Hähnchen-Brokkoli-Pfanne", cal: 450, protein: 40, carbs: 10, fat: 12, ing: ["150g Hähnchenbrust", "200g Brokkoli", "1TL Sojasauce", "1TL Sesamöl"], steps: "Hähnchen anbraten, Brokkoli bissfest dünsten, mit Sauce ablöschen." },
             { name: "Kichererbsen-Gemüse-Curry", cal: 420, protein: 18, carbs: 60, fat: 10, ing: ["200g Kichererbsen", "1 Paprika", "100ml Kokosmilch", "1TL Curry"], steps: "Paprika anbraten, Kichererbsen und Kokosmilch dazu, würzen und köcheln lassen." },
             { name: "Vollkornpasta mit Zucchini-Pesto", cal: 480, protein: 15, carbs: 70, fat: 15, ing: ["80g Vollkornnudeln", "1 Zucchini", "2EL Pesto", "5 Kirschtomaten"], steps: "Nudeln kochen. Zucchini hobeln, kurz mit den Nudeln schwenken, Pesto unterrühren." },
-            { name: "Linsensalat mit Feta", cal: 390, protein: 20, carbs: 45, fat: 14, ing: ["150g Linsen", "50g Feta", "1/2 Gurke", "Zitronensaft"], steps: "Linsen kochen, abkühlen lassen. Mit gewürfelter Gurke und Feta mischen, Dressing dazu." }
+            { name: "Linsensalat mit Feta", cal: 390, protein: 20, carbs: 45, fat: 14, ing: ["150g Linsen", "50g Feta", "1 ganze Gurke", "1 Spritzer Zitronensaft"], steps: "Linsen kochen, abkühlen lassen. Mit gewürfelter Gurke und Feta mischen, Dressing dazu." },
+            { name: "Süßkartoffel-Bowl", cal: 410, protein: 12, carbs: 55, fat: 10, ing: ["200g Süßkartoffel", "50g Kichererbsen", "2 EL Hummus", "50g Spinat"], steps: "Kartoffeln rösten, mit Rest anrichten." },
+            { name: "Thunfisch-Salat-Wrap", cal: 360, protein: 35, carbs: 30, fat: 10, ing: ["1 Vollkorn-Wrap", "1 Dose Thunfisch (im eigenen Saft)", "1 EL Magerquark", "Salatblätter"], steps: "Thunfisch mit Quark mischen, auf dem Wrap mit Salat verteilen und rollen." },
+            { name: "Gebratener Tofu mit Wokgemüse", cal: 380, protein: 25, carbs: 20, fat: 15, ing: ["150g Tofu", "250g Wokgemüse-Mix", "1 EL Sojasauce"], steps: "Tofu knusprig anbraten, Gemüse kurz mitdünsten, würzen." }
         ];
 
-        let currentRecipes = [];
-
-        function scale(ing, p) { return ing.replace(/(\d+)/g, (m) => parseInt(m) * p); }
+        function scale(ing, p) { 
+            // Ersetzt Zahlen vor Buchstaben (z.B. 150g) und passt sie an. 
+            // Ignoriert Wörter wie "ganze".
+            return ing.replace(/(\d+)(?=[a-zA-Z%]+)/g, (m) => parseInt(m) * p); 
+        }
         
         function render() {
             const p = parseInt(document.getElementById('persons').value);
@@ -43,6 +48,7 @@
             document.getElementById('container').innerHTML = html;
         }
 
+        let currentRecipes = [];
         function loadNewRecipes() {
             const shuffled = [...pool].sort(() => 0.5 - Math.random());
             currentRecipes = shuffled.slice(0, 3);
