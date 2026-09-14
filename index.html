@@ -1,188 +1,20 @@
 <!DOCTYPE html>
-<html lang="de">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Rocket Start - Datum & Uhrzeit</title>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      font-family: system-ui, -apple-system, sans-serif;
-      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
-      color: white;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      overflow: hidden;
-      position: relative;
-    }
-    /* Sternenhimmel */
-    .stars {
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      pointer-events: none;
-      z-index: 0;
-    }
-    .star {
-      position: absolute;
-      background: white;
-      border-radius: 50%;
-      animation: twinkle 2s ease-in-out infinite alternate;
-    }
-    @keyframes twinkle {
-      0% { opacity: 0.3; }
-      100% { opacity: 1; }
-    }
-    .container { text-align: center; max-width: 500px; width: 100%; }
-    h1 { font-size: 1.8rem; margin-bottom: 30px; color: #a8b4ff; }
-    .clock { font-size: 4rem; font-weight: 300; letter-spacing: 4px; margin: 20px 0; font-variant-numeric: tabular-nums; text-shadow: 0 0 30px rgba(168,180,255,0.5); }
-    .date { font-size: 1.2rem; color: #8892c0; margin-bottom: 40px; }
-    .rocket { cursor: pointer; transition: transform 0.1s; margin: 40px 0; display: flex; justify-content: center; }
-    .rocket.launch {
-      animation: flyAcross 4s ease-in forwards;
-      z-index: 100;
-      pointer-events: none;
-    }
-    .rocket svg { display: block; margin: 0 auto; }
-    .message {
-      position: fixed;
-      top: 10%;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 1.5rem;
-      color: #ffd43b;
-      text-shadow: 0 0 10px rgba(255, 212, 59, 0.7);
-      opacity: 0;
-      transition: opacity 0.5s ease-out;
-      z-index: 200;
-      pointer-events: none;
-      text-align: center;
-    }
-    .message.show {
-      opacity: 1;
-    }
-    .smoke {
-      position: fixed;
-      width: 18px;
-      height: 18px;
-      background: rgba(200, 200, 210, 0.5);
-      border-radius: 50%;
-      pointer-events: none;
-      z-index: 99;
-      animation: smokeFade 1.5s ease-out forwards;
-    }
-    @keyframes smokeFade {
-      0% { transform: scale(1); opacity: 0.6; }
-      100% { transform: scale(3); opacity: 0; }
-    }
-    .btn {
-      background: linear-gradient(135deg, #667eea, #764ba2);
-      border: none; color: white; padding: 14px 36px;
-      border-radius: 50px; font-size: 1.1rem; font-weight: 600;
-      cursor: pointer; margin: 20px 0; transition: transform 0.2s, box-shadow 0.2s;
-      box-shadow: 0 4px 15px rgba(102,126,234,0.4);
-    }
-    .btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(102,126,234,0.6); }
-    @keyframes flyAcross {
-      0% { transform: translate(0, 0) scale(1) rotate(0deg); opacity: 1; }
-      100% { transform: translate(0, -500px) scale(0.6) rotate(0deg); opacity: 0; }
-    }
-  </style>
+<html>
+<head><title>Heiko's Projects</title>
+<style>
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #263238; color: #eceff1; padding: 40px; }
+    h1 { text-align: center; color: #cfd8dc; }
+    .nav-list { display: flex; flex-direction: column; align-items: center; gap: 20px; list-style: none; padding: 0; }
+    .nav-item { background: #37474f; padding: 20px 40px; border-radius: 12px; border: 2px solid #546e7a; transition: 0.3s; width: 250px; text-align: center; }
+    .nav-item a { color: #81d4fa; text-decoration: none; font-size: 1.2em; font-weight: bold; }
+    .nav-item:hover { background: #455a64; transform: scale(1.05); border-color: #81d4fa; }
+</style>
 </head>
 <body>
-  <!-- Sternenhimmel -->
-  <div class="stars" id="stars"></div>
-
-  <div class="container">
-    <div class="clock" id="clock">--:--:--</div>
-    <div class="date" id="date"></div>
-    <div class="rocket" id="rocket" onclick="launchRocket()">
-      <svg viewBox="0 0 100 30" width="80" height="auto" style="display:block; margin:0 auto;">
-        <path d="M10,25 L50,15 L90,25 L80,28 L20,28 Z" fill="#ff6b6b"/>
-        <circle cx="50" cy="14" r="3" fill="#ffd43b"/>
-      </svg>
-    </div>
-    <div id="message" class="message"></div>
-    <a href="jahreskostenkalkulation.html" class="btn" style="display:inline-block; text-decoration:none; margin-top:20px;">📊 Jahreskostenkalkulation</a>
-    <a href="heizkosten-oelzentralheizung.html" class="btn" style="display:inline-block; text-decoration:none; margin-top:10px;">🛢️ Heizkosten Ölzentralheizung</a>
-    <a href="nevio-18.html" class="btn" style="display:inline-block; text-decoration:none; margin-top:10px; background:linear-gradient(135deg,#ff3b5c,#ffd93d);">🎂 Nevio wird 18 - Countdown</a>
-    <a href="aliya-bass.html" class="btn" style="display:inline-block; text-decoration:none; margin-top:10px; background:linear-gradient(135deg,#8a2bff,#00f0ff);">🔊 Aliya - Bass Mode &amp; Countdown</a>
-    <a href="robot-galaxie.html" class="btn" style="display:inline-block; text-decoration:none; margin-top:10px; background:linear-gradient(135deg,#63f9ff,#ff5c39); color:#0b0b14; border:3px solid #0b0b14; box-shadow:4px 4px 0 #0b0b14;">🤖 Roboter &amp; Schwarzes Loch (3D)</a>
-  </div>
-  <script>
-    function updateClock() {
-      const now = new Date();
-      document.getElementById('clock').textContent = now.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-    }
-    function updateDate() {
-      const now = new Date();
-      document.getElementById('date').textContent = now.toLocaleDateString('de-DE', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-    }
-    updateClock(); updateDate();
-    setInterval(updateClock, 1000);
-    function launchRocket() {
-      const rocket = document.getElementById('rocket');
-      const message = document.getElementById('message');
-      
-      rocket.classList.remove('launch');
-      void rocket.offsetWidth;
-      rocket.classList.add('launch');
-      spawnSmokeTrail(rocket);
-      clearStars();
-      
-      // Botschaft "Liebt euch" wenn Rakete den höchsten Punkt erreicht (nach 4s)
-      setTimeout(() => {
-        message.textContent = 'Liebt euch ❤️';
-        message.classList.add('show');
-        
-        // Nach 3 Sekunden wieder ausblenden
-        setTimeout(() => {
-          message.classList.remove('show');
-        }, 3000);
-      }, 4000);
-
-      // Rakete-Animation beenden und zurücksetzen
-      setTimeout(() => { 
-        rocket.classList.remove('launch');
-      }, 4000);
-    }
-
-    function clearStars() {
-      const starsContainer = document.getElementById('stars');
-      starsContainer.innerHTML = '';
-      createStars();
-    }
-
-    function createStars() {
-      const starsContainer = document.getElementById('stars');
-      const count = 120;
-      for (let i = 0; i < count; i++) {
-        const star = document.createElement('div');
-        star.className = 'star';
-        star.style.left = Math.random() * 100 + '%';
-        star.style.top = Math.random() * 100 + '%';
-        star.style.width = (Math.random() * 2.5 + 1) + 'px';
-        star.style.height = star.style.width;
-        star.style.animationDelay = Math.random() * 2 + 's';
-        star.style.animationDuration = (Math.random() * 2 + 1.5) + 's';
-        starsContainer.appendChild(star);
-      }
-    }
-
-    function spawnSmokeTrail(rocket) {
-      const rocketRect = rocket.getBoundingClientRect();
-      const trail = document.createElement('div');
-      trail.className = 'smoke';
-      trail.style.left = (rocketRect.left + rocketRect.width / 2) + 'px';
-      trail.style.top = (rocketRect.top + rocketRect.height / 2) + 'px';
-      document.body.appendChild(trail);
-      setTimeout(() => trail.remove(), 1500);
-    }
-
-    createStars();
-  </script>
-<br><a href="driftrace/">Drift Racer Spiel</a><br><a href="yazio-lite/">Yazio Lite PWA</a></body>
+    <h1>Heiko's Projekte</h1>
+    <ul class="nav-list">
+        <li class="nav-item"><a href="driftrace/">Drift Racer</a></li>
+        <li class="nav-item"><a href="yazio-lite/">Yazio Lite PWA</a></li>
+    </ul>
+</body>
 </html>

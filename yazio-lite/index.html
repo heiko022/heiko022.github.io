@@ -1,24 +1,29 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="manifest" href="manifest.json">
     <title>Yazio Lite</title>
-    <style>body { font-family: sans-serif; text-align: center; padding: 20px; }</style>
+    <style>
+        body { font-family: sans-serif; background: #e8f5e9; padding: 20px; }
+        .card { background: white; padding: 20px; margin: 10px 0; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        select { width: 100%; padding: 10px; font-size: 1.1em; }
+    </style>
 </head>
 <body>
-    <h1>Tägliche Rezepte</h1>
-    <label>Personen:</label>
+    <h1>🍏 Yazio Lite</h1>
+    <label>Portionen:</label>
     <select id="persons"><option>1</option><option>2</option><option>3</option><option>4</option></select>
     <div id="recipes"></div>
     <script>
-        const meals = ["Quinoa-Salat", "Hähnchen mit Gemüse", "Linsensuppe"];
+        const meals = ["Quinoa-Salat", "Gegrilltes Hähnchen", "Linsencurry"];
         function generate() {
             const p = document.getElementById('persons').value;
-            document.getElementById('recipes').innerHTML = meals.map(m => `<p>${m} (${p} Portionen)</p>`).join('');
+            document.getElementById('recipes').innerHTML = meals.map(m => 
+                `<div class="card"><h3>${m}</h3><p>Für ${p} Personen</p></div>`).join('');
         }
         document.getElementById('persons').onchange = generate;
         generate();
-        if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js');
     </script>
 </body>
 </html>
