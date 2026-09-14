@@ -6,24 +6,38 @@
     <title>Yazio Lite</title>
     <style>
         body { font-family: sans-serif; background: #e8f5e9; padding: 20px; }
-        .card { background: white; padding: 20px; margin: 10px 0; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        select { width: 100%; padding: 10px; font-size: 1.1em; }
+        .card { background: white; padding: 15px; margin: 10px 0; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        select { width: 100%; padding: 10px; font-size: 1.1em; border-radius: 5px; }
+        h1 { color: #2e7d32; }
     </style>
 </head>
 <body>
     <h1>🍏 Yazio Lite</h1>
-    <label>Portionen:</label>
-    <select id="persons"><option>1</option><option>2</option><option>3</option><option>4</option></select>
+    <label>Personen:</label>
+    <select id="persons">
+        <option>1</option><option>2</option><option>3</option><option>4</option><option>5</option>
+    </select>
     <div id="recipes"></div>
     <script>
-        const meals = ["Quinoa-Salat", "Gegrilltes Hähnchen", "Linsencurry"];
-        function generate() {
-            const p = document.getElementById('persons').value;
-            document.getElementById('recipes').innerHTML = meals.map(m => 
-                `<div class="card"><h3>${m}</h3><p>Für ${p} Personen</p></div>`).join('');
+        const dailyRecipes = [
+            { name: "Griechischer Salat mit Feta", cal: 350, ingredients: ["200g Gurke", "100g Tomate", "50g Feta", "Olivenöl"], steps: "Alles klein schneiden und vermengen." },
+            { name: "Hähnchenbrust mit Brokkoli", cal: 450, ingredients: ["150g Hähnchen", "200g Brokkoli", "Gewürze"], steps: "Hähnchen anbraten, Brokkoli dünsten." },
+            { name: "Vollkorn-Linsencurry", cal: 400, ingredients: ["100g Linsen", "Kokosmilch", "Currypulver"], steps: "Linsen kochen und würzen." }
+        ];
+
+        function updateRecipes() {
+            const p = parseInt(document.getElementById('persons').value);
+            document.getElementById('recipes').innerHTML = dailyRecipes.map(r => `
+                <div class="card">
+                    <h3>${r.name}</h3>
+                    <p><b>Kalorien:</b> ${r.cal * p} kcal</p>
+                    <p><b>Zutaten (für ${p} Pers.):</b> ${r.ingredients.join(', ')}</p>
+                    <p><b>Zubereitung:</b> ${r.steps}</p>
+                </div>
+            `).join('');
         }
-        document.getElementById('persons').onchange = generate;
-        generate();
+        document.getElementById('persons').addEventListener('change', updateRecipes);
+        updateRecipes();
     </script>
 </body>
 </html>
