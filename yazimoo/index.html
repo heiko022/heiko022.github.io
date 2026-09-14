@@ -27,14 +27,14 @@
             { name: "Linsensalat mit Feta", cal: 390, protein: 20, carbs: 45, fat: 14, ing: ["150g Linsen", "50g Feta", "1/2 Gurke", "Zitronensaft"], steps: "Linsen kochen, abkühlen lassen. Mit gewürfelter Gurke und Feta mischen, Dressing dazu." }
         ];
 
+        let currentRecipes = [];
+
         function scale(ing, p) { return ing.replace(/(\d+)/g, (m) => parseInt(m) * p); }
         
-        function loadNewRecipes() {
+        function render() {
             const p = parseInt(document.getElementById('persons').value);
-            const shuffled = [...pool].sort(() => 0.5 - Math.random());
-            const selected = shuffled.slice(0, 3);
             let html = '<h2>Heutige Auswahl:</h2>';
-            selected.forEach(r => {
+            currentRecipes.forEach(r => {
                 html += `<div class="card"><h3>${r.name}</h3>
                 <div class="recipe-meta"><b>Pro Portion:</b> ${r.cal} kcal | <b>Protein:</b> ${r.protein}g | <b>Kohlenhydrate:</b> ${r.carbs}g | <b>Fett:</b> ${r.fat}g</div>
                 <p><b>Zutaten (für ${p} Pers.):</b> ${r.ing.map(i => scale(i, p)).join(', ')}</p>
@@ -42,7 +42,14 @@
             });
             document.getElementById('container').innerHTML = html;
         }
-        document.getElementById('persons').addEventListener('change', loadNewRecipes);
+
+        function loadNewRecipes() {
+            const shuffled = [...pool].sort(() => 0.5 - Math.random());
+            currentRecipes = shuffled.slice(0, 3);
+            render();
+        }
+
+        document.getElementById('persons').addEventListener('change', render);
         loadNewRecipes();
     </script>
 </body>
