@@ -1,27 +1,48 @@
 <!DOCTYPE html>
-<html><head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<style>body{font-family:sans-serif; background:#e8f5e9; padding:20px;} .card{background:white; padding:15px; margin:10px 0; border-radius:10px;} select{width:100%; padding:10px;}</style>
-</head><body><h1>🍏 Yazimoo</h1>
-<label>Portionen:</label><select id="persons"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select>
-<button onclick="location.reload()" style="padding:10px; width:100%; font-size:1em; cursor:pointer; background:#4caf50; color:white; border:none; border-radius:5px; margin-bottom:10px;">Neue Rezepte laden</button><div id="container"></div>
-<script>
-const recipes = {"Fr\u00fchst\u00fcck": [{"name": "Overnight Oats mit Beeren", "cal": 320, "protein": 10, "carbs": 45, "fat": 8, "ing": ["50g Haferflocken", "100g Beeren", "100ml Milch"], "steps": "\u00dcber Nacht ziehen lassen."}, {"name": "Dinkel-Apfel-M\u00fcsli", "cal": 350, "protein": 12, "carbs": 50, "fat": 6, "ing": ["50g Dinkelm\u00fcsli", "1 Apfel", "150g Joghurt"], "steps": "Apfel reiben, mischen."}, {"name": "Vollkornbrot mit Frischk\u00e4se", "cal": 280, "protein": 11, "carbs": 35, "fat": 9, "ing": ["2 Scheiben Vollkornbrot", "50g Frischk\u00e4se", "Radieschen"], "steps": "Bestreichen und belegen."}], "Mittag": [{"name": "Kichererbsen-Pfanne", "cal": 420, "protein": 18, "carbs": 60, "fat": 10, "ing": ["200g Kichererbsen", "1 Paprika", "Gew\u00fcrze"], "steps": "Anbraten."}, {"name": "H\u00e4hnchen-Brokkoli-Pfanne", "cal": 450, "protein": 40, "carbs": 15, "fat": 12, "ing": ["150g H\u00e4hnchen", "200g Brokkoli", "1TL \u00d6l"], "steps": "Anbraten."}, {"name": "Vollkornpasta mit Pesto", "cal": 480, "protein": 15, "carbs": 70, "fat": 15, "ing": ["80g Vollkornnudeln", "2EL Pesto", "Tomaten"], "steps": "Kochen und mischen."}], "Abend": [{"name": "Gem\u00fcsesuppe", "cal": 250, "protein": 8, "carbs": 30, "fat": 5, "ing": ["300g Gem\u00fcse", "500ml Br\u00fche"], "steps": "Kochen."}, {"name": "Lachs mit gr\u00fcnem Spargel", "cal": 400, "protein": 35, "carbs": 5, "fat": 25, "ing": ["150g Lachs", "200g Spargel"], "steps": "D\u00fcnsten/Braten."}, {"name": "Gro\u00dfer bunter Salat", "cal": 300, "protein": 10, "carbs": 20, "fat": 15, "ing": ["Salat mix", "Gurke", "Tomate", "1EL Oliven\u00f6l"], "steps": "Schneiden und anmachen."}]};
-function scale(ing, p) { return ing.replace(/(\d+)/g, (m) => parseInt(m) * p); }
-function update() {
-    const p = parseInt(document.getElementById('persons').value);
-    let html = '';
-    for (let cat in recipes) {
-        html += `<h2>${cat}</h2>`;
-        recipes[cat].forEach(r => {
-            html += `<div class="card"><h3>${r.name}</h3>
-            <p><b>Kalorien:</b> ${r.cal} kcal | <b>Protein:</b> ${r.protein}g | <b>Kohlenhydrate:</b> ${r.carbs}g | <b>Fett:</b> ${r.fat}g</p>
-            <p><b>Zutaten:</b> ${r.ing.map(i => scale(i, p)).join(', ')}</p>
-            <p><b>Zubereitung:</b> ${r.steps}</p></div>`;
-        });
-    }
-    document.getElementById('container').innerHTML = html;
-}
-document.getElementById('persons').addEventListener('change', update);
-update();
-</script></body></html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Yazimoo</title>
+    <style>
+        body { font-family: sans-serif; background: #e8f5e9; padding: 20px; }
+        .card { background: white; padding: 15px; margin: 10px 0; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        select, button { width: 100%; padding: 12px; font-size: 1.1em; border-radius: 5px; margin-bottom: 10px; }
+        button { background: #4caf50; color: white; border: none; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>🍏 Yazimoo</h1>
+    <label>Portionen:</label>
+    <select id="persons"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select>
+    <button onclick="loadNewRecipes()">Neue Rezepte laden</button>
+    <div id="container"></div>
+    <script>
+        const pool = [
+            { name: "Avocado-Ei-Toast", cal: 300, protein: 12, carbs: 20, fat: 18, ing: ["1 Scheibe Vollkornbrot", "1/2 Avocado", "1 Ei"], steps: "Ei braten, Avocado aufs Brot." },
+            { name: "Quinoa-Salat", cal: 380, protein: 14, carbs: 40, fat: 12, ing: ["80g Quinoa", "Tomaten", "Gurke", "Feta"], steps: "Quinoa kochen, Rest schneiden." },
+            { name: "Lachsfilet mit Ofengemüse", cal: 500, protein: 38, carbs: 15, fat: 20, ing: ["150g Lachs", "200g Zucchini", "100g Karotten"], steps: "Im Ofen bei 200°C backen." },
+            { name: "Griechischer Joghurt mit Nüssen", cal: 280, protein: 15, carbs: 10, fat: 15, ing: ["200g Joghurt", "30g Mandeln"], steps: "Mischen." },
+            { name: "Linsensalat", cal: 340, protein: 18, carbs: 45, fat: 6, ing: ["150g Linsen", "Petersilie", "Zwiebel"], steps: "Linsen gar kochen, würzen." },
+            { name: "Gemüse-Omelett", cal: 320, protein: 22, carbs: 8, fat: 18, ing: ["2 Eier", "100g Champignons", "Spinat"], steps: "Eier verquirlen, braten." }
+        ];
+
+        function scale(ing, p) { return ing.replace(/(\d+)/g, (m) => parseInt(m) * p); }
+        
+        function loadNewRecipes() {
+            const p = parseInt(document.getElementById('persons').value);
+            const shuffled = [...pool].sort(() => 0.5 - Math.random());
+            const selected = shuffled.slice(0, 3);
+            let html = '<h2>Empfehlungen:</h2>';
+            selected.forEach(r => {
+                html += `<div class="card"><h3>${r.name}</h3>
+                <p><b>Pro Portion:</b> ${r.cal} kcal | <b>Protein:</b> ${r.protein}g | <b>Kohlenhydrate:</b> ${r.carbs}g | <b>Fett:</b> ${r.fat}g</p>
+                <p><b>Zutaten (für ${p} Pers.):</b> ${r.ing.map(i => scale(i, p)).join(', ')}</p>
+                <p><b>Zubereitung:</b> ${r.steps}</p></div>`;
+            });
+            document.getElementById('container').innerHTML = html;
+        }
+        document.getElementById('persons').addEventListener('change', loadNewRecipes);
+        loadNewRecipes();
+    </script>
+</body>
+</html>
