@@ -1,4 +1,27 @@
 <!DOCTYPE html>
-<html><head><style>body{font-family:sans-serif; background:#e8f5e9; padding:20px;} .cat{color:#2e7d32;} .card{background:white; padding:10px; margin:10px 0; border-radius:10px;}</style></head>
-<body><h1>🍏 Tägliche Rezepte</h1>
-<h2 class="cat">Frühstück</h2><div class="card"><h3>Vollkornbrot mit Frischkäse</h3><p>280 kcal | P:11g | KH:35g | F:9g</p><p>Zutaten: 2 Scheiben Vollkornbrot, 50g Frischkäse, Radieschen</p><p>Zubereitung: Bestreichen und belegen.</p></div><h2 class="cat">Mittag</h2><div class="card"><h3>Vollkornpasta mit Pesto</h3><p>480 kcal | P:15g | KH:70g | F:15g</p><p>Zutaten: 80g Vollkornnudeln, 2EL Pesto, Tomaten</p><p>Zubereitung: Kochen und mischen.</p></div><h2 class="cat">Abend</h2><div class="card"><h3>Großer bunter Salat</h3><p>300 kcal | P:10g | KH:20g | F:15g</p><p>Zutaten: Salat mix, Gurke, Tomate, 1EL Olivenöl</p><p>Zubereitung: Schneiden und anmachen.</p></div></body></html>
+<html><head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>body{font-family:sans-serif; background:#e8f5e9; padding:20px;} .card{background:white; padding:15px; margin:10px 0; border-radius:10px;} select{width:100%; padding:10px;}</style>
+</head><body><h1>🍏 Yazio Lite</h1>
+<label>Portionen:</label><select id="persons"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select>
+<div id="container"></div>
+<script>
+const recipes = {"Fr\u00fchst\u00fcck": [{"name": "Overnight Oats mit Beeren", "cal": 320, "protein": 10, "carbs": 45, "fat": 8, "ing": ["50g Haferflocken", "100g Beeren", "100ml Milch"], "steps": "\u00dcber Nacht ziehen lassen."}, {"name": "Dinkel-Apfel-M\u00fcsli", "cal": 350, "protein": 12, "carbs": 50, "fat": 6, "ing": ["50g Dinkelm\u00fcsli", "1 Apfel", "150g Joghurt"], "steps": "Apfel reiben, mischen."}, {"name": "Vollkornbrot mit Frischk\u00e4se", "cal": 280, "protein": 11, "carbs": 35, "fat": 9, "ing": ["2 Scheiben Vollkornbrot", "50g Frischk\u00e4se", "Radieschen"], "steps": "Bestreichen und belegen."}], "Mittag": [{"name": "Kichererbsen-Pfanne", "cal": 420, "protein": 18, "carbs": 60, "fat": 10, "ing": ["200g Kichererbsen", "1 Paprika", "Gew\u00fcrze"], "steps": "Anbraten."}, {"name": "H\u00e4hnchen-Brokkoli-Pfanne", "cal": 450, "protein": 40, "carbs": 15, "fat": 12, "ing": ["150g H\u00e4hnchen", "200g Brokkoli", "1TL \u00d6l"], "steps": "Anbraten."}, {"name": "Vollkornpasta mit Pesto", "cal": 480, "protein": 15, "carbs": 70, "fat": 15, "ing": ["80g Vollkornnudeln", "2EL Pesto", "Tomaten"], "steps": "Kochen und mischen."}], "Abend": [{"name": "Gem\u00fcsesuppe", "cal": 250, "protein": 8, "carbs": 30, "fat": 5, "ing": ["300g Gem\u00fcse", "500ml Br\u00fche"], "steps": "Kochen."}, {"name": "Lachs mit gr\u00fcnem Spargel", "cal": 400, "protein": 35, "carbs": 5, "fat": 25, "ing": ["150g Lachs", "200g Spargel"], "steps": "D\u00fcnsten/Braten."}, {"name": "Gro\u00dfer bunter Salat", "cal": 300, "protein": 10, "carbs": 20, "fat": 15, "ing": ["Salat mix", "Gurke", "Tomate", "1EL Oliven\u00f6l"], "steps": "Schneiden und anmachen."}]};
+function scale(ing, p) { return ing.replace(/(\d+)/g, (m) => parseInt(m) * p); }
+function update() {
+    const p = parseInt(document.getElementById('persons').value);
+    let html = '';
+    for (let cat in recipes) {
+        html += `<h2>${cat}</h2>`;
+        recipes[cat].forEach(r => {
+            html += `<div class="card"><h3>${r.name}</h3>
+            <p><b>Kalorien:</b> ${r.cal} kcal | <b>Protein:</b> ${r.protein}g | <b>Kohlenhydrate:</b> ${r.carbs}g | <b>Fett:</b> ${r.fat}g</p>
+            <p><b>Zutaten:</b> ${r.ing.map(i => scale(i, p)).join(', ')}</p>
+            <p><b>Zubereitung:</b> ${r.steps}</p></div>`;
+        });
+    }
+    document.getElementById('container').innerHTML = html;
+}
+document.getElementById('persons').addEventListener('change', update);
+update();
+</script></body></html>
