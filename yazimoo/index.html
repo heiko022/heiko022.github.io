@@ -36,7 +36,7 @@
             let html = '<h2>Heutige Auswahl:</h2>';
             selected.forEach(r => {
                 html += `<div class="card"><h3>${r.name}</h3>
-                <div class="recipe-meta"><b>Kalorien:</b> ${r.cal * p} kcal | <b>Protein:</b> ${r.protein * p}g | <b>Kohlenhydrate:</b> ${r.carbs * p}g | <b>Fett:</b> ${r.fat * p}g</div>
+                <div class="recipe-meta"><b>Pro Portion:</b> ${r.cal} kcal | <b>Protein:</b> ${r.protein}g | <b>Kohlenhydrate:</b> ${r.carbs}g | <b>Fett:</b> ${r.fat}g</div>
                 <p><b>Zutaten (für ${p} Pers.):</b> ${r.ing.map(i => scale(i, p)).join(', ')}</p>
                 <p><b>Zubereitung:</b> ${r.steps}</p></div>`;
             });
