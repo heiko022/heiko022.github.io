@@ -1,62 +1,60 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Drift Racer - Pro Edition</title>
+    <title>Drift Racer - Pro Track</title>
     <style>
-        body { margin: 0; background: #3e2723; overflow: hidden; font-family: sans-serif; }
-        canvas { display: block; margin: 20px auto; background: #6d4c41; border: 4px solid #2e1e1a; }
-        #ui { color: #d7ccc8; text-align: center; }
+        body { margin: 0; background: #3e2723; overflow: hidden; }
+        canvas { display: block; margin: 0 auto; background: #6d4c41; }
     </style>
 </head>
 <body>
-    <div id="ui">Pfeiltasten zum Driften</div>
     <canvas id="gameCanvas" width="800" height="600"></canvas>
     <script>
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
         
-        let car = { x: 400, y: 500, angle: -Math.PI/2, speed: 0, accel: 0.15, friction: 0.96, turnSpeed: 0.06 };
+        let car = { x: 100, y: 100, angle: 0, speed: 0, accel: 0.15, friction: 0.97, turnSpeed: 0.05 };
         let keys = {};
         window.addEventListener('keydown', e => keys[e.code] = true);
         window.addEventListener('keyup', e => keys[e.code] = false);
 
-        const obstacles = [
-            {x: 200, y: 150, w: 100, h: 20}, {x: 500, y: 400, w: 20, h: 150},
-            {x: 100, y: 400, w: 150, h: 20}, {x: 600, y: 150, w: 20, h: 150}
-        ];
+        // Track path (inner/outer)
+        function drawTrack() {
+            ctx.strokeStyle = '#2e1e1a';
+            ctx.lineWidth = 60;
+            ctx.beginPath();
+            ctx.moveTo(100, 100); ctx.lineTo(700, 100);
+            ctx.lineTo(700, 500); ctx.lineTo(100, 500);
+            ctx.closePath();
+            ctx.stroke();
+            ctx.strokeStyle = '#5d4037';
+            ctx.lineWidth = 50;
+            ctx.stroke();
+        }
 
         function update() {
             if (keys['ArrowUp']) car.speed += car.accel;
             if (keys['ArrowDown']) car.speed -= car.accel;
-            if (keys['ArrowLeft']) car.angle -= car.turnSpeed * (car.speed > 0 ? 1 : -1);
-            if (keys['ArrowRight']) car.angle += car.turnSpeed * (car.speed > 0 ? 1 : -1);
+            if (keys['ArrowLeft']) car.angle -= car.turnSpeed * (car.speed !== 0 ? 1 : 0);
+            if (keys['ArrowRight']) car.angle += car.turnSpeed * (car.speed !== 0 ? 1 : 0);
             
             car.speed *= car.friction;
-            let nextX = car.x + Math.cos(car.angle) * car.speed;
-            let nextY = car.y + Math.sin(car.angle) * car.speed;
-
-            // Bounds & Collision
-            if (nextX > 20 && nextX < 780 && nextY > 20 && nextY < 580) {
-                car.x = nextX;
-                car.y = nextY;
-            } else {
-                car.speed *= -0.5; // Bounce
-            }
+            car.x += Math.cos(car.angle) * car.speed;
+            car.y += Math.sin(car.angle) * car.speed;
 
             ctx.clearRect(0, 0, 800, 600);
-            
-            // Draw Track
-            ctx.fillStyle = '#4e342e';
-            obstacles.forEach(o => ctx.fillRect(o.x, o.y, o.w, o.h));
+            drawTrack();
 
-            // Draw Car
             ctx.save();
             ctx.translate(car.x, car.y);
             ctx.rotate(car.angle);
             ctx.fillStyle = '#b71c1c';
-            ctx.fillRect(-15, -10, 30, 20); // Body
-            ctx.fillStyle = '#212121';
-            ctx.fillRect(5, -8, 10, 16);    // Cockpit
+            ctx.fillRect(-15, -8, 30, 16); // Body
+            ctx.fillStyle = '#111';
+            ctx.fillRect(-12, -10, 6, 4);   // Wheels
+            ctx.fillRect(-12, 6, 6, 4);
+            ctx.fillRect(8, -10, 6, 4);
+            ctx.fillRect(8, 6, 6, 4);
             ctx.restore();
             requestAnimationFrame(update);
         }
