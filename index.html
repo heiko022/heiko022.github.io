@@ -1,1 +1,35 @@
-
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Heiko's Universe</title>
+    <style>
+        body { margin: 0; background: #000; color: #fff; text-align: center; font-family: sans-serif; overflow: hidden; }
+        #stars { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
+        .button { display: block; width: 200px; margin: 10px auto; padding: 15px; background: #333; color: #fff; text-decoration: none; border-radius: 20px; }
+        #ufo { font-size: 50px; cursor: pointer; position: relative; }
+        #message { font-size: 30px; color: #ff4081; opacity: 0; transition: 1s; }
+    </style>
+</head>
+<body>
+    <canvas id="stars"></canvas>
+    <h1>Heiko's Universe</h1>
+    <a href="driftrace/" class="button">Driftrace</a><a href="yazio-lite/" class="button">Yazio Lite</a>
+    <div id="ufo" onclick="fly()">🛸</div>
+    <div id="message">Liebt euch! ❤️✨</div>
+    <script>
+        const canvas = document.getElementById('stars');
+        const ctx = canvas.getContext('2d');
+        function drawStars() {
+            ctx.fillStyle = 'white';
+            for(let i=0; i<100; i++) ctx.fillRect(Math.random()*window.innerWidth, Math.random()*window.innerHeight, 2, 2);
+        }
+        drawStars();
+        function fly() {
+            const ufo = document.getElementById('ufo');
+            ufo.style.transition = '2s';
+            ufo.style.transform = 'translateY(-1000px) rotate(45deg)';
+            document.getElementById('message').style.opacity = '1';
+        }
+    </script>
+</body>
+</html>
