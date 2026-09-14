@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html>
-<head><meta name="viewport" content="width=device-width, initial-scale=1"><title>Yazimoo</title>
-<style>
-    body { font-family: sans-serif; background: #e8f5e9; padding: 20px; }
-    .card { background: white; padding: 15px; margin: 10px 0; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-    select, button { width: 100%; padding: 12px; margin-bottom: 10px; }
-</style>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Yazimoo</title>
+    <style>
+        body { font-family: sans-serif; background: #e8f5e9; padding: 20px; }
+        .card { background: white; padding: 15px; margin: 10px 0; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        select, button { width: 100%; padding: 12px; margin-bottom: 10px; font-size: 1.1em; }
+        button { background: #4caf50; color: white; border: none; cursor: pointer; }
+    </style>
 </head>
 <body>
     <h1>🍏 Yazimoo</h1>
@@ -13,11 +16,27 @@
     <button onclick="loadNewRecipes()">Neue Rezepte laden</button>
     <div id="container"></div>
     <script>
-        const pool = [{"name": "Thunfisch Wrap", "cal": 360, "protein": 35, "carbs": 30, "fat": 10, "ing": ["1 Vollkornwrap", "1 Dose Thunfisch", "1EL Quark"], "steps": "Rollen."}, {"name": "Tofu Wok", "cal": 380, "protein": 25, "carbs": 20, "fat": 15, "ing": ["150g Tofu", "250g Wokgem\u00fcse", "1EL Soja"], "steps": "Wok."}, {"name": "Zucchini-Pfanne", "cal": 300, "protein": 10, "carbs": 15, "fat": 10, "ing": ["300g Zucchini", "50g Tomate", "1EL \u00d6l"], "steps": "Anbraten."}];
+        // Full pool maintained in memory
+        const allPool = [
+            { name: "Lachsfilet mit Ofengemüse", cal: 500, protein: 38, carbs: 15, fat: 20, ing: ["150g Lachsfilet", "200g Zucchini", "100g Karotten", "1EL Öl"], steps: "Ofen 200°C, 20 Min." },
+            { name: "Hähnchen-Brokkoli", cal: 450, protein: 40, carbs: 10, fat: 12, ing: ["150g Hähnchen", "200g Brokkoli", "1TL Soja"], steps: "Anbraten." },
+            { name: "Kichererbsen-Curry", cal: 420, protein: 18, carbs: 60, fat: 10, ing: ["200g Kichererbsen", "1 Paprika", "100ml Kokos"], steps: "Köcheln lassen." },
+            { name: "Vollkornpasta Pesto", cal: 480, protein: 15, carbs: 70, fat: 15, ing: ["80g Nudeln", "1 Zucchini", "2EL Pesto"], steps: "Kochen." },
+            { name: "Linsensalat Feta", cal: 390, protein: 20, carbs: 45, fat: 14, ing: ["150g Linsen", "50g Feta", "1 Gurke"], steps: "Mischen."},
+            { name: "Süßkartoffel Bowl", cal: 410, protein: 12, carbs: 55, fat: 10, ing: ["200g Süßkartoffel", "50g Kichererbsen", "2EL Hummus"], steps: "Rösten."},
+            { name: "Thunfisch Wrap", cal: 360, protein: 35, carbs: 30, fat: 10, ing: ["1 Vollkornwrap", "1 Dose Thunfisch", "1EL Quark"], steps: "Rollen."},
+            { name: "Tofu Wok", cal: 380, protein: 25, carbs: 20, fat: 15, ing: ["150g Tofu", "250g Wokgemüse", "1EL Soja"], steps: "Wok."},
+            { name: "Zucchini-Pfanne", cal: 300, protein: 10, carbs: 15, fat: 10, ing: ["300g Zucchini", "50g Tomate", "1EL Öl"], steps: "Anbraten."}
+        ];
+
+        let currentSelection = [];
+
         function scale(ing, p) { return ing.replace(/(\d+)/g, (m) => parseInt(m) * p); }
-        function render(p) {
+        
+        function render() {
+            const p = parseInt(document.getElementById('persons').value);
             let html = '';
-            pool.forEach(r => {
+            currentSelection.forEach(r => {
                 html += `<div class="card"><h3>${r.name}</h3>
                 <p><b>Pro Portion:</b> ${r.cal} kcal | <b>Protein:</b> ${r.protein}g | <b>Kohlenhydrate:</b> ${r.carbs}g | <b>Fett:</b> ${r.fat}g</p>
                 <p><b>Zutaten (für ${p} Pers.):</b> ${r.ing.map(i => scale(i, p)).join(', ')}</p>
@@ -25,8 +44,14 @@
             });
             document.getElementById('container').innerHTML = html;
         }
-        function loadNewRecipes() { render(parseInt(document.getElementById('persons').value)); }
-        document.getElementById('persons').addEventListener('change', loadNewRecipes);
+
+        function loadNewRecipes() {
+            const shuffled = [...allPool].sort(() => 0.5 - Math.random());
+            currentSelection = shuffled.slice(0, 3);
+            render();
+        }
+
+        document.getElementById('persons').addEventListener('change', render);
         loadNewRecipes();
     </script>
 </body>
