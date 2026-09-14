@@ -8,21 +8,18 @@
         body { font-family: sans-serif; background: #e8f5e9; padding: 20px; }
         .card { background: white; padding: 15px; margin: 10px 0; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
         select { width: 100%; padding: 10px; font-size: 1.1em; border-radius: 5px; }
-        h1 { color: #2e7d32; }
     </style>
 </head>
 <body>
     <h1>🍏 Yazio Lite</h1>
-    <label>Personen:</label>
-    <select id="persons">
-        <option>1</option><option>2</option><option>3</option><option>4</option><option>5</option>
-    </select>
+    <label>Portionen:</label>
+    <select id="persons"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select>
     <div id="recipes"></div>
     <script>
         const dailyRecipes = [
-            { name: "Griechischer Salat mit Feta", cal: 350, ingredients: ["200g Gurke", "100g Tomate", "50g Feta", "Olivenöl"], steps: "Alles klein schneiden und vermengen." },
-            { name: "Hähnchenbrust mit Brokkoli", cal: 450, ingredients: ["150g Hähnchen", "200g Brokkoli", "Gewürze"], steps: "Hähnchen anbraten, Brokkoli dünsten." },
-            { name: "Vollkorn-Linsencurry", cal: 400, ingredients: ["100g Linsen", "Kokosmilch", "Currypulver"], steps: "Linsen kochen und würzen." }
+            { name: "Griechischer Salat mit Feta", cal: 350, protein: 12, carbs: 15, fat: 25, ingredients: ["200g Gurke", "100g Tomate", "50g Feta", "Olivenöl"], steps: "Alles klein schneiden und vermengen." },
+            { name: "Hähnchenbrust mit Brokkoli", cal: 450, protein: 40, carbs: 10, fat: 8, ingredients: ["150g Hähnchen", "200g Brokkoli", "Gewürze"], steps: "Hähnchen anbraten, Brokkoli dünsten." },
+            { name: "Vollkorn-Linsencurry", cal: 400, protein: 20, carbs: 55, fat: 5, ingredients: ["100g Linsen", "Kokosmilch", "Currypulver"], steps: "Linsen kochen und würzen." }
         ];
 
         function updateRecipes() {
@@ -30,8 +27,8 @@
             document.getElementById('recipes').innerHTML = dailyRecipes.map(r => `
                 <div class="card">
                     <h3>${r.name}</h3>
-                    <p><b>Kalorien:</b> ${r.cal * p} kcal</p>
-                    <p><b>Zutaten (für ${p} Pers.):</b> ${r.ingredients.join(', ')}</p>
+                    <p><b>Kalorien:</b> ${r.cal} kcal | <b>Protein:</b> ${r.protein}g | <b>KH:</b> ${r.carbs}g | <b>Fett:</b> ${r.fat}g</p>
+                    <p><b>Zutaten:</b> ${r.ingredients.join(', ')}</p>
                     <p><b>Zubereitung:</b> ${r.steps}</p>
                 </div>
             `).join('');
