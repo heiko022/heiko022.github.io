@@ -1,58 +1,63 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Drift Racer - Dirt Track</title>
+    <title>Drift Racer - Pro Edition</title>
     <style>
-        body { margin: 0; overflow: hidden; background: #5D4037; }
-        canvas { display: block; margin: 0 auto; background: #8D6E63; border: 5px solid #3E2723; }
+        body { margin: 0; background: #3e2723; overflow: hidden; font-family: sans-serif; }
+        canvas { display: block; margin: 20px auto; background: #6d4c41; border: 4px solid #2e1e1a; }
+        #ui { color: #d7ccc8; text-align: center; }
     </style>
 </head>
 <body>
-    <canvas id="gameCanvas"></canvas>
+    <div id="ui">Pfeiltasten zum Driften</div>
+    <canvas id="gameCanvas" width="800" height="600"></canvas>
     <script>
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
-        canvas.width = 800;
-        canvas.height = 600;
-
-        let car = { x: 400, y: 300, angle: 0, speed: 0, vel: 0, steer: 0 };
+        
+        let car = { x: 400, y: 500, angle: -Math.PI/2, speed: 0, accel: 0.15, friction: 0.96, turnSpeed: 0.06 };
         let keys = {};
         window.addEventListener('keydown', e => keys[e.code] = true);
         window.addEventListener('keyup', e => keys[e.code] = false);
 
+        const obstacles = [
+            {x: 200, y: 150, w: 100, h: 20}, {x: 500, y: 400, w: 20, h: 150},
+            {x: 100, y: 400, w: 150, h: 20}, {x: 600, y: 150, w: 20, h: 150}
+        ];
+
         function update() {
-            if (keys['ArrowUp']) car.vel += 0.2;
-            if (keys['ArrowDown']) car.vel -= 0.2;
-            if (keys['ArrowLeft']) car.steer -= 0.1;
-            if (keys['ArrowRight']) car.steer += 0.1;
+            if (keys['ArrowUp']) car.speed += car.accel;
+            if (keys['ArrowDown']) car.speed -= car.accel;
+            if (keys['ArrowLeft']) car.angle -= car.turnSpeed * (car.speed > 0 ? 1 : -1);
+            if (keys['ArrowRight']) car.angle += car.turnSpeed * (car.speed > 0 ? 1 : -1);
             
-            car.vel *= 0.95; // Friction
-            car.steer *= 0.8; // Steering return
-            car.angle += car.steer * (car.vel * 0.1);
-            car.x += Math.cos(car.angle) * car.vel;
-            car.y += Math.sin(car.angle) * car.vel;
+            car.speed *= car.friction;
+            let nextX = car.x + Math.cos(car.angle) * car.speed;
+            let nextY = car.y + Math.sin(car.angle) * car.speed;
 
-            // Bounds
-            car.x = Math.max(20, Math.min(canvas.width - 20, car.x));
-            car.y = Math.max(20, Math.min(canvas.height - 20, car.y));
+            // Bounds & Collision
+            if (nextX > 20 && nextX < 780 && nextY > 20 && nextY < 580) {
+                car.x = nextX;
+                car.y = nextY;
+            } else {
+                car.speed *= -0.5; // Bounce
+            }
 
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.clearRect(0, 0, 800, 600);
             
-            // Draw Obstacles
-            ctx.fillStyle = '#4E342E';
-            ctx.fillRect(200, 100, 50, 200);
-            ctx.fillRect(500, 300, 200, 50);
+            // Draw Track
+            ctx.fillStyle = '#4e342e';
+            obstacles.forEach(o => ctx.fillRect(o.x, o.y, o.w, o.h));
 
             // Draw Car
             ctx.save();
             ctx.translate(car.x, car.y);
             ctx.rotate(car.angle);
-            ctx.fillStyle = 'red';
+            ctx.fillStyle = '#b71c1c';
             ctx.fillRect(-15, -10, 30, 20); // Body
-            ctx.fillStyle = 'black';
-            ctx.fillRect(10, -12, 5, 24);   // Windshield
+            ctx.fillStyle = '#212121';
+            ctx.fillRect(5, -8, 10, 16);    // Cockpit
             ctx.restore();
-            
             requestAnimationFrame(update);
         }
         update();
