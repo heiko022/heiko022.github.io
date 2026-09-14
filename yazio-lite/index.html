@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="manifest" href="manifest.json">
+    <title>Yazio Lite</title>
+    <style>body { font-family: sans-serif; text-align: center; padding: 20px; }</style>
+</head>
+<body>
+    <h1>Tägliche Rezepte</h1>
+    <label>Personen:</label>
+    <select id="persons"><option>1</option><option>2</option><option>3</option><option>4</option></select>
+    <div id="recipes"></div>
+    <script>
+        const meals = ["Quinoa-Salat", "Hähnchen mit Gemüse", "Linsensuppe"];
+        function generate() {
+            const p = document.getElementById('persons').value;
+            document.getElementById('recipes').innerHTML = meals.map(m => `<p>${m} (${p} Portionen)</p>`).join('');
+        }
+        document.getElementById('persons').onchange = generate;
+        generate();
+        if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js');
+    </script>
+</body>
+</html>
