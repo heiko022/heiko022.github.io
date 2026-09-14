@@ -17,18 +17,22 @@
     <div id="recipes"></div>
     <script>
         const dailyRecipes = [
-            { name: "Griechischer Salat mit Feta", cal: 350, protein: 12, carbs: 15, fat: 25, ingredients: ["200g Gurke", "100g Tomate", "50g Feta", "Olivenöl"], steps: "Alles klein schneiden und vermengen." },
-            { name: "Hähnchenbrust mit Brokkoli", cal: 450, protein: 40, carbs: 10, fat: 8, ingredients: ["150g Hähnchen", "200g Brokkoli", "Gewürze"], steps: "Hähnchen anbraten, Brokkoli dünsten." },
-            { name: "Vollkorn-Linsencurry", cal: 400, protein: 20, carbs: 55, fat: 5, ingredients: ["100g Linsen", "Kokosmilch", "Currypulver"], steps: "Linsen kochen und würzen." }
+            { name: "Griechischer Salat mit Feta", cal: 350, protein: 12, carbs: 15, fat: 25, ingredients: ["200g Gurke", "100g Tomate", "50g Feta", "1EL Olivenöl"], steps: "Alles klein schneiden und vermengen." },
+            { name: "Hähnchenbrust mit Brokkoli", cal: 450, protein: 40, carbs: 10, fat: 8, ingredients: ["150g Hähnchen", "200g Brokkoli", "1TL Gewürze"], steps: "Hähnchen anbraten, Brokkoli dünsten." },
+            { name: "Vollkorn-Linsencurry", cal: 400, protein: 20, carbs: 55, fat: 5, ingredients: ["100g Linsen", "100ml Kokosmilch", "1TL Currypulver"], steps: "Linsen kochen und würzen." }
         ];
+
+        function scale(ing, p) {
+            return ing.replace(/(\d+)/g, (match) => parseInt(match) * p);
+        }
 
         function updateRecipes() {
             const p = parseInt(document.getElementById('persons').value);
             document.getElementById('recipes').innerHTML = dailyRecipes.map(r => `
                 <div class="card">
                     <h3>${r.name}</h3>
-                    <p><b>Kalorien:</b> ${r.cal} kcal | <b>Protein:</b> ${r.protein}g | <b>KH:</b> ${r.carbs}g | <b>Fett:</b> ${r.fat}g</p>
-                    <p><b>Zutaten:</b> ${r.ingredients.join(', ')}</p>
+                    <p><b>Kalorien:</b> ${r.cal * p} kcal | <b>Protein:</b> ${r.protein * p}g | <b>KH:</b> ${r.carbs * p}g | <b>Fett:</b> ${r.fat * p}g</p>
+                    <p><b>Zutaten:</b> ${r.ingredients.map(i => scale(i, p)).join(', ')}</p>
                     <p><b>Zubereitung:</b> ${r.steps}</p>
                 </div>
             `).join('');
