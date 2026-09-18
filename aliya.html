@@ -282,7 +282,7 @@
   </div>
 
   <div class="row">
-    <button class="btn" id="play" type="button">🎵 Querflöte spielen</button>
+    <button class="btn" id="play" type="button">🎵 Flöte &amp; Orchester</button>
     <a class="btn outline" href="index.html">⬅️ Zur Startseite</a>
   </div>
 
@@ -415,141 +415,216 @@
   tick();
   setInterval(tick, 1000);
 
-  /* ============ Querflöte (WebAudio-Synthese, lizenzfrei) ============ */
-  // Noten-Liste: eigens komponierte, sanfte Flötenmelodie in a-Moll
-  const N = { 'A4':440.00,'B4':493.88,'C5':523.25,'D5':587.33,'E5':659.25,'G4':392.00,'G5':783.99,'A5':880.00 };
-  const MELODY = [
-    ['A4',1],['C5',1],['E5',1],['A5',1.5],['G5',0.5],['E5',1],['C5',1],['A4',1],
-    ['B4',1],['C5',1],['D5',1],['E5',1.5],['C5',0.5],['A4',1],['G4',1],['A4',2]
-  ];
-  // Weiche Begleit-Akkorde (a-Moll / F-Dur)
-  const PADS = [
-    { at: 0,     notes: [220.00, 261.63, 329.63], dur: 8 },   // A3 C4 E4 (a-Moll)
-    { at: 8,     notes: [174.61, 220.00, 261.63], dur: 8.8 }  // F3 A3 C4 (F-Dur)
-  ];
-  const quarter = 0.5; // 120 bpm, fließend
+  /* ============ Querflöte + Beat + Orchester (WebAudio-Synthese, lizenzfrei) ============ */
+    // Noten-Liste: eigens komponierte Flötenmelodie in a-Moll
+    const N = { 'A4':440.00,'B4':493.88,'C5':523.25,'D5':587.33,'E5':659.25,'G4':392.00,'G5':783.99,'A5':880.00 };
+    const MELODY = [
+      ['A4',1],['C5',1],['E5',1],['A5',1.5],['G5',0.5],['E5',1],['C5',1],['A4',1],
+      ['B4',1],['C5',1],['D5',1],['E5',1.5],['C5',0.5],['A4',1],['G4',1],['A4',2]
+    ];
+    // Orchester-Akkorde (a-Moll / F-Dur / C-Dur / G-Dur) - Streicher-Pads
+    const CHORDS = [
+      { at: 0,  notes: [220.00, 261.63, 329.63, 440.00], dur: 8 },   // A3 C4 E4 A4 (a-Moll)
+      { at: 8,  notes: [174.61, 220.00, 261.63, 349.23], dur: 8.8 }  // F3 A3 C4 F4 (F-Dur)
+    ];
+    const quarter = 0.5; // 120 bpm
 
-  let ctx = null, master = null, cut = null, timer = null, playing = false;
-  const playBtn = document.getElementById('play');
+    let ctx = null, master = null, cut = null, timer = null, playing = false;
+    const playBtn = document.getElementById('play');
 
-  const initAudio = () => {
-    const AC = window.AudioContext || window.webkitAudioContext;
-    if (!ctx && AC) ctx = new AC();
-    if (ctx && ctx.state === 'suspended') ctx.resume();
-    return ctx;
-  };
+    const initAudio = () => {
+      const AC = window.AudioContext || window.webkitAudioContext;
+      if (!ctx && AC) ctx = new AC();
+      if (ctx && ctx.state === 'suspended') ctx.resume();
+      return ctx;
+    };
 
-  // Frischer Ausgangskanal pro Start; beim Stoppen wird er ausgeblendet & abgekoppelt
-  // => schneidet auch bereits vorprogrammierte Noten sofort ab.
-  function startTrack() {
-    cut = ctx.createGain();
-    cut.gain.value = 1;
-    cut.connect(ctx.destination);
-    master = ctx.createGain();
-    master.gain.value = 0.6;
-    master.connect(cut);
-  }
-  function stopTrack() {
-    if (!ctx || !cut) return;
-    const c = cut, m = master;
-    c.gain.setValueAtTime(c.gain.value, ctx.currentTime);
-    c.gain.linearRampToValueAtTime(0.0001, ctx.currentTime + 0.22);
-    setTimeout(() => { try { m && m.disconnect(); c.disconnect(); } catch (e) {} }, 280);
-    master = null; cut = null;
-  }
-
-  // Realistischer Flötenklang: Grundton + Obertonreihe + Vibrato + Atemgeräusch
-  function fluteNote(freq, t, dur, vol) {
-    const g = ctx.createGain();
-    g.gain.setValueAtTime(0.0001, t);
-    g.gain.exponentialRampToValueAtTime(vol, t + 0.07);
-    g.gain.setValueAtTime(vol, t + Math.max(0, dur - 0.14));
-    g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
-    g.connect(master);
-
-    const vib = ctx.createOscillator();
-    vib.frequency.value = 5.7;
-    const vibDepth = ctx.createGain();
-    vibDepth.gain.value = freq * 0.006;
-    vib.connect(vibDepth);
-
-    const partials = [1, 2, 3, 4, 5, 6];
-    const amps = [0.55, 0.30, 0.16, 0.10, 0.06, 0.03];
-    partials.forEach((p, i) => {
-      const o = ctx.createOscillator();
-      o.type = 'sine';
-      o.frequency.value = freq * p;
-      vibDepth.connect(o.frequency);          // Vibrato
-      const og = ctx.createGain();
-      og.gain.value = amps[i];
-      o.connect(og).connect(g);
-      o.start(t); o.stop(t + dur + 0.08);
-    });
-    vib.start(t); vib.stop(t + dur + 0.08);
-
-    // Atemgeräusch (angehauchter Klang)
-    const len = Math.floor(ctx.sampleRate * dur);
-    if (len > 0) {
-      const buf = ctx.createBuffer(1, len, ctx.sampleRate);
-      const d = buf.getChannelData(0);
-      for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1);
-      const ns = ctx.createBufferSource(); ns.buffer = buf;
-      const f = ctx.createBiquadFilter(); f.type = 'bandpass'; f.frequency.value = 1300; f.Q.value = 0.5;
-      const ng = ctx.createGain(); ng.gain.value = vol * 0.05;
-      ns.connect(f).connect(ng).connect(g);
-      ns.start(t); ns.stop(t + dur);
+    // Frischer Ausgangskanal pro Start; beim Stoppen wird er ausgeblendet & abgekoppelt
+    function startTrack() {
+      cut = ctx.createGain();
+      cut.gain.value = 1;
+      cut.connect(ctx.destination);
+      master = ctx.createGain();
+      master.gain.value = 0.6;
+      master.connect(cut);
     }
-  }
+    function stopTrack() {
+      if (!ctx || !cut) return;
+      const c = cut, m = master;
+      c.gain.setValueAtTime(c.gain.value, ctx.currentTime);
+      c.gain.linearRampToValueAtTime(0.0001, ctx.currentTime + 0.22);
+      setTimeout(() => { try { m && m.disconnect(); c.disconnect(); } catch (e) {} }, 280);
+      master = null; cut = null;
+    }
 
-  function padChord(t, notes, dur) {
-    notes.forEach(n => {
-      const o = ctx.createOscillator(); o.type = 'sine'; o.frequency.value = n;
+    // Realistischer Flötenklang: Grundton + Obertonreihe + Vibrato + Atemgeräusch
+    function fluteNote(freq, t, dur, vol) {
       const g = ctx.createGain();
       g.gain.setValueAtTime(0.0001, t);
-      g.gain.linearRampToValueAtTime(0.045, t + 0.6);
-      g.gain.setValueAtTime(0.045, t + dur - 0.7);
+      g.gain.exponentialRampToValueAtTime(vol, t + 0.07);
+      g.gain.setValueAtTime(vol, t + Math.max(0, dur - 0.14));
+      g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+      g.connect(master);
+
+      const vib = ctx.createOscillator();
+      vib.frequency.value = 5.7;
+      const vibDepth = ctx.createGain();
+      vibDepth.gain.value = freq * 0.006;
+      vib.connect(vibDepth);
+
+      const partials = [1, 2, 3, 4, 5, 6];
+      const amps = [0.55, 0.30, 0.16, 0.10, 0.06, 0.03];
+      partials.forEach((p, i) => {
+        const o = ctx.createOscillator();
+        o.type = 'sine';
+        o.frequency.value = freq * p;
+        vibDepth.connect(o.frequency);
+        const og = ctx.createGain();
+        og.gain.value = amps[i];
+        o.connect(og).connect(g);
+        o.start(t); o.stop(t + dur + 0.08);
+      });
+      vib.start(t); vib.stop(t + dur + 0.08);
+
+      const len = Math.floor(ctx.sampleRate * dur);
+      if (len > 0) {
+        const buf = ctx.createBuffer(1, len, ctx.sampleRate);
+        const d = buf.getChannelData(0);
+        for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1);
+        const ns = ctx.createBufferSource(); ns.buffer = buf;
+        const f = ctx.createBiquadFilter(); f.type = 'bandpass'; f.frequency.value = 1300; f.Q.value = 0.5;
+        const ng = ctx.createGain(); ng.gain.value = vol * 0.05;
+        ns.connect(f).connect(ng).connect(g);
+        ns.start(t); ns.stop(t + dur);
+      }
+    }
+
+    // Streicher-Pad (Orchester): mehrere leicht verstimmt Oszillatoren + Tiefpass
+    function stringPad(t, notes, dur) {
+      notes.forEach(n => {
+        [0, 0.4, -0.4].forEach(det => {
+          const o = ctx.createOscillator(); o.type = 'sawtooth'; o.frequency.value = n * Math.pow(2, det / 1200);
+          const f = ctx.createBiquadFilter(); f.type = 'lowpass'; f.frequency.value = 1400; f.Q.value = 0.6;
+          const g = ctx.createGain();
+          g.gain.setValueAtTime(0.0001, t);
+          g.gain.linearRampToValueAtTime(0.028, t + 0.8);
+          g.gain.setValueAtTime(0.028, t + dur - 0.9);
+          g.gain.linearRampToValueAtTime(0.0001, t + dur);
+          o.connect(f).connect(g).connect(master);
+          o.start(t); o.stop(t + dur + 0.1);
+        });
+      });
+    }
+
+    // Orchester-Bass (tiefe Streicher/Brass)
+    function bassNote(t, freq, dur) {
+      const o = ctx.createOscillator(); o.type = 'triangle'; o.frequency.value = freq;
+      const f = ctx.createBiquadFilter(); f.type = 'lowpass'; f.frequency.value = 500;
+      const g = ctx.createGain();
+      g.gain.setValueAtTime(0.0001, t);
+      g.gain.linearRampToValueAtTime(0.12, t + 0.05);
+      g.gain.setValueAtTime(0.12, t + dur - 0.1);
       g.gain.linearRampToValueAtTime(0.0001, t + dur);
+      o.connect(f).connect(g).connect(master);
+      o.start(t); o.stop(t + dur + 0.05);
+    }
+
+    // ---- Beat (Kick / Snare / Hi-Hat) ----
+    function noiseBuffer(dur) {
+      const len = Math.floor(ctx.sampleRate * dur);
+      const buf = ctx.createBuffer(1, len, ctx.sampleRate);
+      const d = buf.getChannelData(0);
+      for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * (1 - i / len);
+      return buf;
+    }
+    function kick(t, vol) {
+      const o = ctx.createOscillator(); o.type = 'sine';
+      o.frequency.setValueAtTime(150, t);
+      o.frequency.exponentialRampToValueAtTime(42, t + 0.16);
+      const g = ctx.createGain();
+      g.gain.setValueAtTime(0.0001, t);
+      g.gain.exponentialRampToValueAtTime(vol, t + 0.01);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + 0.2);
       o.connect(g).connect(master);
-      o.start(t); o.stop(t + dur + 0.1);
-    });
-  }
+      o.start(t); o.stop(t + 0.22);
+    }
+    function snare(t, vol) {
+      const src = ctx.createBufferSource(); src.buffer = noiseBuffer(0.18);
+      const f = ctx.createBiquadFilter(); f.type = 'bandpass'; f.frequency.value = 1900; f.Q.value = 0.7;
+      const g = ctx.createGain();
+      g.gain.setValueAtTime(vol, t);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + 0.16);
+      src.connect(f).connect(g).connect(master);
+      src.start(t); src.stop(t + 0.18);
+    }
+    function hihat(t, vol, open) {
+      const src = ctx.createBufferSource(); src.buffer = noiseBuffer(open ? 0.2 : 0.05);
+      const f = ctx.createBiquadFilter(); f.type = 'highpass'; f.frequency.value = 8000;
+      const g = ctx.createGain();
+      g.gain.setValueAtTime(vol, t);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + (open ? 0.18 : 0.05));
+      src.connect(f).connect(g).connect(master);
+      src.start(t); src.stop(t + (open ? 0.2 : 0.06));
+    }
 
-  function playSong(offset) {}          // (ungenutzt)
+    // ---- Sequencer: plant eine komplette 8-Takt-Phrase vor ----
+    const BAR = 4 * quarter;                 // 4/4-Takt
+    const PHRASE = 8 * BAR;                  // 8 Takte
+    const BASS_LINE = [55, 0, 55, 0, 65.41, 0, 55, 0, 49, 0, 49, 0, 55, 0, 55, 0]; // A1/C2/F1/A1
 
-  playBtn.addEventListener('click', () => {
-    if (!initAudio()) { playBtn.textContent = '🔇 Ton nicht verfügbar'; return; }
-    if (playing) {
-      clearInterval(timer);
-      stopTrack();
-      playing = false;
-      document.body.classList.remove('play');
-      playBtn.classList.remove('on');
-      playBtn.textContent = '🎵 Querflöte spielen';
-    } else {
-      startTrack();
-      playing = true;
-      document.body.classList.add('play');
-      playBtn.classList.add('on');
-      playBtn.textContent = '⏸ Flöte stoppen';
-
-      let scheduled = 0;                    // schon geplante Melodien (relativ)
-      const bar = 17 * quarter + 0.4;       // Länge einer Melodie-Runde
-      const scheduleBar = () => {
-        if (!playing) return;
-        const at = ctx.currentTime + 0.08 + scheduled;
-        let tAcc = 0;
+    function schedulePhrase(at) {
+      // Flötenmelodie (2x pro Phrase)
+      let tAcc = 0;
+      for (let rep = 0; rep < 2; rep++) {
         MELODY.forEach(([name, beats]) => {
-          fluteNote(N[name], at + tAcc, beats * quarter * 0.96, 0.16);
+          fluteNote(N[name], at + tAcc, beats * quarter * 0.96, 0.15);
           tAcc += beats * quarter;
         });
-        PADS.forEach(pd => padChord(at + pd.at, pd.notes, pd.dur));
-        scheduled += bar;
-      };
-      scheduleBar();
-      // Lookahead: nächste Runde regelmäßig vorplanen
-      timer = setInterval(scheduleBar, 4000);
+      }
+      // Orchester-Pads
+      CHORDS.forEach(cd => stringPad(at + cd.at, cd.notes, cd.dur));
+      // Orchester-Bass (pro Viertel)
+      for (let i = 0; i < 16; i++) {
+        const f = BASS_LINE[i];
+        if (f) bassNote(at + i * quarter, f, quarter * 0.9);
+      }
+      // Beat: Kick auf 1 & 3, Snare auf 2 & 4, Hi-Hats auf alle Achtel
+      for (let i = 0; i < 32; i++) {
+        const t = at + i * (quarter / 2);
+        if (i % 8 === 0 || i % 8 === 4) kick(t, 0.5);
+        if (i % 8 === 2 || i % 8 === 6) snare(t, 0.3);
+        hihat(t, i % 2 === 1 ? 0.12 : 0.08, i % 2 === 1);
+      }
     }
-  });
+
+    playBtn.addEventListener('click', () => {
+      if (!initAudio()) { playBtn.textContent = '🔇 Ton nicht verfügbar'; return; }
+      if (playing) {
+        clearInterval(timer);
+        stopTrack();
+        playing = false;
+        document.body.classList.remove('play');
+        playBtn.classList.remove('on');
+        playBtn.textContent = '🎵 Flöte & Orchester';
+      } else {
+        startTrack();
+        playing = true;
+        document.body.classList.add('play');
+        playBtn.classList.add('on');
+        playBtn.textContent = '⏸ Flöte stoppen';
+
+        let scheduled = 0;
+        const scheduleNext = () => {
+          if (!playing) return;
+          const at = ctx.currentTime + 0.08 + scheduled;
+          schedulePhrase(at);
+          scheduled += PHRASE;
+        };
+        scheduleNext();
+        // Lookahead: nächste Phrase regelmäßig vorplanen
+        timer = setInterval(scheduleNext, 4000);
+      }
+    });
 })();
 </script>
 </body>
