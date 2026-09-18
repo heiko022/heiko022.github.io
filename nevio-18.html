@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Nevio wird 18! - Countdown mit Herzschlag</title>
+<title>Nevio wird 18! - Countdown 2.0 💥</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet">
@@ -16,6 +16,8 @@
     --yellow: #ffd93d;
     --red: #ff3b5c;
     --blue: #2d7dff;
+    --lime: #86ef1f;
+    --rap: #a855f7;
     --paper: #fffdf5;
   }
 
@@ -134,6 +136,8 @@
     box-shadow: 3px 3px 0 var(--ink);
     font-size: 0.86rem;
   }
+  .sub .tag.lime { background: var(--lime); color: var(--ink); }
+  .sub .tag.rap { background: var(--rap); }
 
   /* --- Herz-Panel --- */
   .heart-panel {
@@ -237,12 +241,11 @@
     text-align: center;
     background: var(--ink);
     color: var(--yellow);
-    display: inline-block;
+    display: table;
     padding: 3px 14px;
     border-radius: 4px;
     transform: rotate(-1.5deg);
     margin: 0 auto 14px;
-    display: table;
   }
   .cd-grid {
     display: grid;
@@ -298,6 +301,104 @@
   }
   .plabel b { color: var(--red); font-size: 1.05rem; }
 
+  /* --- Bike-Panel (KTM Macina) --- */
+  .bike-panel { transform: rotate(1deg); overflow: hidden; }
+  .bike-ribbon {
+    font-family: 'Bangers', 'Comic Sans MS', cursive;
+    letter-spacing: 1px;
+    background: var(--lime);
+    color: var(--ink);
+    border: 4px solid var(--ink);
+    border-radius: 6px;
+    display: inline-block;
+    padding: 3px 14px;
+    font-size: 1.05rem;
+    transform: rotate(-1.5deg);
+    box-shadow: 4px 4px 0 var(--ink);
+    margin-bottom: 6px;
+  }
+  .bike-card { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+  .bike { width: 100%; height: auto; max-width: 340px; }
+  .bike h3 {
+    font-family: 'Bangers', 'Comic Sans MS', cursive;
+    font-size: 1.7rem;
+    letter-spacing: 1px;
+    line-height: 1;
+    color: var(--red);
+    -webkit-text-stroke: 1.2px var(--ink);
+    text-align: center;
+  }
+  .bike .kicker { font-weight: 700; text-align: center; font-size: 0.95rem; }
+  .bike-tags { display: flex; flex-wrap: wrap; gap: 7px; justify-content: center; }
+  .bike-tags span {
+    background: #fff;
+    border: 3px solid var(--ink);
+    border-radius: 20px;
+    padding: 3px 11px;
+    font-weight: 700;
+    font-size: 0.85rem;
+    box-shadow: 3px 3px 0 var(--ink);
+    transform: rotate(-1deg);
+  }
+  .bike-tags span:nth-child(2n) { transform: rotate(1deg); background: var(--lime); }
+  .bike-tags span:nth-child(3n) { background: #cfe8ff; }
+
+  /* --- Rap-Panel --- */
+  .rap-panel { transform: rotate(-1deg); background: #1c0b33; color: #fff; text-align: center; }
+  .rap-title {
+    font-family: 'Bangers', 'Comic Sans MS', cursive;
+    font-size: 1.7rem;
+    letter-spacing: 1px;
+    color: var(--rap);
+    -webkit-text-stroke: 1.2px var(--ink);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+  .rap-title .mics { display: flex; gap: 4px; font-size: 1.1rem; }
+  .eq {
+    display: flex;
+    gap: 5px;
+    height: 46px;
+    align-items: center;
+    margin: 12px 0 6px;
+  }
+  .eq span {
+    flex: 1;
+    background: linear-gradient(var(--rap), #4c1d95);
+    border: 2px solid var(--ink);
+    border-radius: 4px;
+    height: 80%;
+    width: 100%;
+    transform-origin: center;
+    transform: scaleY(0.14);
+    animation: eqb 0.6s ease-in-out infinite alternate;
+    animation-play-state: paused;
+  }
+  .eq span:nth-child(odd) { animation-delay: 0.15s; }
+  .eq span:nth-child(3n) { animation-duration: 0.45s; }
+  .eq span:nth-child(4n) { animation-duration: 0.7s; }
+  body.beaton .eq span { animation-play-state: running; }
+  @keyframes eqb { from { transform: scaleY(0.14); } to { transform: scaleY(1); } }
+
+  .rap-line {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #ffe9a8;
+    font-style: italic;
+    margin: 4px 0 12px;
+  }
+  .rap-flip {
+    display: inline-block;
+    animation: flip 1.2s steps(2) infinite;
+  }
+  @keyframes flip {
+    0% { transform: scaleY(1); }
+    50% { transform: scaleY(0.15); }
+    100% { transform: scaleY(1); }
+  }
+
   /* --- Buttons --- */
   .row {
     display: flex;
@@ -323,6 +424,7 @@
     text-align: center;
   }
   .btn.gelb { background: var(--yellow); color: var(--ink); transform: rotate(1deg); }
+  .btn.rap { background: var(--rap); color: #fff; }
   .btn:active, .btn.on { transform: translate(5px, 5px) rotate(0deg); box-shadow: 0 0 0 var(--ink); }
 
   .hinweis {
@@ -369,7 +471,8 @@
     <h1>NEVIO WIRD 18!</h1>
     <p class="sub">
       Geboren am <span class="tag">27.07.2009</span><br>
-      Der große Tag: <span class="tag">27.07.2027</span>
+      Der große Tag: <span class="tag">27.07.2027</span><br>
+      <span class="tag lime">🚵 KTM Macina Team</span> <span class="tag rap">🎤 Rap auf Repeat</span>
     </p>
   </div>
 
@@ -391,6 +494,84 @@
     <div class="bubble" id="bubble">Jeder Schlag bringt Nevio näher an die 18!</div>
   </div>
 
+  <div class="panel bike-panel">
+    <div class="bike-ribbon">🚵 NEVIOS BEAST</div>
+    <div class="bike-card">
+      <svg class="bike" viewBox="0 0 340 210" role="img" aria-label="KTM Macina E-Mountainbike">
+        <!-- Schatten -->
+        <ellipse cx="170" cy="186" rx="150" ry="10" fill="rgba(16,16,26,0.18)"/>
+        <!-- Hinterrad -->
+        <circle cx="110" cy="160" r="40" fill="#fff" stroke="#10101a" stroke-width="7"/>
+        <g stroke="#10101a" stroke-width="3">
+          <line x1="110" y1="120" x2="110" y2="200"/><line x1="70" y1="160" x2="150" y2="160"/>
+          <line x1="82" y1="132" x2="138" y2="188"/><line x1="138" y1="132" x2="82" y2="188"/>
+        </g>
+        <!-- Vorderrad -->
+        <circle cx="255" cy="160" r="40" fill="#fff" stroke="#10101a" stroke-width="7"/>
+        <g stroke="#10101a" stroke-width="3">
+          <line x1="255" y1="120" x2="255" y2="200"/><line x1="215" y1="160" x2="295" y2="160"/>
+          <line x1="227" y1="132" x2="283" y2="188"/><line x1="283" y1="132" x2="227" y2="188"/>
+        </g>
+        <!-- Rahmen (Robuste MTB-Geometrie) -->
+        <g stroke="#ff3b5c" stroke-width="11" stroke-linecap="round" stroke-linejoin="round" fill="none">
+          <path d="M150 152 L 126 78"/>          <!-- Sitzrohr -->
+          <path d="M126 78 L 222 70"/>            <!-- Oberrohr -->
+          <path d="M222 70 L 255 160"/>           <!-- Steuerrohr -> Gabel -->
+          <path d="M150 152 L 228 128"/>          <!-- Unterrohr -->
+        </g>
+        <g stroke="#10101a" stroke-width="4" stroke-linecap="round" fill="none">
+          <path d="M222 70 L 237 92"/>            <!-- Gabelschaft -->
+          <path d="M237 92 L 255 160"/>           <!-- Gabel -->
+          <path d="M150 152 L 110 160"/>          <!-- Kettenstrebe -->
+          <path d="M126 78 L 118 66"/>            <!-- Sattelstütze -->
+          <path d="M222 70 L 210 56"/>            <!-- Vorbau -->
+        </g>
+        <!-- Sattel -->
+        <rect x="96" y="52" width="44" height="12" rx="6" fill="#10101a"/>
+        <!-- Lenker -->
+        <path d="M198 56 Q 210 62 212 50" stroke="#10101a" stroke-width="8" stroke-linecap="round" fill="none"/>
+        <!-- Pedal -->
+        <rect x="143" y="148" width="18" height="7" rx="3" fill="#10101a"/>
+        <!-- E-Antrieb: Motor am Tretlager -->
+        <circle cx="150" cy="152" r="16" fill="#10101a"/>
+        <circle cx="150" cy="152" r="8" fill="var(--lime)"/>
+        <g stroke="#10101a" stroke-width="3">
+          <line x1="140" y1="169" x2="120" y2="160"/><line x1="158" y1="122" x2="142" y2="130"/>
+        </g>
+        <!-- Akku am Unterrohr -->
+        <rect x="176" y="96" width="26" height="44" rx="6" fill="#10101a"/>
+        <g fill="#86ef1f">
+          <rect x="180" y="104" width="18" height="6"/><rect x="180" y="113" width="14" height="6"/><rect x="180" y="122" width="18" height="6"/>
+        </g>
+        <!-- Displayschlitz oben am Vorbau -->
+        <rect x="207" y="74" width="12" height="8" rx="2" fill="#ffd93d" stroke="#10101a" stroke-width="2"/>
+        <!-- Speed-/Bewegungslinien -->
+        <g stroke="var(--lime)" stroke-width="4" stroke-linecap="round" opacity="0.85">
+          <line x1="300" y1="120" x2="326" y2="108"/><line x1="305" y1="140" x2="334" y2="136"/><line x1="296" y1="168" x2="322" y2="172"/>
+        </g>
+      </svg>
+      <h3>KTM MACINA TEAM XL</h3>
+      <div class="kicker">e-Mountainbike • Elektrischer Antrieb • XL-Rahmen</div>
+      <div class="bike-tags">
+        <span>🔋 E-Power</span><span>⛰️ Trail &amp; Street</span><span>🏁 Schnell weg</span><span>👑 XL-Size</span>
+        <span>🎵 Ride &amp; Rap</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel rap-panel">
+    <div class="rap-title">
+      <span class="mics">🎤</span>
+      <span>RAP-VIBES</span>
+      <span class="mics">🎤</span>
+    </div>
+    <div class="eq" id="eq">
+      <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+    </div>
+    <div class="rap-line">"Pedal, Pump, Bardown — drop the track, <span class="rap-flip">roll the bass</span>!"</div>
+    <button class="btn rap" id="beat" type="button">🎧 Drop the Beat</button>
+  </div>
+
   <div class="panel cd-panel">
     <div class="cd-title">COUNTDOWN BIS ZUM 18. GEBURTSTAG</div>
     <div class="cd-grid">
@@ -409,10 +590,11 @@
 
   <div class="row">
     <button class="btn gelb" id="sound" type="button">🔊 Herzschlag hören</button>
+    <button class="btn rap" id="beat2" type="button">🎧 Rap-Beat</button>
     <a class="btn" href="index.html">⬅️ Zur Startseite</a>
   </div>
 
-  <div class="hinweis">Made with ❤️ für Nevio</div>
+  <div class="hinweis">Made with ❤️ 🚵 🎤 für Nevio</div>
 </div>
 
 <script>
@@ -437,10 +619,11 @@
   var SPRUECHE = [
     "Jeder Schlag bringt Nevio näher an die 18!",
     "Herz an, Countdown läuft — bald bist du erwachsen, Nevio!",
-    "Das Herz weiß genau: 27.07.2027 wird gefeiert!",
+    "Auf'm Macina-Bike zum Erwachsensein — Volle Power! 🚵",
     "Lub-dub, lub-dub ... noch ein bisschen Geduld!",
-    "Ein Herzschlag für jeden Tag, der dich älter macht.",
-    "18 Jahre Nevio — das wird ein Fest!"
+    "Heads in the seine — der Beat läuft, der Countdown auch! 🎤",
+    "18 Jahre Nevio — das wird ein Fest!",
+    "Trail rauf, Bass an — Nevio hat beides drauf!"
   ];
   var spruchIdx = 0;
 
@@ -450,7 +633,7 @@
 
   function startParty() {
     document.body.classList.add('party');
-    var farben = ['#ff3b5c', '#2d7dff', '#ffd93d', '#22c55e', '#ffffff'];
+    var farben = ['#ff3b5c', '#2d7dff', '#ffd93d', '#22c55e', '#a855f7', '#ffffff'];
     var i;
     for (i = 0; i < 90; i++) {
       (function (n) {
@@ -532,9 +715,21 @@
   function raf() { dotPos(); requestAnimationFrame(raf); }
   raf();
 
-  // Optionaler Herzschlag-Ton (nur nach Klick, WebAudio)
-  var audioCtx = null, loopTimer = null;
+  // ======== Gemeinsamer WebAudio-Kontext ========
+  var audioCtx = null;
+  function ensureCtx() {
+    if (!audioCtx) {
+      var AC = window.AudioContext || window.webkitAudioContext;
+      if (!AC) return null;
+      audioCtx = new AC();
+    }
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+    return audioCtx;
+  }
+
+  // ------- Herzschlag-Ton -------
   var soundBtn = document.getElementById('sound');
+  var loopTimer = null;
 
   function thump(zeit, freq, dauer, laut) {
     var o = audioCtx.createOscillator();
@@ -557,12 +752,7 @@
   }
 
   soundBtn.addEventListener('click', function () {
-    if (!audioCtx) {
-      var AC = window.AudioContext || window.webkitAudioContext;
-      if (!AC) { soundBtn.textContent = '🔇 Ton nicht verfügbar'; return; }
-      audioCtx = new AC();
-    }
-    if (audioCtx.state === 'suspended') audioCtx.resume();
+    if (!ensureCtx()) { soundBtn.textContent = '🔇 Ton nicht verfügbar'; return; }
     if (loopTimer) {
       clearInterval(loopTimer);
       loopTimer = null;
@@ -575,6 +765,107 @@
       soundBtn.textContent = '🔇 Herzschlag aus';
     }
   });
+
+  // ------- Rap-Beat (boom-bap) -------
+  var bpm = 92;
+  var eighth = 60 / bpm / 2;          // 8tel Dauer
+  var beatTimer = null, beatStep = 0, nextNote = 0, beatOn = false;
+
+  function noiseBuffer() {
+    var len = audioCtx.sampleRate * 0.06;
+    var buf = audioCtx.createBuffer(1, len, audioCtx.sampleRate);
+    var d = buf.getChannelData(0);
+    for (var i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * (1 - i / len);
+    return buf;
+  }
+
+  function kick(t) {
+    var o = audioCtx.createOscillator();
+    var g = audioCtx.createGain();
+    o.type = 'sine';
+    o.frequency.setValueAtTime(150, t);
+    o.frequency.exponentialRampToValueAtTime(42, t + 0.14);
+    g.gain.setValueAtTime(0.85, t);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + 0.16);
+    o.connect(g).connect(audioCtx.destination);
+    o.start(t); o.stop(t + 0.18);
+  }
+  function snare(t) {
+    var src = audioCtx.createBufferSource(); src.buffer = noiseBuffer();
+    var f = audioCtx.createBiquadFilter(); f.type = 'bandpass'; f.frequency.value = 1900; f.Q.value = 0.8;
+    var g = audioCtx.createGain();
+    g.gain.setValueAtTime(0.5, t);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + 0.14);
+    src.connect(f).connect(g).connect(audioCtx.destination);
+    src.start(t); src.stop(t + 0.16);
+  }
+  function hihat(t, open) {
+    var src = audioCtx.createBufferSource(); src.buffer = noiseBuffer();
+    var f = audioCtx.createBiquadFilter(); f.type = 'highpass'; f.frequency.value = 8000;
+    var g = audioCtx.createGain();
+    g.gain.setValueAtTime(open ? 0.28 : 0.16, t);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + (open ? 0.18 : 0.05));
+    src.connect(f).connect(g).connect(audioCtx.destination);
+    src.start(t); src.stop(t + 0.2);
+  }
+  function bassline(t, idx) {
+    // Kurze Bassfigur: Grundton auf Beat 1 & 3, bisschen Swing
+    var notes = [55, 0, 58, 0, 55, 0, 58, 0]; // A1/C2 ... dezente Basslinie
+    var f = notes[idx % notes.length];
+    if (!f) return;
+    var o = audioCtx.createOscillator(); o.type = 'triangle';
+    var g = audioCtx.createGain();
+    o.frequency.setValueAtTime(f, t);
+    g.gain.setValueAtTime(0.24, t);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + eighth * 0.9);
+    o.connect(g).connect(audioCtx.destination);
+    o.start(t); o.stop(t + eighth);
+  }
+
+  function scheduleStep() {
+    while (nextNote < audioCtx.currentTime + 0.12) {
+      var i = beatStep;
+      // Kick auf Beats 1 & 3 (8tel 0 und 4), gelegentlich +1
+      if (i % 8 === 0 || i % 8 === 4) kick(nextNote);
+      // Snare auf Beats 2 & 4 (8tel 2 und 6)
+      if (i % 8 === 2 || i % 8 === 6) snare(nextNote);
+      // Hi-Hats auf alle 8tel, offen auf dem Off-Beat
+      hihat(nextNote, i % 2 === 1);
+      // Basslinie
+      bassline(nextNote, i);
+      beatStep = (beatStep + 1) % 16;
+      nextNote += eighth;
+    }
+  }
+
+  function setBeat(on) {
+    if (on) {
+      ensureCtx();
+      beatStep = 0;
+      nextNote = audioCtx.currentTime + 0.05;
+      scheduleStep();
+      beatTimer = setInterval(scheduleStep, 25);
+      document.body.classList.add('beaton');
+    } else {
+      if (beatTimer) { clearInterval(beatTimer); beatTimer = null; }
+      document.body.classList.remove('beaton');
+    }
+  }
+
+  function toggleBeat(btn) {
+    if (!ensureCtx()) { btn.textContent = '🔇 Ton nicht verfügbar'; return; }
+    beatOn = !beatOn;
+    setBeat(beatOn);
+    var on = beatOn ? ' 🎵' : '';
+    btn.textContent = (beatOn ? '⏹ Beat stoppen' : '🎧 Drop the Beat') + on;
+    document.querySelectorAll('#beat, #beat2').forEach(function (b) {
+      b.textContent = btn.textContent;
+      b.classList.toggle('on', beatOn);
+    });
+  }
+
+  document.getElementById('beat').addEventListener('click', function () { toggleBeat(this); });
+  document.getElementById('beat2').addEventListener('click', function () { toggleBeat(this); });
 })();
 </script>
 </body>
