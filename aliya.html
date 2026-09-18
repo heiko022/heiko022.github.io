@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aliya | Querflöte &amp; Musikverein</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&family=Pacifico&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --cream: #fff8ec;
+    --gold: #e6b955;
+    --rose: #e88aa8;
+    --lila: #a98bd8;
+    --ink: #3a2e2a;
+    --soft: #ffffff;
+  }
+
+  body {
+    font-family: 'Quicksand', system-ui, sans-serif;
+    background:
+      radial-gradient(circle at 15% 12%, rgba(232,138,168,0.22), transparent 50%),
+      radial-gradient(circle at 88% 20%, rgba(169,139,216,0.25), transparent 52%),
+      radial-gradient(circle at 65% 92%, rgba(230,185,85,0.22), transparent 55%),
+      var(--cream);
+    color: var(--ink);
+    min-height: 100vh;
+    padding: 18px 14px 50px;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  /* Leise schwebende Noten im Hintergrund */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background-image:
+      url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><text y='70' font-size='46' fill='rgba(230,185,85,0.5)'>♪</text></svg>"),
+      url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><text y='70' font-size='40' fill='rgba(232,138,168,0.5)'>♫</text></svg>");
+    background-repeat: repeat;
+    background-size: 200px 200px, 230px 240px;
+    background-position: 0 0, 110px 90px;
+    opacity: 0.5;
+    animation: floatNotes 26s ease-in-out infinite alternate;
+  }
+  @keyframes floatNotes {
+    from { transform: translateY(0); }
+    to { transform: translateY(-26px); }
+  }
+
+  .wrap { position: relative; z-index: 2; max-width: 640px; margin: 0 auto; display: flex; flex-direction: column; gap: 18px; }
+
+  .card {
+    background: rgba(255,255,255,0.82);
+    border: 0;
+    border-radius: 24px;
+    padding: 22px 18px;
+    box-shadow: 0 10px 32px rgba(58,46,42,0.12);
+    backdrop-filter: blur(4px);
+    position: relative;
+  }
+
+  /* --- Hero --- */
+  .hero { text-align: center; overflow: hidden; }
+  .hero .kicker {
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 700;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    font-size: 0.72rem;
+    color: var(--lila);
+    margin-bottom: 8px;
+  }
+  .hero h1 {
+    font-family: 'Pacifico', cursive;
+    font-weight: 400;
+    font-size: clamp(3rem, 18vw, 5rem);
+    line-height: 1;
+    background: linear-gradient(120deg, var(--rose), var(--lila) 55%, var(--gold));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    transform: rotate(-2deg);
+  }
+  .hero .sub { margin-top: 10px; font-weight: 700; font-size: 1.05rem; }
+  .hero .sub .sep { color: var(--gold); margin: 0 6px; }
+  .hero .badge {
+    display: inline-block;
+    margin-top: 14px;
+    font-weight: 700;
+    font-size: 0.85rem;
+    background: linear-gradient(120deg, var(--gold), #f2cf7d);
+    color: #4a3600;
+    border-radius: 999px;
+    padding: 7px 16px;
+    box-shadow: 0 4px 12px rgba(230,185,85,0.5);
+  }
+
+  /* --- Flöte --- */
+  .flute-card { text-align: center; }
+  .flute svg { width: 100%; max-width: 360px; height: auto; }
+  .note-rise { margin-top: 10px; }
+  .note-rise span { display: inline-block; margin: 0 5px; font-size: 1.3rem; opacity: 0; }
+  .note-rise span.g { animation: rise 2.4s ease-out infinite; }
+  .note-rise span.r { animation: rise 2.9s ease-out infinite 0.5s; }
+  .note-rise span.l { animation: rise 2.6s ease-out infinite 1s; }
+  @keyframes rise {
+    0% { transform: translateY(8px); opacity: 0; }
+    25% { opacity: 1; }
+    100% { transform: translateY(-18px); opacity: 0; }
+  }
+  body.play .note-rise span { animation-play-state: running; }
+  body:not(.play) .note-rise span { animation-play-state: paused; }
+
+  /* --- Info (Musikverein) --- */
+  .info h2 { font-weight: 700; font-size: 1.15rem; color: var(--rose); margin-bottom: 10px; }
+  .info ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .info li { position: relative; padding-left: 30px; line-height: 1.5; font-weight: 600; font-size: 0.95rem; }
+  .info li::before { content: "🎼"; position: absolute; left: 0; top: 0; }
+  .info li b { color: var(--lila); }
+  .info .verein {
+    margin-top: 14px;
+    background: linear-gradient(120deg, #fff4dd, #ffe9ef);
+    border-left: 5px solid var(--gold);
+    border-radius: 12px;
+    padding: 10px 14px;
+    font-weight: 700;
+    font-size: 0.9rem;
+  }
+
+  /* --- Countdown --- */
+  .cd-title { font-weight: 700; text-align: center; font-size: 0.95rem; letter-spacing: 1px; color: var(--lila); margin-bottom: 14px; }
+  .cd-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+  .cell {
+    background: #fff;
+    border: 2px solid var(--gold);
+    border-radius: 14px;
+    padding: 12px 2px 9px;
+    text-align: center;
+  }
+  .cell .num { font-weight: 700; font-size: clamp(1.5rem, 8vw, 2.2rem); line-height: 1; color: var(--ink); font-variant-numeric: tabular-nums; }
+  .cell.sec .num { color: var(--rose); }
+  .cell .lbl { margin-top: 6px; font-size: 0.6rem; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; color: #b3947a; }
+  .zieldatum { text-align: center; font-size: 0.84rem; color: #b3947a; margin-top: 12px; font-weight: 600; }
+  .zieldatum b { color: var(--lila); }
+  .bar { margin-top: 16px; height: 14px; border-radius: 999px; background: #f0e4d8; overflow: hidden; }
+  .fill { height: 100%; width: 0%; background: linear-gradient(90deg, var(--gold), var(--rose)); transition: width 0.6s ease-out; }
+  .plabel { text-align: center; font-size: 0.8rem; color: #b3947a; margin-top: 8px; font-weight: 600; }
+  .plabel b { color: var(--ink); }
+
+  /* --- Buttons --- */
+  .row { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
+  .btn {
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    font-size: 1rem;
+    border: 0;
+    border-radius: 999px;
+    padding: 14px 26px;
+    color: #fff;
+    background: linear-gradient(120deg, var(--lila), var(--rose));
+    box-shadow: 0 6px 18px rgba(169,139,216,0.45);
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+    transition: transform 0.12s, box-shadow 0.12s;
+  }
+  .btn.gold { background: linear-gradient(120deg, var(--gold), #eecf86); color: #4a3600; box-shadow: 0 6px 18px rgba(230,185,85,0.5); }
+  .btn.outline { background: #fff; color: var(--lila); box-shadow: inset 0 0 0 2px var(--lila); }
+  .btn:active { transform: scale(0.96); }
+  .btn.on { box-shadow: 0 0 0 3px #fff, 0 6px 22px rgba(232,138,168,0.8); }
+
+  .hinweis { text-align: center; font-size: 0.78rem; color: #b3947a; }
+  .hinweis b { color: var(--rose); }
+
+  /* Party */
+  body.party { animation: partyFlash 0.7s steps(2) infinite; }
+  @keyframes partyFlash { 0% { background: var(--cream); } 100% { background: #ffe4f0; } }
+  .confetti { position: fixed; top: -24px; width: 10px; height: 16px; z-index: 60; pointer-events: none; animation: fall linear forwards; }
+  @keyframes fall { to { transform: translateY(115vh) rotate(900deg); } }
+
+  @media (max-width: 380px) {
+    .cell .lbl { font-size: 0.52rem; letter-spacing: 0.5px; }
+    .card { padding: 16px 14px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="card hero">
+    <div class="kicker">✦ Querflöte &amp; Musikverein ✦</div>
+    <h1>Aliya</h1>
+    <div class="sub">Musik aus dem Herzen <span class="sep">·</span> geboren am <b>03.11.2006</b></div>
+    <div class="badge" id="nextAge">NÄCHSTER GEBURTSTAG: --</div>
+  </div>
+
+  <div class="card flute-card">
+    <svg class="flute" viewBox="0 0 360 150" role="img" aria-label="Querflöte">
+      <defs>
+        <linearGradient id="silver" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#f7f9fc"/>
+          <stop offset="0.5" stop-color="#cfd8e3"/>
+          <stop offset="1" stop-color="#9aa7b5"/>
+        </linearGradient>
+        <radialGradient id="shine" cx="0.3" cy="0.2" r="1.4">
+          <stop offset="0" stop-color="rgba(255,255,255,0.95)"/>
+          <stop offset="0.45" stop-color="rgba(255,255,255,0)"/>
+        </radialGradient>
+      </defs>
+      <!-- Schatten -->
+      <ellipse cx="180" cy="132" rx="140" ry="10" fill="rgba(58,46,42,0.12)"/>
+      <!-- Flötenrohr -->
+      <g transform="rotate(-8 180 60)">
+        <rect x="30" y="52" width="300" height="22" rx="11" fill="url(#silver)" stroke="#8d99a8" stroke-width="1.5"/>
+        <rect x="30" y="52" width="300" height="22" rx="11" fill="url(#shine)"/>
+        <!-- Kopfstück & Mundloch -->
+        <ellipse cx="58" cy="63" rx="8" ry="7" fill="#5b1a58" opacity="0.85"/>
+        <!-- Tonlöcher / Klappen -->
+        <circle cx="150" cy="63" r="9" fill="#e8edf3" stroke="#8d99a8" stroke-width="1.5"/>
+        <circle cx="175" cy="50" r="6" fill="#e8edf3" stroke="#8d99a8" stroke-width="1.5"/>
+        <circle cx="202" cy="70" r="6" fill="#e8edf3" stroke="#8d99a8" stroke-width="1.5"/>
+        <circle cx="230" cy="58" r="9" fill="#e8edf3" stroke="#8d99a8" stroke-width="1.5"/>
+        <circle cx="258" cy="68" r="6" fill="#e8edf3" stroke="#8d99a8" stroke-width="1.5"/>
+        <circle cx="286" cy="60" r="8" fill="#e8edf3" stroke="#8d99a8" stroke-width="1.5"/>
+        <!-- Klappenstangen -->
+        <line x1="150" y1="50" x2="258" y2="50" stroke="#c3ccd6" stroke-width="3"/>
+      </g>
+      <!-- schwebende Noten -->
+      <text x="300" y="40" font-size="26" fill="var(--gold)">♪</text>
+      <text x="60" y="40" font-size="22" fill="var(--rose)">♫</text>
+      <text x="330" y="118" font-size="20" fill="var(--lila)">♪</text>
+    </svg>
+    <div class="note-rise">
+      <span class="g">♪</span><span class="r">♫</span><span class="l">♪</span><span class="g">♬</span><span class="r">♪</span><span class="l">♫</span>
+    </div>
+  </div>
+
+  <div class="card info">
+    <h2>🎵 Aliyas Musik</h2>
+    <ul>
+      <li>Aliya spielt <b>Querflöte</b> — ein schönes, helles Instrument voller Klang.</li>
+      <li>Sie ist aktiv im <b>Musikverein</b> und macht dort die Musik zum Klingen.</li>
+      <li>Flöte heißt: Atem, Feingefühl &amp; jede Menge Übung — aber vor allem Liebe zur Musik.</li>
+    </ul>
+    <div class="verein">🎺 Direkt hier kannst du Aliyas Querflöte hören — einfach unten auf „Flöte spielen" tippen.</div>
+  </div>
+
+  <div class="card">
+    <div class="cd-title" id="cdTitle">COUNTDOWN BIS ZUM NÄCHSTEN GEBURTSTAG</div>
+    <div class="cd-grid">
+      <div class="cell"><div class="num" id="d">--</div><div class="lbl">Tage</div></div>
+      <div class="cell"><div class="num" id="h">--</div><div class="lbl">Stunden</div></div>
+      <div class="cell"><div class="num" id="m">--</div><div class="lbl">Minuten</div></div>
+      <div class="cell sec"><div class="num" id="s">--</div><div class="lbl">Sekunden</div></div>
+    </div>
+    <div class="zieldatum" id="zieldatum">Ziel: <b>--</b></div>
+    <div class="bar"><div class="fill" id="fill"></div></div>
+    <div class="plabel" id="plabel">Lebensjahr-Fortschritt: <b>--</b></div>
+  </div>
+
+  <div class="row">
+    <button class="btn" id="play" type="button">🎵 Querflöte spielen</button>
+    <a class="btn outline" href="index.html">⬅️ Zur Startseite</a>
+  </div>
+
+  <div class="hinweis">Gebaut mit ♡ für Aliya · Melodie eigens komponiert &amp; lizenzfrei 🎶</div>
+</div>
+
+<script>
+(() => {
+  "use strict";
+
+  const GEBURT_TAG = 3, GEBURT_MONAT = 10, GEBURT_JAHR = 2006; // 03.11.2006
+
+  const el = {
+    d: document.getElementById('d'), h: document.getElementById('h'),
+    m: document.getElementById('m'), s: document.getElementById('s'),
+    fill: document.getElementById('fill'), plabel: document.getElementById('plabel'),
+    zieldatum: document.getElementById('zieldatum'), cdTitle: document.getElementById('cdTitle'),
+    nextAge: document.getElementById('nextAge')
+  };
+  const pad = n => n < 10 ? '0' + n : '' + n;
+
+  const naechsterGeburtstag = jetzt => {
+    let d = new Date(jetzt.getFullYear(), GEBURT_MONAT, GEBURT_TAG, 0, 0, 0);
+    if (d.getTime() <= jetzt.getTime()) d = new Date(jetzt.getFullYear() + 1, GEBURT_MONAT, GEBURT_TAG, 0, 0, 0);
+    return d;
+  };
+
+  const startParty = () => {
+    document.body.classList.add('party');
+    const farben = ['#e88aa8', '#f2cf7d', '#a98bd8', '#ffffff'];
+    for (let i = 0; i < 80; i++) {
+      setTimeout(() => {
+        const c = document.createElement('div');
+        c.className = 'confetti';
+        c.style.left = (Math.random() * 96) + 'vw';
+        c.style.background = farben[Math.floor(Math.random() * farben.length)];
+        c.style.animationDuration = (2.4 + Math.random() * 2.2) + 's';
+        document.body.appendChild(c);
+        setTimeout(() => c.remove(), 5200);
+      }, i * 55);
+    }
+  };
+  let partyStarted = false;
+
+  const tick = () => {
+    const jetzt = new Date();
+    const istGeburtstag = jetzt.getMonth() === GEBURT_MONAT && jetzt.getDate() === GEBURT_TAG;
+    const ziel = istGeburtstag
+      ? new Date(jetzt.getFullYear(), GEBURT_MONAT, GEBURT_TAG, 0, 0, 0)
+      : naechsterGeburtstag(jetzt);
+    const rest = Math.max(0, ziel.getTime() - jetzt.getTime());
+    const sek = Math.floor(rest / 1000);
+    el.d.textContent = Math.floor(sek / 86400);
+    el.h.textContent = pad(Math.floor((sek % 86400) / 3600));
+    el.m.textContent = pad(Math.floor((sek % 3600) / 60));
+    el.s.textContent = pad(sek % 60);
+
+    const zielAlter = ziel.getFullYear() - GEBURT_JAHR;
+    if (istGeburtstag) {
+      el.cdTitle.textContent = `ALLES GUTE ZUM ${zielAlter}. GEBURTSTAG, ALIYA!`;
+      el.zieldatum.innerHTML = `Heute wird Aliya <b>${zielAlter}</b>! 🎉`;
+      el.nextAge.textContent = `HEUTE: ${zielAlter} JAHRE! 🎂`;
+    } else {
+      el.cdTitle.textContent = `COUNTDOWN BIS ZUM ${zielAlter}. GEBURTSTAG`;
+      el.zieldatum.innerHTML = `Dann wird Aliya <b>${zielAlter}</b>!`;
+      el.nextAge.textContent = `NÄCHSTER GEBURTSTAG: ${zielAlter} JAHRE`;
+    }
+
+    const letzter = new Date(ziel.getFullYear() - 1, GEBURT_MONAT, GEBURT_TAG, 0, 0, 0);
+    let pct = (jetzt.getTime() - letzter.getTime()) / (ziel.getTime() - letzter.getTime()) * 100;
+    pct = Math.max(0, Math.min(100, pct));
+    el.fill.style.width = pct.toFixed(2) + '%';
+    el.plabel.innerHTML = `Lebensjahr-Fortschritt: <b>${pct.toFixed(1).replace('.', ',')} %</b>`;
+
+    if (istGeburtstag && !partyStarted) { partyStarted = true; startParty(); }
+  };
+  tick();
+  setInterval(tick, 1000);
+
+  /* ============ Querflöte (WebAudio-Synthese, lizenzfrei) ============ */
+  // Noten-Liste: eigens komponierte, sanfte Flötenmelodie in a-Moll
+  const N = { 'A4':440.00,'B4':493.88,'C5':523.25,'D5':587.33,'E5':659.25,'G4':392.00,'G5':783.99,'A5':880.00 };
+  const MELODY = [
+    ['A4',1],['C5',1],['E5',1],['A5',1.5],['G5',0.5],['E5',1],['C5',1],['A4',1],
+    ['B4',1],['C5',1],['D5',1],['E5',1.5],['C5',0.5],['A4',1],['G4',1],['A4',2]
+  ];
+  // Weiche Begleit-Akkorde (a-Moll / F-Dur)
+  const PADS = [
+    { at: 0,     notes: [220.00, 261.63, 329.63], dur: 8 },   // A3 C4 E4 (a-Moll)
+    { at: 8,     notes: [174.61, 220.00, 261.63], dur: 8.8 }  // F3 A3 C4 (F-Dur)
+  ];
+  const quarter = 0.5; // 120 bpm, fließend
+
+  let ctx = null, master = null, timer = null, playing = false;
+  const playBtn = document.getElementById('play');
+
+  const initAudio = () => {
+    const AC = window.AudioContext || window.webkitAudioContext;
+    if (!ctx && AC) {
+      ctx = new AC();
+      master = ctx.createGain();
+      master.gain.value = 0.6;
+      master.connect(ctx.destination);
+    }
+    if (ctx && ctx.state === 'suspended') ctx.resume();
+    return ctx;
+  };
+
+  // Realistischer Flötenklang: Grundton + Obertonreihe + Vibrato + Atemgeräusch
+  function fluteNote(freq, t, dur, vol) {
+    const g = ctx.createGain();
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.exponentialRampToValueAtTime(vol, t + 0.07);
+    g.gain.setValueAtTime(vol, t + Math.max(0, dur - 0.14));
+    g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    g.connect(master);
+
+    const vib = ctx.createOscillator();
+    vib.frequency.value = 5.7;
+    const vibDepth = ctx.createGain();
+    vibDepth.gain.value = freq * 0.006;
+    vib.connect(vibDepth);
+
+    const partials = [1, 2, 3, 4, 5, 6];
+    const amps = [0.55, 0.30, 0.16, 0.10, 0.06, 0.03];
+    partials.forEach((p, i) => {
+      const o = ctx.createOscillator();
+      o.type = 'sine';
+      o.frequency.value = freq * p;
+      vibDepth.connect(o.frequency);          // Vibrato
+      const og = ctx.createGain();
+      og.gain.value = amps[i];
+      o.connect(og).connect(g);
+      o.start(t); o.stop(t + dur + 0.08);
+    });
+    vib.start(t); vib.stop(t + dur + 0.08);
+
+    // Atemgeräusch (angehauchter Klang)
+    const len = Math.floor(ctx.sampleRate * dur);
+    if (len > 0) {
+      const buf = ctx.createBuffer(1, len, ctx.sampleRate);
+      const d = buf.getChannelData(0);
+      for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1);
+      const ns = ctx.createBufferSource(); ns.buffer = buf;
+      const f = ctx.createBiquadFilter(); f.type = 'bandpass'; f.frequency.value = 1300; f.Q.value = 0.5;
+      const ng = ctx.createGain(); ng.gain.value = vol * 0.05;
+      ns.connect(f).connect(ng).connect(g);
+      ns.start(t); ns.stop(t + dur);
+    }
+  }
+
+  function padChord(t, notes, dur) {
+    notes.forEach(n => {
+      const o = ctx.createOscillator(); o.type = 'sine'; o.frequency.value = n;
+      const g = ctx.createGain();
+      g.gain.setValueAtTime(0.0001, t);
+      g.gain.linearRampToValueAtTime(0.045, t + 0.6);
+      g.gain.setValueAtTime(0.045, t + dur - 0.7);
+      g.gain.linearRampToValueAtTime(0.0001, t + dur);
+      o.connect(g).connect(master);
+      o.start(t); o.stop(t + dur + 0.1);
+    });
+  }
+
+  function playSong(offset) {}          // (ungenutzt)
+
+  playBtn.addEventListener('click', () => {
+    if (!initAudio()) { playBtn.textContent = '🔇 Ton nicht verfügbar'; return; }
+    if (playing) {
+      clearInterval(timer);
+      playing = false;
+      document.body.classList.remove('play');
+      playBtn.classList.remove('on');
+      playBtn.textContent = '🎵 Querflöte spielen';
+    } else {
+      playing = true;
+      document.body.classList.add('play');
+      playBtn.classList.add('on');
+      playBtn.textContent = '⏸ Flöte stoppen';
+
+      let scheduled = 0;                    // schon geplante Melodien (relativ)
+      const bar = 17 * quarter + 0.4;       // Länge einer Melodie-Runde
+      const scheduleBar = () => {
+        if (!playing) return;
+        const at = ctx.currentTime + 0.08 + scheduled;
+        let tAcc = 0;
+        MELODY.forEach(([name, beats]) => {
+          fluteNote(N[name], at + tAcc, beats * quarter * 0.96, 0.16);
+          tAcc += beats * quarter;
+        });
+        PADS.forEach(pd => padChord(at + pd.at, pd.notes, pd.dur));
+        scheduled += bar;
+      };
+      scheduleBar();
+      // Lookahead: nächste Runde regelmäßig vorplanen
+      timer = setInterval(scheduleBar, 4000);
+    }
+  });
+})();
+</script>
+</body>
+</html>
