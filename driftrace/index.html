@@ -24,7 +24,7 @@
     <div id="overlay">
         <h1>🏎️ DRIFT RACER</h1>
         <p>Fahre auf der Strecke und kombiniere deine Kurven zu Drifts — so schnell du kannst!</p>
-        <p><b>Lenkrad</b> links: geben &amp; lenken. <b>Pedale</b> rechts: Gas / Bremse. Am PC: <span class="kbd">↑</span><span class="kbd">W</span> Gas, <span class="kbd">↓</span><span class="kbd">S</span> Bremse, <span class="kbd">←</span><span class="kbd">→</span> / <span class="kbd">A</span><span class="kbd">D</span> Lenken, <span class="kbd">Space</span> Handbremse.</p>
+        <p><b>Lenkrad</b> unten mittig: halten &amp; ziehen zum Lenken. <b>GAS</b> unten links, <b>BREMS</b> unten rechts. Am PC: <span class="kbd">↑</span><span class="kbd">W</span> Gas, <span class="kbd">↓</span><span class="kbd">S</span> Bremse, <span class="kbd">←</span><span class="kbd">→</span> / <span class="kbd">A</span><span class="kbd">D</span> Lenken, <span class="kbd">Space</span> Handbremse.</p>
         <button class="go" id="startBtn">LOS GEFAHREN ✨</button>
     </div>
     <script>
@@ -32,6 +32,8 @@
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
         let CW, CH;
+        // Touch-Controls Positionen (früh deklariert, da layout() schon beim Laden läuft)
+        let gasX=0, gasY=0, brakeX=0, brakeY=0, pedR=0, wheelCx=0, wheelCy=0, wheelR=0;
 
         /* ---------- World & camera ---------- */
         const WORLD_W = 2400, WORLD_H = 1700;
@@ -257,11 +259,10 @@
 
         // touch / pointer controls
         const pointers = new Map();      // id -> {x,y,zone}
-        let wheelActive = false, wheelCx=0, wheelCy=0, wheelR=0;
+        let wheelActive = false;
         let gasActive=false, brakeActive=false;
 
         /* ---------- Touch-Controls Layout ---------- */
-        let gasX=0, gasY=0, brakeX=0, brakeY=0, pedR=0;
         function layout(){
             const m = Math.min(CW, CH);
             pedR = m*0.15;
