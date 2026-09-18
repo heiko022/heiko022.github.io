@@ -5,14 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Heiko's Universe</title>
     <style>
-        body { margin: 0; background: #000; color: #fff; text-align: center; font-family: sans-serif; overflow-x: hidden; }
-        #stars { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
-        .button { display: block; width: 300px; max-width: 80vw; margin: 12px auto; padding: 20px; background: #333; color: #fff; text-decoration: none; border-radius: 20px; border: 1px solid #555; font-size: 22px; box-sizing: border-box; }
-        .button:hover { background: #555; }
-        #ufo { font-size: 60px; cursor: pointer; position: relative; }
-        #message { font-size: 32px; color: #ff4081; opacity: 0; transition: 1s; }
+        body { margin: 0; color: #fff; text-align: center; font-family: sans-serif; overflow-x: hidden; min-height: 100vh;
+               background:
+                   radial-gradient(60% 50% at 20% 15%, rgba(80,60,180,0.35), transparent 70%),
+                   radial-gradient(50% 45% at 85% 30%, rgba(200,80,160,0.22), transparent 70%),
+                   radial-gradient(70% 60% at 75% 85%, rgba(40,90,200,0.30), transparent 70%),
+                   radial-gradient(45% 40% at 10% 90%, rgba(150,60,80,0.18), transparent 70%),
+                   linear-gradient(180deg, #04041a 0%, #06062b 45%, #0a0520 100%); }
+        #stars { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; display: block; }
+
+        h1 { font-size: 42px; letter-spacing: 4px; text-shadow: 0 0 18px rgba(150,120,255,0.8); margin: 24px 10px 16px; }
+        .subtitle { color: rgba(255,255,255,0.55); font-size: 16px; letter-spacing: 6px; text-transform: uppercase; margin: 0 0 30px; }
+
+        .button { display: block; width: 300px; max-width: 80vw; margin: 12px auto; padding: 20px; color: #fff; text-decoration: none; border-radius: 22px; box-sizing: border-box; font-size: 22px;
+                  background: rgba(20,20,55,0.5);
+                  border: 1px solid rgba(140,120,255,0.55);
+                  box-shadow: 0 0 14px rgba(120,100,255,0.25), inset 0 0 18px rgba(255,255,255,0.04);
+                  transition: transform 0.15s, background 0.25s, box-shadow 0.25s; }
+        .button:hover { background: rgba(90,70,200,0.55); border-color: rgba(180,160,255,0.9); box-shadow: 0 0 26px rgba(140,110,255,0.55); transform: scale(1.03); }
+        .button:active { transform: scale(0.98); }
+
+        #ufo { font-size: 60px; cursor: pointer; position: relative; text-shadow: 0 0 22px rgba(120,255,220,0.6); margin-top: 24px; }
+        #message { font-size: 32px; color: #ff4081; opacity: 0; transition: 1s; text-shadow: 0 0 16px rgba(255,64,129,0.9); }
+
         @media (max-width: 600px) {
-            h1 { font-size: 28px; }
+            h1 { font-size: 28px; letter-spacing: 2px; }
+            .subtitle { font-size: 13px; letter-spacing: 4px; }
             .button { width: 90vw; max-width: none; padding: 22px; font-size: 24px; }
         }
     </style>
@@ -20,17 +38,92 @@
 <body>
     <canvas id="stars"></canvas>
     <h1>Heiko's Universe</h1>
+    <div class="subtitle">✦ Erkunden &amp; entdecken ✦</div>
     <a href="heizkosten-oelzentralheizung.html" class="button">Heizkosten Oelzentralheizung</a><a href="geburtstag-aliya-nevio/" class="button">Geburtstag Aliya &amp; Nevio</a><a href="nevio-18.html" class="button">Nevio 18</a><a href="aliya-bass.html" class="button">Aliya Bass</a><a href="robot-galaxie.html" class="button">Robot Galaxie</a><a href="jahreskostenkalkulation.html" class="button">Jahreskostenkalkulation</a><a href="driftrace/" class="button">Driftrace</a><a href="yazimoo/" class="button">Yazimoo</a>
     <div id="ufo" onclick="fly()">🛸</div>
     <div id="message">Liebt euch! ❤️✨</div>
     <script>
         const canvas = document.getElementById('stars');
         const ctx = canvas.getContext('2d');
-        function drawStars() {
-            ctx.fillStyle = 'white';
-            for(let i=0; i<150; i++) ctx.fillRect(Math.random()*window.innerWidth, Math.random()*window.innerHeight, 1.5, 1.5);
+        let W, H;
+        const D = 300;
+        const stars = [];
+        const meteors = [];
+
+        function rnd(a, b) { return a + Math.random() * (b - a); }
+
+        function resize() {
+            W = canvas.width = window.innerWidth;
+            H = canvas.height = window.innerHeight;
         }
-        drawStars();
+        resize();
+        window.addEventListener('resize', resize);
+
+        // 3 Tiefenschichten: kleine langsame, mittlere, große schnelle + einige farbige Sterne
+        for (let i = 0; i < D; i++) {
+            const speedLayer = Math.random();
+            const colors = [0, 50, 200, 275]; // rar verteilte Farben
+            stars.push({
+                x: Math.random() * W,
+                y: Math.random() * H,
+                r: 0.5 + speedLayer * 1.7,
+                a: 0.3 + Math.random() * 0.7,
+                tw: 0.004 + Math.random() * 0.02,
+                driftY: 0.02 + speedLayer * 0.12,
+                hue: Math.random() < 0.12 ? colors[Math.floor(Math.random() * colors.length)] : null
+            });
+        }
+
+        let t = 0;
+        function draw() {
+            ctx.clearRect(0, 0, W, H);
+            t++;
+            for (const s of stars) {
+                s.y -= s.driftY * 0.4;
+                if (s.y < -2) { s.y = H + 2; s.x = Math.random() * W; }
+                let alpha = s.a * (0.6 + 0.4 * Math.sin(t * s.tw * 2 + s.x));
+                ctx.beginPath();
+                if (s.hue !== null) {
+                    ctx.fillStyle = `hsla(${s.hue}, 90%, 80%, ${alpha})`;
+                    ctx.shadowBlur = 8; ctx.shadowColor = `hsl(${s.hue}, 90%, 70%)`;
+                } else {
+                    ctx.fillStyle = `rgba(255,255,255,${alpha})`;
+                    ctx.shadowBlur = 4; ctx.shadowColor = 'rgba(200,210,255,0.8)';
+                }
+                ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.shadowBlur = 0;
+            }
+            drawMeteors();
+            requestAnimationFrame(draw);
+        }
+
+        function drawMeteors() {
+            for (let i = meteors.length - 1; i >= 0; i--) {
+                const m = meteors[i];
+                m.x += m.vx; m.y += m.vy; m.life -= 0.015;
+                if (m.life <= 0) { meteors.splice(i, 1); continue; }
+                const g = ctx.createLinearGradient(m.x, m.y, m.x - m.l * m.vx, m.y - m.l * m.vy);
+                g.addColorStop(0, `rgba(255,255,255,${m.life})`);
+                g.addColorStop(1, 'rgba(255,255,255,0)');
+                ctx.strokeStyle = g;
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.moveTo(m.x, m.y);
+                ctx.lineTo(m.x - m.l * m.vx, m.y - m.l * m.vy);
+                ctx.stroke();
+            }
+        }
+
+        // Gelegentliche Sternschnuppen
+        setInterval(() => {
+            const ang = Math.PI * (0.15 + Math.random() * 0.15); // schräg nach unten links
+            const sp = 5 + Math.random() * 6;
+            meteors.push({ x: Math.random() * W, y: Math.random() * H * 0.4, vx: -Math.cos(ang) * sp, vy: Math.sin(ang) * sp, l: 60 + Math.random() * 80, life: 1 });
+        }, 4000 + Math.random() * 3000);
+
+        draw();
+
         function fly() {
             const ufo = document.getElementById('ufo');
             ufo.style.transition = '2s';
