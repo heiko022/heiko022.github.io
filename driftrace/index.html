@@ -281,7 +281,7 @@
             e.preventDefault();
             const p = pos(e);
             const z = zoneOf(p.x, p.y);
-            canvas.setPointerCapture(e.pointerId);
+            try { canvas.setPointerCapture(e.pointerId); } catch (err) {}
             pointers.set(e.pointerId, { x: p.x, y: p.y, zone: z });
             if (z === 'gas') gasActive = true;
             if (z === 'brake') brakeActive = true;
