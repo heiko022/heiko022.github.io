@@ -86,7 +86,18 @@
       text-shadow: 0 2px 0 rgba(255,255,255,0.7), 0 4px 14px rgba(184,74,110,0.35);
       transform: rotate(-1deg);
           }
-  .hero .sub { margin-top: 10px; font-weight: 700; font-size: 1.05rem; }
+  .hero .sub {
+    margin-top: 22px;
+    display: inline-block;
+    font-weight: 700;
+    font-size: 1.02rem;
+    color: #5a4a3f;
+    background: rgba(255,255,255,0.75);
+    border: 1.5px solid rgba(230,185,85,0.65);
+    border-radius: 999px;
+    padding: 9px 20px;
+    box-shadow: 0 4px 14px rgba(58,46,42,0.10);
+  }
   .hero .sub .sep { color: var(--gold); margin: 0 6px; }
   .hero .badge {
     display: inline-block;
@@ -180,10 +191,13 @@
   .hinweis b { color: var(--rose); }
 
   /* Party */
-  body.party { animation: partyFlash 0.7s steps(2) infinite; }
-  @keyframes partyFlash { 0% { background: var(--cream); } 100% { background: #ffe4f0; } }
-  .confetti { position: fixed; top: -24px; width: 10px; height: 16px; z-index: 60; pointer-events: none; animation: fall linear forwards; }
-  @keyframes fall { to { transform: translateY(115vh) rotate(900deg); } }
+    body.party { animation: partyFlash 0.7s steps(2) infinite; }
+    @keyframes partyFlash { 0% { background: var(--cream); } 100% { background: #ffe4f0; } }
+    .confetti { position: fixed; top: -24px; width: 10px; height: 16px; z-index: 60; pointer-events: none; animation: fall linear forwards; }
+    @keyframes fall { to { transform: translateY(115vh) rotate(900deg); } }
+
+    /* Feuerwerk (nur am Geburtstag) */
+    #fx { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 5; display: none; }
 
   @media (max-width: 380px) {
     .cell .lbl { font-size: 0.52rem; letter-spacing: 0.5px; }
@@ -300,7 +314,60 @@
   };
   let partyStarted = false;
 
-  const tick = () => {
+    /* ---- Feuerwerk (Canvas) ---- */
+    const fxCanvas = document.createElement('canvas');
+    fxCanvas.id = 'fx';
+    document.body.appendChild(fxCanvas);
+    const fctx = fxCanvas.getContext('2d');
+    let fxW = 0, fxH = 0;
+    const fxResize = () => { fxW = fxCanvas.width = window.innerWidth; fxH = fxCanvas.height = window.innerHeight; };
+    fxResize();
+    window.addEventListener('resize', fxResize);
+
+    const FX_COLORS = ['#ff2bd1', '#00f0ff', '#b6ff3d', '#8a2bff', '#ffd93d', '#ff6b6b', '#ffffff'];
+    const rockets = [], fxParticles = [];
+    let fxRunning = false, fxTimer = null;
+
+    function launchRocket() {
+      const x = fxW * 0.15 + Math.random() * fxW * 0.7;
+      const targetY = fxH * 0.12 + Math.random() * fxH * 0.35;
+      rockets.push({ x, y: fxH + 12, targetY, vx: (Math.random() - 0.5) * 1.4, vy: -(fxH * 0.018 + Math.random() * fxH * 0.02) });
+    }
+    function explode(x, y) {
+      const n = 42 + Math.floor(Math.random() * 30);
+      const hue = FX_COLORS[Math.floor(Math.random() * FX_COLORS.length)];
+      for (let i = 0; i < n; i++) {
+        const a = Math.random() * Math.PI * 2;
+        const sp = 1.6 + Math.random() * 4.6;
+        fxParticles.push({ x, y, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp, life: 1, decay: 0.008 + Math.random() * 0.012, hue, size: 2 + Math.random() * 2.6 });
+      }
+    }
+    function fxLoop() {
+      fctx.clearRect(0, 0, fxW, fxH);
+      for (let i = rockets.length - 1; i >= 0; i--) {
+        const r = rockets[i];
+        r.x += r.vx; r.y += r.vy; r.vy += 0.12;
+        if (r.y <= r.targetY) { explode(r.x, r.y); rockets.splice(i, 1); }
+      }
+      for (let i = fxParticles.length - 1; i >= 0; i--) {
+        const p = fxParticles[i];
+        p.x += p.vx; p.y += p.vy; p.vy += 0.05; p.vx *= 0.985; p.vy *= 0.985; p.life -= p.decay;
+        if (p.life <= 0) { fxParticles.splice(i, 1); continue; }
+        fctx.globalAlpha = Math.max(0, p.life);
+        fctx.fillStyle = p.hue;
+        fctx.beginPath(); fctx.arc(p.x, p.y, p.size, 0, 6.283); fctx.fill();
+      }
+      fctx.globalAlpha = 1;
+      requestAnimationFrame(fxLoop);
+    }
+    function startFireworks() {
+      fxCanvas.style.display = 'block';
+      if (!fxRunning) { fxRunning = true; fxLoop(); }
+      for (let i = 0; i < 3; i++) setTimeout(launchRocket, i * 220);
+      fxTimer = setInterval(() => { launchRocket(); if (Math.random() < 0.5) launchRocket(); }, 750);
+    }
+
+              const tick = () => {
     const jetzt = new Date();
     const istGeburtstag = jetzt.getMonth() === GEBURT_MONAT && jetzt.getDate() === GEBURT_TAG;
     const ziel = istGeburtstag
@@ -330,7 +397,7 @@
     el.fill.style.width = pct.toFixed(2) + '%';
     el.plabel.innerHTML = `Lebensjahr-Fortschritt: <b>${pct.toFixed(1).replace('.', ',')} %</b>`;
 
-    if (istGeburtstag && !partyStarted) { partyStarted = true; startParty(); }
+    if (istGeburtstag && !partyStarted) { partyStarted = true; startParty(); startFireworks(); }
   };
   tick();
   setInterval(tick, 1000);
