@@ -559,10 +559,8 @@
               <!-- ===== HINTERRAD (29", Schwalbe Smart Sam 2.5") ===== -->
               <circle cx="110" cy="180" r="38" fill="#1a1c20" stroke="#10101a" stroke-width="5"/>
               <circle cx="110" cy="180" r="38" fill="none" stroke="#2c2f35" stroke-width="2.5" stroke-dasharray="5 4"/>
-              <!-- Felge: breiter Ring -->
               <circle cx="110" cy="180" r="33" fill="#c9cdd4" stroke="#10101a" stroke-width="2.5"/>
               <circle cx="110" cy="180" r="29" fill="none" stroke="#10101a" stroke-width="1.5"/>
-              <!-- Speichen: 8 Stück, von Nabe bis Felgenmitte (r=31) -->
               <g class="spin rear" stroke="#10101a" stroke-width="2">
                 <line x1="110" y1="149" x2="110" y2="211"/><line x1="79" y1="180" x2="141" y2="180"/>
                 <line x1="88" y1="158" x2="132" y2="202"/><line x1="132" y1="158" x2="88" y2="202"/>
@@ -574,10 +572,8 @@
               <!-- ===== VORDERAD (29") - ANGEHOBEN (Wheelie) ===== -->
               <circle cx="255" cy="150" r="38" fill="#1a1c20" stroke="#10101a" stroke-width="5"/>
               <circle cx="255" cy="150" r="38" fill="none" stroke="#2c2f35" stroke-width="2.5" stroke-dasharray="5 4"/>
-              <!-- Felge: breiter Ring -->
               <circle cx="255" cy="150" r="33" fill="#c9cdd4" stroke="#10101a" stroke-width="2.5"/>
               <circle cx="255" cy="150" r="29" fill="none" stroke="#10101a" stroke-width="1.5"/>
-              <!-- Speichen: 8 Stück, von Nabe bis Felgenmitte (r=31) -->
               <g class="spin front" stroke="#10101a" stroke-width="2">
                 <line x1="255" y1="119" x2="255" y2="181"/><line x1="224" y1="150" x2="286" y2="150"/>
                 <line x1="233" y1="128" x2="277" y2="172"/><line x1="277" y1="128" x2="233" y2="172"/>
@@ -587,24 +583,24 @@
               <circle cx="255" cy="150" r="6" fill="#ff7a1a" stroke="#10101a" stroke-width="2.5"/>
 
               <!-- ===== RAHMEN (XXL, dunkelgrau glänzend, Hardtail) ===== -->
+              <!-- Sitzrohr: nach hinten geneigt, Sattel hoch -->
               <g stroke="url(#ktmFrame)" stroke-width="13" stroke-linecap="round" stroke-linejoin="round" fill="none">
-                <path d="M150 172 L 122 92"/>          <!-- Sitzrohr -->
-                <path d="M222 84 L 122 92"/>            <!-- Oberrohr (fällt ab) -->
-                <path d="M222 84 L 255 150"/>           <!-- Steuerrohr -->
-                <path d="M150 172 L 222 84"/>           <!-- Unterrohr (massiv, Akku integriert) -->
+                <path d="M150 172 L 128 88"/>          <!-- Sitzrohr -->
+                <path d="M200 80 L 128 88"/>            <!-- Oberrohr (leicht abfallend) -->
+                <path d="M200 80 L 255 150"/>           <!-- Steuerrohr -->
+                <path d="M150 172 L 200 80"/>           <!-- Unterrohr (massiv, Akku integriert) -->
               </g>
-              <!-- Rahmen-Kontur (Ink-Look) -->
               <g stroke="#10101a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity="0.9">
-                <path d="M150 172 L 122 92"/><path d="M222 84 L 122 92"/><path d="M222 84 L 255 150"/><path d="M150 172 L 222 84"/>
+                <path d="M150 172 L 128 88"/><path d="M200 80 L 128 88"/><path d="M200 80 L 255 150"/><path d="M150 172 L 200 80"/>
               </g>
 
               <!-- KTM-Logo auf dem Unterrohr -->
-              <text x="172" y="140" font-family="'Bangers','Comic Sans MS',cursive" font-size="16" fill="#ff7a1a" transform="rotate(-14 172 140)" letter-spacing="1">KTM</text>
+              <text x="162" y="132" font-family="'Bangers','Comic Sans MS',cursive" font-size="16" fill="#ff7a1a" transform="rotate(-14 162 132)" letter-spacing="1">KTM</text>
 
               <!-- ===== BOSCH PowerTube 750Wh Akku (integriert im Unterrohr) ===== -->
-              <rect x="164" y="122" width="52" height="13" rx="5" fill="url(#greyTube)" stroke="#10101a" stroke-width="2.5" transform="rotate(-14 190 128)"/>
-              <g fill="#ff7a1a" transform="rotate(-14 190 128)">
-                <rect x="170" y="126" width="6" height="5" rx="1"/><rect x="180" y="126" width="6" height="5" rx="1"/><rect x="190" y="126" width="6" height="5" rx="1"/><rect x="200" y="126" width="6" height="5" rx="1"/><rect x="210" y="126" width="6" height="5" rx="1"/>
+              <rect x="156" y="116" width="48" height="13" rx="5" fill="url(#greyTube)" stroke="#10101a" stroke-width="2.5" transform="rotate(-14 180 122)"/>
+              <g fill="#ff7a1a" transform="rotate(-14 180 122)">
+                <rect x="162" y="120" width="6" height="5" rx="1"/><rect x="172" y="120" width="6" height="5" rx="1"/><rect x="182" y="120" width="6" height="5" rx="1"/><rect x="192" y="120" width="6" height="5" rx="1"/>
               </g>
 
               <!-- ===== BOSCH Performance CX Gen.4 Motor ===== -->
@@ -627,31 +623,33 @@
               <!-- ===== Kettenstrebe + Sitzstrebe (Hardtail) ===== -->
               <g stroke="#10101a" stroke-width="5" stroke-linecap="round" fill="none">
                 <path d="M150 172 L 110 180"/>          <!-- Kettenstrebe -->
-                <path d="M122 92 L 110 180"/>           <!-- Sitzstrebe -->
+                <path d="M128 88 L 110 180"/>           <!-- Sitzstrebe -->
               </g>
 
-              <!-- ===== Suntour XCR 34 Federgabel (mit Gabelbrücke) ===== -->
+              <!-- ===== Suntour XCR 34 Federgabel (verbindet Lenker mit Vorderrad) ===== -->
               <g stroke="#10101a" stroke-width="5" stroke-linecap="round" fill="none">
-                <path d="M222 84 L 237 106"/>            <!-- Gabelschaft -->
-                <path d="M237 106 L 255 150"/>           <!-- Gabelstandrohr -->
+                <path d="M200 80 L 215 102"/>            <!-- Gabelschaft -->
+                <path d="M215 102 L 255 150"/>           <!-- Gabelstandrohr bis zur Nabe -->
               </g>
-              <rect x="230" y="110" width="16" height="7" rx="3" fill="#3a3f47" stroke="#10101a" stroke-width="2.5"/>
-              <rect x="240" y="134" width="9" height="26" rx="4" fill="#ff7a1a" stroke="#10101a" stroke-width="2.5"/>
+              <rect x="208" y="106" width="16" height="7" rx="3" fill="#3a3f47" stroke="#10101a" stroke-width="2.5"/>
+              <rect x="218" y="130" width="9" height="26" rx="4" fill="#ff7a1a" stroke="#10101a" stroke-width="2.5"/>
+              <!-- Achse: verbindet Gabel mit Vorderrad-Nabe -->
+              <circle cx="255" cy="150" r="4" fill="#10101a"/>
 
-              <!-- ===== Sattelstütze (bySchulz G.2) + Sattel ===== -->
-              <path d="M122 92 L 112 72" stroke="#10101a" stroke-width="5" stroke-linecap="round" fill="none"/>
-              <rect x="80" y="60" width="56" height="14" rx="7" fill="#10101a"/>
-              <rect x="80" y="60" width="56" height="6" rx="3" fill="#2c2f35"/>
+              <!-- ===== Sattelstütze (bySchulz G.2) + Sattel (hoch, auf Lenkerhöhe) ===== -->
+              <path d="M128 88 L 118 66" stroke="#10101a" stroke-width="5" stroke-linecap="round" fill="none"/>
+              <rect x="92" y="60" width="52" height="13" rx="6" fill="#10101a"/>
+              <rect x="92" y="60" width="52" height="5" rx="3" fill="#2c2f35"/>
 
-              <!-- ===== Vorbau + Lenker (Ergotec low rizer) ===== -->
-              <path d="M222 84 L 210 74" stroke="#10101a" stroke-width="5" stroke-linecap="round" fill="none"/>
-              <path d="M196 70 Q 210 78 214 64" stroke="#10101a" stroke-width="8" stroke-linecap="round" fill="none"/>
-              <rect x="188" y="66" width="9" height="7" rx="3" fill="#ff7a1a" stroke="#10101a" stroke-width="2"/>
+              <!-- ===== Vorbau + Lenker (auf Sattelhöhe, kurzer Reach) ===== -->
+              <path d="M200 80 L 190 66" stroke="#10101a" stroke-width="5" stroke-linecap="round" fill="none"/>
+              <path d="M176 62 Q 190 70 194 56" stroke="#10101a" stroke-width="8" stroke-linecap="round" fill="none"/>
+              <rect x="168" y="58" width="9" height="7" rx="3" fill="#ff7a1a" stroke="#10101a" stroke-width="2"/>
 
               <!-- ===== BOSCH KIOX 300 TFT Display am Vorbau ===== -->
-              <rect x="203" y="88" width="16" height="11" rx="2" fill="#10101a" stroke="#10101a" stroke-width="2"/>
-              <rect x="205" y="90" width="12" height="7" rx="1" fill="#0f2b1f"/>
-              <text x="211" y="96" font-family="monospace" font-size="6" fill="#86ef1f" text-anchor="middle">25</text>
+              <rect x="183" y="82" width="16" height="11" rx="2" fill="#10101a" stroke="#10101a" stroke-width="2"/>
+              <rect x="185" y="84" width="12" height="7" rx="1" fill="#0f2b1f"/>
+              <text x="191" y="90" font-family="monospace" font-size="6" fill="#86ef1f" text-anchor="middle">25</text>
 
               <!-- ===== Tektro Scheibenbremsen (Rotor + Bremssattel) ===== -->
               <circle cx="110" cy="180" r="13" fill="none" stroke="#c9cdd4" stroke-width="2.5"/>
@@ -665,33 +663,35 @@
               <path d="M150 172 L 143 166" stroke="#10101a" stroke-width="5" stroke-linecap="round"/>
               <rect x="134" y="163" width="18" height="7" rx="3" fill="#10101a"/>
 
-              <!-- ===== KARIKIERTER JUNGE (Wheelie-Pose nach Referenzbild: stehend, zurückgelehnt) ===== -->
-              <!-- Hinteres Bein: gestreckt, drückt das Pedal nach unten -->
-              <path d="M110 58 L 130 100" stroke="#10101a" stroke-width="9" stroke-linecap="round" fill="none"/>
-              <path d="M130 100 L 150 168" stroke="#10101a" stroke-width="9" stroke-linecap="round" fill="none"/>
-              <circle cx="150" cy="170" r="7" fill="#10101a"/>
-              <!-- Vorderes Bein: gebeugt, Pedal oben -->
-              <path d="M110 58 L 92 100" stroke="#10101a" stroke-width="9" stroke-linecap="round" fill="none"/>
-              <path d="M92 100 L 138 160" stroke="#10101a" stroke-width="9" stroke-linecap="round" fill="none"/>
-              <circle cx="138" cy="162" r="7" fill="#10101a"/>
+              <!-- ===== KARIKIERTER JUNGE (Wheelie: Hüfte auf Sattel, Oberkörper zurückgelehnt) ===== -->
+              <!-- Hinteres Bein: Oberschenkel + Unterschenkel, Knie sichtbar, gestreckt -->
+              <path d="M118 60 L 140 100" stroke="#10101a" stroke-width="11" stroke-linecap="round" fill="none"/>
+              <circle cx="140" cy="100" r="6" fill="#10101a"/>
+              <path d="M140 100 L 150 168" stroke="#10101a" stroke-width="11" stroke-linecap="round" fill="none"/>
+              <circle cx="150" cy="170" r="8" fill="#10101a"/>
+              <!-- Vorderes Bein: Oberschenkel + Unterschenkel, Knie gebeugt -->
+              <path d="M118 60 L 96 96" stroke="#10101a" stroke-width="11" stroke-linecap="round" fill="none"/>
+              <circle cx="96" cy="96" r="6" fill="#10101a"/>
+              <path d="M96 96 L 138 160" stroke="#10101a" stroke-width="11" stroke-linecap="round" fill="none"/>
+              <circle cx="138" cy="162" r="8" fill="#10101a"/>
 
-              <!-- Torso: stark nach hinten geneigt (Schwerpunkt über dem Hinterrad) -->
-              <path d="M110 58 L 96 30" stroke="#2d7dff" stroke-width="16" stroke-linecap="round" fill="none"/>
-              <path d="M110 58 L 96 30" stroke="#10101a" stroke-width="16" stroke-linecap="round" fill="none" opacity="0"/>
+              <!-- Torso: Hüfte auf Sattel, Oberkörper stark nach hinten geneigt -->
+              <path d="M118 60 L 88 28" stroke="#2d7dff" stroke-width="18" stroke-linecap="round" fill="none"/>
+              <path d="M118 60 L 88 28" stroke="#10101a" stroke-width="18" stroke-linecap="round" fill="none" opacity="0"/>
 
-              <!-- Arme: gestreckt nach vorn zum Lenker -->
-              <path d="M96 32 L 210 70" stroke="#10101a" stroke-width="8" stroke-linecap="round" fill="none"/>
-              <path d="M96 32 L 210 70" stroke="#2d7dff" stroke-width="8" stroke-linecap="round" fill="none" opacity="0.9"/>
-              <circle cx="210" cy="70" r="6" fill="#ffd9a0" stroke="#10101a" stroke-width="2.5"/>
+              <!-- Arme: vom zurückgelehnten Oberkörper gestreckt nach vorn zum Lenker -->
+              <path d="M88 30 L 190 66" stroke="#10101a" stroke-width="9" stroke-linecap="round" fill="none"/>
+              <path d="M88 30 L 190 66" stroke="#2d7dff" stroke-width="9" stroke-linecap="round" fill="none" opacity="0.9"/>
+              <circle cx="190" cy="66" r="7" fill="#ffd9a0" stroke="#10101a" stroke-width="2.5"/>
 
               <!-- Kopf (groß, karikiert, nach vorn gerichtet) -->
-              <circle cx="96" cy="14" r="15" fill="#ffd9a0" stroke="#10101a" stroke-width="3"/>
-              <path d="M81 10 Q 96 -8 111 10" fill="#10101a" stroke="#10101a" stroke-width="2"/>
-              <circle cx="91" cy="12" r="2.5" fill="#10101a"/>
-              <circle cx="102" cy="12" r="2.5" fill="#10101a"/>
-              <path d="M88 20 Q 96 26 104 20" fill="none" stroke="#10101a" stroke-width="2.5" stroke-linecap="round"/>
-              <circle cx="85" cy="17" r="2.5" fill="#ff8a8a" opacity="0.6"/>
-              <circle cx="107" cy="17" r="2.5" fill="#ff8a8a" opacity="0.6"/>
+              <circle cx="88" cy="10" r="16" fill="#ffd9a0" stroke="#10101a" stroke-width="3"/>
+              <path d="M72 6 Q 88 -12 104 6" fill="#10101a" stroke="#10101a" stroke-width="2"/>
+              <circle cx="82" cy="8" r="2.5" fill="#10101a"/>
+              <circle cx="94" cy="8" r="2.5" fill="#10101a"/>
+              <path d="M78 16 Q 88 22 98 16" fill="none" stroke="#10101a" stroke-width="2.5" stroke-linecap="round"/>
+              <circle cx="75" cy="13" r="2.5" fill="#ff8a8a" opacity="0.6"/>
+              <circle cx="101" cy="13" r="2.5" fill="#ff8a8a" opacity="0.6"/>
 
               <!-- ===== Speed-/Bewegungslinien ===== -->
               <g stroke="var(--lime)" stroke-width="4" stroke-linecap="round" opacity="0.85">
