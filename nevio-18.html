@@ -559,22 +559,30 @@
               <!-- ===== HINTERRAD (29", Schwalbe Smart Sam 2.5") ===== -->
               <circle cx="110" cy="180" r="38" fill="#1a1c20" stroke="#10101a" stroke-width="5"/>
               <circle cx="110" cy="180" r="38" fill="none" stroke="#2c2f35" stroke-width="2.5" stroke-dasharray="5 4"/>
-              <circle cx="110" cy="180" r="29" fill="#c9cdd4" stroke="#10101a" stroke-width="2.5"/>
-              <circle cx="110" cy="180" r="26" fill="none" stroke="#10101a" stroke-width="1.5"/>
-              <g class="spin rear" stroke="#10101a" stroke-width="2.5">
-                <line x1="110" y1="152" x2="110" y2="208"/><line x1="82" y1="180" x2="138" y2="180"/>
-                <line x1="90" y1="160" x2="130" y2="200"/><line x1="130" y1="160" x2="90" y2="200"/>
+              <!-- Felge: breiter Ring -->
+              <circle cx="110" cy="180" r="33" fill="#c9cdd4" stroke="#10101a" stroke-width="2.5"/>
+              <circle cx="110" cy="180" r="29" fill="none" stroke="#10101a" stroke-width="1.5"/>
+              <!-- Speichen: 8 Stück, von Nabe bis Felgenmitte (r=31) -->
+              <g class="spin rear" stroke="#10101a" stroke-width="2">
+                <line x1="110" y1="149" x2="110" y2="211"/><line x1="79" y1="180" x2="141" y2="180"/>
+                <line x1="88" y1="158" x2="132" y2="202"/><line x1="132" y1="158" x2="88" y2="202"/>
+                <line x1="98" y1="151" x2="122" y2="209"/><line x1="122" y1="151" x2="98" y2="209"/>
+                <line x1="81" y1="168" x2="139" y2="192"/><line x1="139" y1="168" x2="81" y2="192"/>
               </g>
               <circle cx="110" cy="180" r="6" fill="#ff7a1a" stroke="#10101a" stroke-width="2.5"/>
 
               <!-- ===== VORDERAD (29") - ANGEHOBEN (Wheelie) ===== -->
               <circle cx="255" cy="150" r="38" fill="#1a1c20" stroke="#10101a" stroke-width="5"/>
               <circle cx="255" cy="150" r="38" fill="none" stroke="#2c2f35" stroke-width="2.5" stroke-dasharray="5 4"/>
-              <circle cx="255" cy="150" r="29" fill="#c9cdd4" stroke="#10101a" stroke-width="2.5"/>
-              <circle cx="255" cy="150" r="26" fill="none" stroke="#10101a" stroke-width="1.5"/>
-              <g class="spin front" stroke="#10101a" stroke-width="2.5">
-                <line x1="255" y1="122" x2="255" y2="178"/><line x1="227" y1="150" x2="283" y2="150"/>
-                <line x1="235" y1="130" x2="275" y2="170"/><line x1="275" y1="130" x2="235" y2="170"/>
+              <!-- Felge: breiter Ring -->
+              <circle cx="255" cy="150" r="33" fill="#c9cdd4" stroke="#10101a" stroke-width="2.5"/>
+              <circle cx="255" cy="150" r="29" fill="none" stroke="#10101a" stroke-width="1.5"/>
+              <!-- Speichen: 8 Stück, von Nabe bis Felgenmitte (r=31) -->
+              <g class="spin front" stroke="#10101a" stroke-width="2">
+                <line x1="255" y1="119" x2="255" y2="181"/><line x1="224" y1="150" x2="286" y2="150"/>
+                <line x1="233" y1="128" x2="277" y2="172"/><line x1="277" y1="128" x2="233" y2="172"/>
+                <line x1="243" y1="121" x2="267" y2="179"/><line x1="267" y1="121" x2="243" y2="179"/>
+                <line x1="226" y1="138" x2="284" y2="162"/><line x1="284" y1="138" x2="226" y2="162"/>
               </g>
               <circle cx="255" cy="150" r="6" fill="#ff7a1a" stroke="#10101a" stroke-width="2.5"/>
 
@@ -657,33 +665,33 @@
               <path d="M150 172 L 143 166" stroke="#10101a" stroke-width="5" stroke-linecap="round"/>
               <rect x="134" y="163" width="18" height="7" rx="3" fill="#10101a"/>
 
-              <!-- ===== KARIKIERTER JUNGE (sitzt auf dem Sattel, Wheelie-Pose) ===== -->
-              <!-- Hinteres Bein: Oberschenkel waagerecht nach vorn, Unterschenkel zum Pedal -->
-              <path d="M110 58 L 145 62" stroke="#10101a" stroke-width="9" stroke-linecap="round" fill="none"/>
-              <path d="M145 62 L 150 168" stroke="#10101a" stroke-width="9" stroke-linecap="round" fill="none"/>
+              <!-- ===== KARIKIERTER JUNGE (Wheelie-Pose nach Referenzbild: stehend, zurückgelehnt) ===== -->
+              <!-- Hinteres Bein: gestreckt, drückt das Pedal nach unten -->
+              <path d="M110 58 L 130 100" stroke="#10101a" stroke-width="9" stroke-linecap="round" fill="none"/>
+              <path d="M130 100 L 150 168" stroke="#10101a" stroke-width="9" stroke-linecap="round" fill="none"/>
               <circle cx="150" cy="170" r="7" fill="#10101a"/>
-              <!-- Vorderes Bein: Oberschenkel waagerecht nach hinten, Unterschenkel zum Pedal -->
-              <path d="M110 58 L 80 60" stroke="#10101a" stroke-width="9" stroke-linecap="round" fill="none"/>
-              <path d="M80 60 L 138 160" stroke="#10101a" stroke-width="9" stroke-linecap="round" fill="none"/>
+              <!-- Vorderes Bein: gebeugt, Pedal oben -->
+              <path d="M110 58 L 92 100" stroke="#10101a" stroke-width="9" stroke-linecap="round" fill="none"/>
+              <path d="M92 100 L 138 160" stroke="#10101a" stroke-width="9" stroke-linecap="round" fill="none"/>
               <circle cx="138" cy="162" r="7" fill="#10101a"/>
 
-              <!-- Torso: vom Sattel nach hinten gelehnt (Wheelie) -->
-              <path d="M110 58 L 100 34" stroke="#2d7dff" stroke-width="16" stroke-linecap="round" fill="none"/>
-              <path d="M110 58 L 100 34" stroke="#10101a" stroke-width="16" stroke-linecap="round" fill="none" opacity="0"/>
+              <!-- Torso: stark nach hinten geneigt (Schwerpunkt über dem Hinterrad) -->
+              <path d="M110 58 L 96 30" stroke="#2d7dff" stroke-width="16" stroke-linecap="round" fill="none"/>
+              <path d="M110 58 L 96 30" stroke="#10101a" stroke-width="16" stroke-linecap="round" fill="none" opacity="0"/>
 
-              <!-- Arme: nach vorn zum Lenker -->
-              <path d="M100 36 L 210 70" stroke="#10101a" stroke-width="8" stroke-linecap="round" fill="none"/>
-              <path d="M100 36 L 210 70" stroke="#2d7dff" stroke-width="8" stroke-linecap="round" fill="none" opacity="0.9"/>
+              <!-- Arme: gestreckt nach vorn zum Lenker -->
+              <path d="M96 32 L 210 70" stroke="#10101a" stroke-width="8" stroke-linecap="round" fill="none"/>
+              <path d="M96 32 L 210 70" stroke="#2d7dff" stroke-width="8" stroke-linecap="round" fill="none" opacity="0.9"/>
               <circle cx="210" cy="70" r="6" fill="#ffd9a0" stroke="#10101a" stroke-width="2.5"/>
 
-              <!-- Kopf (groß, karikiert) -->
-              <circle cx="100" cy="18" r="15" fill="#ffd9a0" stroke="#10101a" stroke-width="3"/>
-              <path d="M85 14 Q 100 -4 115 14" fill="#10101a" stroke="#10101a" stroke-width="2"/>
-              <circle cx="95" cy="16" r="2.5" fill="#10101a"/>
-              <circle cx="106" cy="16" r="2.5" fill="#10101a"/>
-              <path d="M92 24 Q 100 30 108 24" fill="none" stroke="#10101a" stroke-width="2.5" stroke-linecap="round"/>
-              <circle cx="89" cy="21" r="2.5" fill="#ff8a8a" opacity="0.6"/>
-              <circle cx="111" cy="21" r="2.5" fill="#ff8a8a" opacity="0.6"/>
+              <!-- Kopf (groß, karikiert, nach vorn gerichtet) -->
+              <circle cx="96" cy="14" r="15" fill="#ffd9a0" stroke="#10101a" stroke-width="3"/>
+              <path d="M81 10 Q 96 -8 111 10" fill="#10101a" stroke="#10101a" stroke-width="2"/>
+              <circle cx="91" cy="12" r="2.5" fill="#10101a"/>
+              <circle cx="102" cy="12" r="2.5" fill="#10101a"/>
+              <path d="M88 20 Q 96 26 104 20" fill="none" stroke="#10101a" stroke-width="2.5" stroke-linecap="round"/>
+              <circle cx="85" cy="17" r="2.5" fill="#ff8a8a" opacity="0.6"/>
+              <circle cx="107" cy="17" r="2.5" fill="#ff8a8a" opacity="0.6"/>
 
               <!-- ===== Speed-/Bewegungslinien ===== -->
               <g stroke="var(--lime)" stroke-width="4" stroke-linecap="round" opacity="0.85">
