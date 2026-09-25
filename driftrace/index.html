@@ -159,6 +159,7 @@
 
         // lap tracking
         let bestLap=0, lapTime=0, lastProgress=0, armed=false, lapCount=0, running=false;
+            document.getElementById("finishBtn").style.display="none";
         let totalDist=0;
 
         function progressOf(idx){ return idx / N; }
@@ -650,11 +651,13 @@
         finishBtn.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);z-index:25;padding:12px 32px;font-size:18px;border:3px solid #ffb300;border-radius:14px;background:#ffb300;color:#111;font-weight:700;font-family:Bangers,cursive;cursor:pointer;display:none;';
         document.body.appendChild(finishBtn);
         finishBtn.addEventListener('click', () => { if (running && lapCount >= 1) { showNameInput(); running = false; } });
+        finishBtn.style.display = 'none';
 
         // start
         document.getElementById('startBtn').addEventListener('click', () => {
             document.getElementById('overlay').style.display='none';
             running=true;
+            document.getElementById("finishBtn").style.display="block";
         });
         // Bestenliste button
         document.getElementById('bestBtn').addEventListener('click', () => { showLeaderboard(); });
