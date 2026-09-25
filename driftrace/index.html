@@ -159,7 +159,6 @@
 
         // lap tracking
         let bestLap=0, lapTime=0, lastProgress=0, armed=false, lapCount=0, running=false;
-            document.getElementById("finishBtn").style.display="none";
         let totalDist=0;
 
         function progressOf(idx){ return idx / N; }
@@ -668,6 +667,16 @@
         // Enter key on name input
         document.getElementById('playerName').addEventListener('keypress', (e) => {
             if (e.key === 'Enter') saveAndFinish();
+        });
+        // beforeunload: ask about saving when closing
+        window.addEventListener('beforeunload', (e) => {
+            if (running && lapCount >= 1) {
+                e.preventDefault();
+                e.returnValue = '';
+                showNameInput();
+                running = false;
+                return '';
+            }
         });
     })();
     </script>
