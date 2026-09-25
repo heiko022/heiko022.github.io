@@ -1,4 +1,4 @@
-const CACHE_NAME = 'playground-v3';
+const CACHE_NAME = 'playground-v4';
 const ASSETS = [
   '/',
   '/index.html',
