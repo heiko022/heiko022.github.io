@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Geburtstagsseite für Aliya – Countdown, Musik, Konfetti und Feuerwerk. Querflöte &amp; Musikverein.">
+<meta name="description" content="Geburtstagsseite für Aliya – Countdown, Orchestermusik, Konfetti und Feuerwerk. Symphony &amp; Celebration.">
 <meta name="theme-color" content="#fff8ec">
-<title>Aliya | Querflöte &amp; Musikverein</title>
+<title>Aliya | Orchester &amp; Symphonie</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&family=Pacifico&display=swap" rel="stylesheet">
@@ -112,9 +112,9 @@
     box-shadow: 0 4px 12px rgba(230,185,85,0.5);
   }
 
-  /* --- Flöte --- */
-  .flute-card { text-align: center; }
-  .flute svg { width: 100%; max-width: 360px; height: auto; }
+  /* --- Orchester --- */
+  .orchestra-card { text-align: center; }
+  .orchestra svg { width: 100%; max-width: 360px; height: auto; }
   .note-rise { margin-top: 10px; }
   .note-rise span { display: inline-block; margin: 0 5px; font-size: 1.3rem; opacity: 0; }
   .note-rise span.g { animation: rise 2.4s ease-out infinite; }
@@ -243,54 +243,108 @@
     <div class="badge" id="nextAge">NÄCHSTER GEBURTSTAG: --</div>
   </div>
 
-  <div class="card flute-card">
-    <svg class="flute" viewBox="0 0 360 150" role="img" aria-label="Querflöte">
+  <div class="card orchestra-card">
+    <svg class="orchestra" viewBox="0 0 360 150" role="img" aria-label="Orchester">
       <defs>
-        <linearGradient id="silver" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stop-color="#fbfdff"/>
-          <stop offset="0.45" stop-color="#d7dfe9"/>
-          <stop offset="1" stop-color="#9aa7b5"/>
+        <linearGradient id="orchestraGold" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#FFD700"/>
+          <stop offset="0.5" stop-color="#DAA520"/>
+          <stop offset="1" stop-color="#B8860B"/>
         </linearGradient>
-        <linearGradient id="silverTop" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stop-color="#ffffff"/>
-          <stop offset="1" stop-color="#eef2f7"/>
+        <linearGradient id="orchestraDark" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#2c2f35"/>
+          <stop offset="1" stop-color="#1a1c20"/>
+        </linearGradient>
+        <linearGradient id="orchestraString" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="#8B4513"/>
+          <stop offset="0.5" stop-color="#A0522D"/>
+          <stop offset="1" stop-color="#8B4513"/>
         </linearGradient>
       </defs>
-      <!-- Schatten -->
-      <ellipse cx="180" cy="130" rx="150" ry="9" fill="rgba(58,46,42,0.12)"/>
-      <g transform="rotate(-6 180 70)">
-        <!-- Hauptrohr (dünn, lang) -->
-        <rect x="40" y="64" width="280" height="13" rx="6.5" fill="url(#silver)" stroke="#8d99a8" stroke-width="1.2"/>
-        <rect x="40" y="64" width="280" height="5" rx="2.5" fill="url(#silverTop)"/>
-        <!-- Kopfstück: Mundloch + Lippenplatte -->
-        <ellipse cx="66" cy="70" rx="9" ry="6" fill="#5b1a58" opacity="0.9"/>
-        <path d="M50 70 Q 60 58 76 66" stroke="#c3ccd6" stroke-width="3" fill="none" stroke-linecap="round"/>
-        <!-- Kopfstück-Ring -->
-        <rect x="90" y="61" width="6" height="19" rx="3" fill="#c3ccd6"/>
-        <!-- Klappen (Pads) mit Stangen -->
-        <g stroke="#8d99a8" stroke-width="1.2">
-          <circle cx="128" cy="70" r="7" fill="#eef2f7"/>
-          <circle cx="150" cy="70" r="7" fill="#eef2f7"/>
-          <circle cx="172" cy="70" r="7" fill="#eef2f7"/>
-          <circle cx="194" cy="70" r="7" fill="#eef2f7"/>
-          <circle cx="216" cy="70" r="7" fill="#eef2f7"/>
-          <circle cx="238" cy="70" r="7" fill="#eef2f7"/>
-          <circle cx="260" cy="70" r="7" fill="#eef2f7"/>
-        </g>
-        <!-- Klappenstangen (Rods) -->
-        <line x1="118" y1="70" x2="270" y2="70" stroke="#c3ccd6" stroke-width="2.5"/>
-        <line x1="118" y1="78" x2="270" y2="78" stroke="#c3ccd6" stroke-width="1.5"/>
-        <!-- Fußstück -->
-        <rect x="292" y="61" width="24" height="19" rx="4" fill="url(#silver)" stroke="#8d99a8" stroke-width="1.2"/>
-        <circle cx="300" cy="70" r="5" fill="#eef2f7" stroke="#8d99a8" stroke-width="1.2"/>
-        <circle cx="310" cy="70" r="5" fill="#eef2f7" stroke="#8d99a8" stroke-width="1.2"/>
-        <!-- Endkappe -->
-        <rect x="318" y="65" width="7" height="11" rx="3.5" fill="#c3ccd6"/>
+      <!-- Boden/Szene -->
+      <rect x="0" y="110" width="360" height="40" rx="4" fill="url(#orchestraDark)"/>
+      <rect x="0" y="110" width="360" height="3" fill="url(#orchestraGold)" opacity="0.5"/>
+      
+      <!-- Konzerthaus-Architektur -->
+      <rect x="10" y="20" width="340" height="90" rx="8" fill="none" stroke="url(#orchestraDark)" stroke-width="2"/>
+      <rect x="15" y="25" width="330" height="80" rx="6" fill="rgba(255,215,0,0.03)"/>
+      
+      <!-- Bühnenbretter -->
+      <rect x="30" y="105" width="300" height="8" rx="3" fill="#654321" stroke="#3d2b1f" stroke-width="1"/>
+      <rect x="30" y="105" width="300" height="3" rx="1" fill="url(#orchestraGold)" opacity="0.7"/>
+      
+      <!-- Links: Cellist -->
+      <g transform="translate(65, 30)">
+        <ellipse cx="15" cy="60" rx="12" ry="25" fill="url(#orchestraString)" stroke="#3d2b1f" stroke-width="1"/>
+        <rect x="5" y="20" width="20" height="8" rx="3" fill="#654321"/>
+        <rect x="3" y="8" width="24" height="5" rx="2" fill="url(#orchestraGold)"/>
+        <ellipse cx="15" cy="75" rx="5" ry="3" fill="#3d2b1f"/>
+        <!-- Bogen -->
+        <path d="M15 8 L18 75 Q 16 80 15 82" stroke="#c0c0c0" stroke-width="1.5" fill="none" stroke-linecap="round"/>
       </g>
-      <!-- schwebende Noten -->
-      <text x="300" y="40" font-size="26" style="fill:var(--gold)">♪</text>
-      <text x="60" y="40" font-size="22" style="fill:var(--rose)">♫</text>
-      <text x="330" y="118" font-size="20" style="fill:var(--lila)">♪</text>
+      
+      <!-- Mitte: Dirigent mit Taktstock -->
+      <g transform="translate(180, 15)">
+        <!-- Schultern & Oberkörper -->
+        <ellipse cx="0" cy="25" rx="22" ry="30" fill="#1a1c20"/>
+        <ellipse cx="0" cy="5" rx="18" ry="25" fill="#c0c0c0"/>
+        <!-- Krawatte -->
+        <polygon points="-4,5 -3,25 0,30 3,25 4,5" fill="#ff3b5c"/>
+        <!-- Arme hoch (dirigieren) -->
+        <path d="M-15,20 Q -30,-15 5,-35" stroke="#c0c0c0" stroke-width="4" fill="none" stroke-linecap="round"/>
+        <path d="M15,20 Q 30,-15 -5,-35" stroke="#c0c0c0" stroke-width="4" fill="none" stroke-linecap="round"/>
+        <!-- Taktstock -->
+        <line x1="5" y1="-35" x2="12" y2="-55" stroke="#c0c0c0" stroke-width="3" stroke-linecap="round"/>
+        <circle cx="12" cy="-57" r="2" fill="#FFD700"/>
+        <!-- Kopf -->
+        <ellipse cx="0" cy="-32" rx="10" ry="12" fill="#c0c0c0"/>
+        <!-- Haare -->
+        <ellipse cx="0" cy="-40" rx="9" ry="6" fill="#1a1c20"/>
+        <!-- Augen (feierlich) -->
+        <circle cx="-3" cy="-30" r="1.5" fill="#ff3b5c"/>
+        <circle cx="3" cy="-30" r="1.5" fill="#ff3b5c"/>
+        <!-- Lächeln -->
+        <path d="M-3,-25 Q 0,-21 3,-25" stroke="#3d2b1f" stroke-width="1" fill="none"/>
+      </g>
+      
+      <!-- Rechts: Pianist -->
+      <g transform="translate(280, 20)">
+        <!-- Klavier -->
+        <rect x="-40" y="0" width="80" height="50" rx="5" fill="#1a1c20" stroke="#333" stroke-width="2"/>
+        <!-- Tasten -->
+        <rect x="-30" y="5" width="4" height="38" rx="1" fill="#fff"/>
+        <rect x="-22" y="5" width="4" height="38" rx="1" fill="#fff"/>
+        <rect x="-14" y="5" width="4" height="38" rx="1" fill="#fff"/>
+        <rect x="-6" y="5" width="4" height="38" rx="1" fill="#fff"/>
+        <rect x="2" y="5" width="4" height="38" rx="1" fill="#fff"/>
+        <rect x="10" y="5" width="4" height="38" rx="1" fill="#fff"/>
+        <rect x="18" y="5" width="4" height="38" rx="1" fill="#fff"/>
+        <rect x="26" y="5" width="4" height="38" rx="1" fill="#fff"/>
+        <!-- Hände auf Tasten -->
+        <ellipse cx="-28" cy="45" rx="5" ry="4" fill="#c0c0c0"/>
+        <ellipse cx="0" cy="45" rx="5" ry="4" fill="#c0c0c0"/>
+        <ellipse cx="28" cy="45" rx="5" ry="4" fill="#c0c0c0"/>
+        <!-- Schultern -->
+        <ellipse cx="0" cy="-15" rx="18" ry="12" fill="#c0c0c0"/>
+        <!-- Kopf -->
+        <ellipse cx="0" cy="-32" rx="9" ry="11" fill="#c0c0c0"/>
+        <!-- Haare hochgesteckt -->
+        <ellipse cx="0" cy="-42" rx="8" ry="5" fill="#1a1c20"/>
+        <!-- Brillen -->
+        <rect x="-12" y="-33" width="10" height="7" rx="3" fill="none" stroke="#333" stroke-width="1"/>
+        <rect x="2" y="-33" width="10" height="7" rx="3" fill="none" stroke="#333" stroke-width="1"/>
+        <line x1="-2" y1="-30" x2="2" y2="-30" stroke="#333" stroke-width="1"/>
+      </g>
+      
+      <!-- Oben: Musiknoten fliegen -->
+      <text x="30" y="40" font-family="serif" font-size="22" fill="#FFD700" opacity="0.8">♪</text>
+      <text x="80" y="25" font-family="serif" font-size="18" fill="#DAA520" opacity="0.6">♫</text>
+      <text x="310" y="35" font-family="serif" font-size="20" fill="#FFD700" opacity="0.7">♩</text>
+      <text x="280" y="20" font-family="serif" font-size="16" fill="#DAA520" opacity="0.5">♪</text>
+      <text x="160" y="15" font-family="serif" font-size="24" fill="#FFD700" opacity="0.9">♬</text>
+      
+      <!-- Goldener Rahmen -->
+      <rect x="5" y="5" width="350" height="145" rx="10" fill="none" stroke="url(#orchestraGold)" stroke-width="2" opacity="0.4"/>
     </svg>
     <div class="note-rise">
       <span class="g">♪</span><span class="r">♫</span><span class="l">♪</span><span class="g">♬</span><span class="r">♪</span><span class="l">♫</span>
@@ -311,7 +365,7 @@
   </div>
 
   <div class="row">
-    <button class="btn" id="play" type="button" aria-pressed="false">🎵 Flöte &amp; Beat</button>
+    <button class="btn" id="play" type="button" aria-pressed="false">🎻 Orchester starten</button>
     <a class="btn outline" href="index.html">⬅️ Zur Startseite</a>
   </div>
 
@@ -470,234 +524,237 @@
   // Nach Rückkehr aus Hintergrund-Tab sofort synchronisieren
   document.addEventListener('visibilitychange', () => { if (!document.hidden) tick(); });
 
-  /* ============ Flöte + Filow-Style Beat (WebAudio-Synthese, lizenzfrei) ============ */
-  // Noten-Liste: eigens komponierte Flötenmelodie in a-Moll
-  const N = { 'A4':440.00,'B4':493.88,'C5':523.25,'D5':587.33,'E5':659.25,'G4':392.00,'G5':783.99,'A5':880.00 };
-  const MELODY = [
-    ['A4',1],['C5',1],['E5',1],['A5',1.5],['G5',0.5],['E5',1],['C5',1],['A4',1],
-    ['B4',1],['C5',1],['D5',1],['E5',1.5],['C5',0.5],['A4',1],['G4',1],['A4',2]
+  /* ============ Orchester-Synthese (WebAudio, lizenzfrei) ============ */
+// Cinematische Orchester-Arrangement in D-Dur (modern, feierlich)
+const N = {
+  'D5':587.33,'E5':659.25,'F#5':739.99,'G5':783.99,'A5':880.00,
+  'B5':987.77,'C6':1046.50,'D6':1174.66,
+  'D4':293.66,'A4':440.00,'D3':146.83,'A3':220.00
+};
+
+// Cinematische Melodie in D-Dur (feierlich + modern)
+const MELODY = [
+  ['D4',1],['A4',1],['B4',1],['D5',1.5],['C#5',0.5],['A4',1],['G4',1],['D4',2],
+  ['E4',1],['F#4',1],['G4',1],['A4',1.5],['G4',0.5],['F#4',1],['E4',1],['D4',2],
+  ['A4',1],['B4',1],['C#5',1],['D5',1.5],['C#5',0.5],['A4',1],['G4',1],['D4',1.5],
+  ['E4',0.5],['A4',1.5],['B4',1],['D5',1],['C#5',0.5],['A4',1],['G4',1],['D4',2]
+];
+
+// Orchester-Pads (warm, lang, detuned) - Streicher
+const PAD_CHORDS = [
+  { at: 0,  notes: [293.66, 369.99, 440.00, 587.33], dur: 8 },   // D4 A4 D5 A5 (D-Dur)
+  { at: 8,  notes: [261.63, 329.63, 392.00, 523.25], dur: 8 }    // C4 E4 G4 C5 (C-Dur)
+];
+
+// Brass-Melodie (Trompeten/Hörner) - fanfareartig
+const BRASS_MELODY = [
+  ['D4',2],['A4',1],['D5',1],['D5',0.5],['C#5',0.5],['A4',1],['G4',1],['D4',2],
+  ['A4',2],['B4',1],['D5',1],['D5',0.5],['C#5',0.5],['A4',1],['G4',1],['D4',2]
+];
+
+// Perkussions-Linie (Orchester-Pauken, Becken)
+const PERCUSSION = [
+  { type: 'timpani', freq: 73.42, beat: 0 },    // D
+  { type: 'timpani', freq: 110.00, beat: 4 },   // A
+  { type: 'snare', beat: 2 },                    // Snare auf 3
+  { type: 'snare', beat: 6 },                    // Snare auf 7
+  { type: 'cymbal', beat: 4 },                   // Becken auf A
+  { type: 'cymbal', beat: 12 }                   // Großes Becken
+];
+
+const quarter = 0.5;  // 120 bpm
+const PHRASE_LEN = 8 * quarter;
+
+let ctx = null, master = null, timer = null, playing = false;
+const playBtn = document.getElementById('play');
+
+const initAudio = () => {
+  const AC = window.AudioContext || window.webkitAudioContext;
+  if (!ctx && AC) ctx = new AC();
+  if (ctx && ctx.state === 'suspended') ctx.resume();
+  return ctx;
+};
+
+function startTrack() {
+  master = ctx.createGain();
+  master.gain.value = 0.5;
+  master.connect(ctx.destination);
+}
+function stopTrack() {
+  if (!ctx || !master) return;
+  const m = master;
+  m.gain.setValueAtTime(m.gain.value, ctx.currentTime);
+  m.gain.linearRampToValueAtTime(0.0001, ctx.currentTime + 0.5);
+  setTimeout(() => { try { m.disconnect(); } catch(e) {} }, 600);
+  master = null;
+}
+
+// --- Orchester-Streicher (4-stimmig, detuned) ---
+function stringSection(t, freq, dur, vol) {
+  const voices = [
+    { detune: 0, amp: 0.4, type: 'sine' },
+    { detune: 3, amp: 0.3, type: 'triangle' },
+    { detune: -3, amp: 0.2, type: 'sawtooth' },
+    { detune: 7, amp: 0.1, type: 'triangle' }
   ];
-  // Moderne Synth-Pads (a-Moll / F-Dur) - warm, nicht klassisch
-  const CHORDS = [
-    { at: 0,  notes: [220.00, 261.63, 329.63, 440.00], dur: 8 },   // A3 C4 E4 A4 (a-Moll)
-    { at: 8,  notes: [174.61, 220.00, 261.63, 349.23], dur: 8.8 }  // F3 A3 C4 F4 (F-Dur)
-  ];
-  const quarter = 0.5; // 120 bpm
-
-  let ctx = null, master = null, cut = null, timer = null, playing = false;
-  const playBtn = document.getElementById('play');
-
-  const initAudio = () => {
-    const AC = window.AudioContext || window.webkitAudioContext;
-    if (!ctx && AC) ctx = new AC();
-    if (ctx && ctx.state === 'suspended') ctx.resume();
-    return ctx;
-  };
-
-  // Frischer Ausgangskanal pro Start; beim Stoppen wird er ausgeblendet & abgekoppelt
-  function startTrack() {
-    cut = ctx.createGain();
-    cut.gain.value = 1;
-    cut.connect(ctx.destination);
-    master = ctx.createGain();
-    master.gain.value = 0.6;
-    master.connect(cut);
-  }
-  function stopTrack() {
-    if (!ctx || !cut) return;
-    const c = cut, m = master;
-    c.gain.setValueAtTime(c.gain.value, ctx.currentTime);
-    c.gain.linearRampToValueAtTime(0.0001, ctx.currentTime + 0.22);
-    setTimeout(() => { try { m && m.disconnect(); c.disconnect(); } catch (e) {} }, 280);
-    master = null; cut = null;
-  }
-
-  // Rausch-Buffer einmal pro Variante erzeugen und wiederverwenden (statt pro Hit neu)
-  const noiseCache = new Map();
-  function noiseBuffer(dur, decay) {
-    const key = dur + (decay ? '-d' : '');
-    let buf = noiseCache.get(key);
-    if (!buf) {
-      const len = Math.max(1, Math.floor(ctx.sampleRate * dur));
-      buf = ctx.createBuffer(1, len, ctx.sampleRate);
-      const d = buf.getChannelData(0);
-      for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * (decay ? (1 - i / len) : 1);
-      noiseCache.set(key, buf);
-    }
-    return buf;
-  }
-
-  // Realistischer Flötenklang: Grundton + Obertonreihe + Vibrato + Atemgeräusch
-  function fluteNote(freq, t, dur, vol) {
+  voices.forEach(v => {
+    const o = ctx.createOscillator();
+    o.type = v.type;
+    o.frequency.value = freq;
+    o.detune.value = v.detune;
     const g = ctx.createGain();
     g.gain.setValueAtTime(0.0001, t);
-    g.gain.exponentialRampToValueAtTime(vol, t + 0.07);
-    g.gain.setValueAtTime(vol, t + Math.max(0, dur - 0.14));
-    g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
-    g.connect(master);
-
-    const vib = ctx.createOscillator();
-    vib.frequency.value = 5.7;
-    const vibDepth = ctx.createGain();
-    vibDepth.gain.value = freq * 0.006;
-    vib.connect(vibDepth);
-
-    const partials = [1, 2, 3, 4, 5, 6];
-    const amps = [0.55, 0.30, 0.16, 0.10, 0.06, 0.03];
-    partials.forEach((p, i) => {
-      const o = ctx.createOscillator();
-      o.type = 'sine';
-      o.frequency.value = freq * p;
-      vibDepth.connect(o.frequency);
-      const og = ctx.createGain();
-      og.gain.value = amps[i];
-      o.connect(og).connect(g);
-      o.start(t); o.stop(t + dur + 0.08);
-    });
-    vib.start(t); vib.stop(t + dur + 0.08);
-
-    // Atemgeräusch (gefiltertes Rauschen, gepoolter Buffer)
-    const ns = ctx.createBufferSource();
-    ns.buffer = noiseBuffer(dur, false);
-    const f = ctx.createBiquadFilter(); f.type = 'bandpass'; f.frequency.value = 1300; f.Q.value = 0.5;
-    const ng = ctx.createGain(); ng.gain.value = vol * 0.05;
-    ns.connect(f).connect(ng).connect(g);
-    ns.start(t); ns.stop(t + dur);
-  }
-
-  // Modernes Synth-Pad (weich, warm) - statt klassischem Streicher
-  function synthPad(t, notes, dur) {
-    notes.forEach(n => {
-      const o = ctx.createOscillator(); o.type = 'sine'; o.frequency.value = n;
-      const o2 = ctx.createOscillator(); o2.type = 'triangle'; o2.frequency.value = n * 2;
-      const f = ctx.createBiquadFilter(); f.type = 'lowpass'; f.frequency.value = 1800; f.Q.value = 0.5;
-      const g = ctx.createGain();
-      g.gain.setValueAtTime(0.0001, t);
-      g.gain.linearRampToValueAtTime(0.05, t + 0.5);
-      g.gain.setValueAtTime(0.05, t + dur - 0.6);
-      g.gain.linearRampToValueAtTime(0.0001, t + dur);
-      o.connect(f); o2.connect(f); f.connect(g).connect(master);
-      o.start(t); o.stop(t + dur + 0.1);
-      o2.start(t); o2.stop(t + dur + 0.1);
-    });
-  }
-
-  // ---- 808-Bass (Filow-Style: tief, lang, mit Pitch-Drop) ----
-  function bass808(t, freq, dur) {
-    const o = ctx.createOscillator(); o.type = 'sine';
-    o.frequency.setValueAtTime(freq, t);
-    o.frequency.exponentialRampToValueAtTime(freq * 0.9, t + dur);
-    const g = ctx.createGain();
-    g.gain.setValueAtTime(0.0001, t);
-    g.gain.exponentialRampToValueAtTime(0.5, t + 0.02);
-    g.gain.setValueAtTime(0.5, t + dur - 0.05);
-    g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
-    o.connect(g).connect(master);
+    g.gain.linearRampToValueAtTime(v.amp * vol, t + 0.3);
+    g.gain.setValueAtTime(v.amp * vol, t + dur - 0.3);
+    g.gain.linearRampToValueAtTime(0.0001, t + dur);
+    const f = ctx.createBiquadFilter(); f.type = 'lowpass'; f.frequency.value = 2500;
+    o.connect(f).connect(g).connect(master);
     o.start(t); o.stop(t + dur + 0.05);
-  }
+  });
+}
 
-  // ---- Beat (Trap: Kick, Snare/Clap, Roll-Hi-Hats) ----
-  function kick(t, vol) {
-    const o = ctx.createOscillator(); o.type = 'sine';
-    o.frequency.setValueAtTime(160, t);
-    o.frequency.exponentialRampToValueAtTime(40, t + 0.14);
-    const g = ctx.createGain();
-    g.gain.setValueAtTime(0.0001, t);
-    g.gain.exponentialRampToValueAtTime(vol, t + 0.01);
-    g.gain.exponentialRampToValueAtTime(0.0001, t + 0.18);
-    o.connect(g).connect(master);
-    o.start(t); o.stop(t + 0.2);
-  }
-  function clap(t, vol) {
-    const src = ctx.createBufferSource(); src.buffer = noiseBuffer(0.2, true);
-    const f = ctx.createBiquadFilter(); f.type = 'bandpass'; f.frequency.value = 1500; f.Q.value = 1.2;
-    const g = ctx.createGain();
-    g.gain.setValueAtTime(vol, t);
-    g.gain.exponentialRampToValueAtTime(0.0001, t + 0.18);
-    src.connect(f).connect(g).connect(master);
-    src.start(t); src.stop(t + 0.2);
-  }
-  function hihat(t, vol, open) {
-    const src = ctx.createBufferSource(); src.buffer = noiseBuffer(open ? 0.25 : 0.05, true);
-    const f = ctx.createBiquadFilter(); f.type = 'highpass'; f.frequency.value = 8500;
-    const g = ctx.createGain();
-    g.gain.setValueAtTime(vol, t);
-    g.gain.exponentialRampToValueAtTime(0.0001, t + (open ? 0.22 : 0.05));
-    src.connect(f).connect(g).connect(master);
-    src.start(t); src.stop(t + (open ? 0.25 : 0.06));
-  }
+// --- Brasse-Trompeten (fanfare-artig) ---
+function brassFanfare(t, freq, dur, vol) {
+  const o1 = ctx.createOscillator(); o1.type = 'sawtooth'; o1.frequency.value = freq;
+  const o2 = ctx.createOscillator(); o2.type = 'square'; o2.frequency.value = freq * 2;
+  const f = ctx.createBiquadFilter(); f.type = 'lowpass'; f.frequency.value = 3000; f.Q.value = 2;
+  const g = ctx.createGain();
+  g.gain.setValueAtTime(0.0001, t);
+  g.gain.exponentialRampToValueAtTime(0.12 * vol, t + 0.05);
+  g.gain.setValueAtTime(0.12 * vol, t + dur - 0.1);
+  g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+  o1.connect(f); o2.connect(f); f.connect(g).connect(master);
+  o1.start(t); o1.stop(t + dur + 0.05);
+  o2.start(t); o2.stop(t + dur + 0.05);
+}
 
-  // ---- Sequencer: plant eine komplette 8-Takt-Phrase vor ----
-  const BAR = 4 * quarter;                 // 4/4-Takt
-  const PHRASE = 8 * BAR;                  // 8 Takte = 16 s
-  // 808-Bass-Linie (a-Moll): A1, F1, C2, G1 - Filow-Style
-  const BASS_LINE = [55, 0, 55, 0, 43.65, 0, 55, 0, 65.41, 0, 65.41, 0, 55, 0, 55, 0];
+// --- Pauken (Timpani) ---
+function timpani(t, freq, vol) {
+  const o = ctx.createOscillator(); o.type = 'sine'; o.frequency.value = freq;
+  const g = ctx.createGain();
+  g.gain.setValueAtTime(0.0001, t);
+  g.gain.exponentialRampToValueAtTime(vol * 0.6, t + 0.05);
+  g.gain.setValueAtTime(vol * 0.6, t + 0.3);
+  g.gain.exponentialRampToValueAtTime(0.0001, t + 0.6);
+  o.connect(g).connect(master);
+  o.start(t); o.stop(t + 0.7);
+}
 
-  function schedulePhrase(at) {
-    // Flötenmelodie (2x pro Phrase)
-    let tAcc = 0;
-    for (let rep = 0; rep < 2; rep++) {
-      MELODY.forEach(([name, beats]) => {
-        fluteNote(N[name], at + tAcc, beats * quarter * 0.96, 0.15);
-        tAcc += beats * quarter;
-      });
-    }
-    // Synth-Pads
-    CHORDS.forEach(cd => synthPad(at + cd.at, cd.notes, cd.dur));
-    // 808-Bass (pro Viertel)
-    for (let i = 0; i < 16; i++) {
-      const f = BASS_LINE[i];
-      if (f) bass808(at + i * quarter, f, quarter * 0.95);
-    }
-    // Trap-Beat: Kick auf 1 & 3, Clap auf 2 & 4, Hi-Hats auf alle Achtel + Roll
-    for (let i = 0; i < 32; i++) {
-      const t = at + i * (quarter / 2);
-      if (i % 8 === 0 || i % 8 === 4) kick(t, 0.55);
-      if (i % 8 === 2 || i % 8 === 6) clap(t, 0.32);
-      hihat(t, i % 2 === 1 ? 0.14 : 0.09, i % 2 === 1);
-    }
-    // Roll-Hi-Hats am Ende jeder Phrase (Filow-Style Energie)
-    for (let r = 0; r < 8; r++) {
-      hihat(at + PHRASE - 0.5 + r * 0.06, 0.12, false);
-    }
-  }
+// --- Snare-Drum ---
+function snare(t, vol) {
+  const noise = ctx.createBufferSource();
+  const len = Math.floor(ctx.sampleRate * 0.15);
+  const buf = ctx.createBuffer(1, len, ctx.sampleRate);
+  const d = buf.getChannelData(0);
+  for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * (1 - i / len);
+  noise.buffer = buf;
+  const f = ctx.createBiquadFilter(); f.type = 'highpass'; f.frequency.value = 2000;
+  const g = ctx.createGain();
+  g.gain.setValueAtTime(vol, t);
+  g.gain.exponentialRampToValueAtTime(0.0001, t + 0.15);
+  noise.connect(f).connect(g).connect(master);
+  noise.start(t); noise.stop(t + 0.15);
+}
 
-  // Lookahead-Scheduler: hält ~4 Phrasen (64 s) Puffer, damit auch
-  // gedrosselte Hintergrund-Timer die Musik nicht abreißen lassen
-  const LOOKAHEAD = PHRASE * 4;
-  let nextPhraseAt = 0;
-  function scheduleAhead() {
-    if (!playing || !ctx) return;
-    if (nextPhraseAt < ctx.currentTime) nextPhraseAt = ctx.currentTime + 0.08;
-    while (nextPhraseAt < ctx.currentTime + LOOKAHEAD) {
-      schedulePhrase(nextPhraseAt);
-      nextPhraseAt += PHRASE;
-    }
-  }
+// --- Becken (Cymbals) ---
+function cymbal(t, vol) {
+  const noise = ctx.createBufferSource();
+  const len = Math.floor(ctx.sampleRate * 2);
+  const buf = ctx.createBuffer(1, len, ctx.sampleRate);
+  const d = buf.getChannelData(0);
+  for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * (1 - i / len);
+  noise.buffer = buf;
+  const f = ctx.createBiquadFilter(); f.type = 'highpass'; f.frequency.value = 6000;
+  const g = ctx.createGain();
+  g.gain.setValueAtTime(vol, t);
+  g.gain.exponentialRampToValueAtTime(0.0001, t + 2);
+  noise.connect(f).connect(g).connect(master);
+  noise.start(t); noise.stop(t + 2);
+}
 
-  playBtn.addEventListener('click', () => {
-    if (!initAudio()) { playBtn.textContent = '🔇 Ton nicht verfügbar'; return; }
-    if (playing) {
-      clearInterval(timer);
-      stopTrack();
-      playing = false;
-      document.body.classList.remove('play');
-      playBtn.classList.remove('on');
-      playBtn.setAttribute('aria-pressed', 'false');
-      playBtn.textContent = '🎵 Flöte & Beat';
-    } else {
-      startTrack();
-      playing = true;
-      nextPhraseAt = 0;
-      scheduleAhead();
-      timer = setInterval(scheduleAhead, 4000);
-      document.body.classList.add('play');
-      playBtn.classList.add('on');
-      playBtn.setAttribute('aria-pressed', 'true');
-      playBtn.textContent = '⏸ Flöte stoppen';
+// --- Streicher-Pad (warm, langanhaltend) ---
+function stringPad(t, notes, dur, vol) {
+  notes.forEach(n => {
+    stringSection(t, n, dur, vol);
+  });
+}
+
+// --- Sequencer: plant 2 Phrasen (16 Takte) vor ---
+function schedulePhrase(at) {
+  // 1. Streicher-Pads (warm, unterlegt)
+  PAD_CHORDS.forEach(cd => {
+    stringPad(at + cd.at, cd.notes, cd.dur, 0.25);
+  });
+  
+  // 2. Brasse-Fanfare (Trompeten oben drüber)
+  BRASS_MELODY.forEach(([name, beats]) => {
+    if (N[name]) {
+      brassFanfare(at, N[name], beats * quarter * 0.95, 0.4);
+    }
+    at += beats * quarter;
+  });
+  
+  // 3. Hauptmelodie (Violinen)
+  let tAcc = 0;
+  MELODY.forEach(([name, beats]) => {
+    if (N[name]) {
+      stringSection(at + tAcc, N[name], beats * quarter * 0.95, 0.35);
+    }
+    tAcc += beats * quarter;
+  });
+  
+  // 4. Pauken (taktisch)
+  PERCUSSION.forEach(p => {
+    const t = at + p.beat * quarter;
+    if (p.type === 'timpani') {
+      timpani(t, p.freq, 0.5);
+    } else if (p.type === 'snare') {
+      snare(t, 0.35);
+    } else if (p.type === 'cymbal') {
+      cymbal(t, 0.15);
     }
   });
-})();
+  
+  // 5. Schluss-Trompete (großes Finale)
+  brassFanfare(at + PHRASE_LEN - 0.5, 880.00, 1.0, 0.5);
+  timpani(at + PHRASE_LEN - 0.3, 110.00, 0.6);
+}
+
+// Lookahead-Scheduler
+const LOOKAHEAD = PHRASE_LEN * 4;
+let nextPhraseAt = 0;
+function scheduleAhead() {
+  if (!playing || !ctx) return;
+  if (nextPhraseAt < ctx.currentTime) nextPhraseAt = ctx.currentTime + 0.08;
+  while (nextPhraseAt < ctx.currentTime + LOOKAHEAD) {
+    schedulePhrase(nextPhraseAt);
+    nextPhraseAt += PHRASE_LEN;
+  }
+}
+
+playBtn.addEventListener('click', () => {
+  if (!initAudio()) { playBtn.textContent = '🔇 Ton nicht verfügbar'; return; }
+  if (playing) {
+    clearInterval(timer);
+    stopTrack();
+    playing = false;
+    document.body.classList.remove('play');
+    playBtn.classList.remove('on');
+    playBtn.setAttribute('aria-pressed', 'false');
+    playBtn.textContent = '🎻 Orchester starten';
+  } else {
+    startTrack();
+    playing = true;
+    nextPhraseAt = 0;
+    scheduleAhead();
+    timer = setInterval(scheduleAhead, 4000);
+    document.body.classList.add('play');
+    playBtn.classList.add('on');
+    playBtn.setAttribute('aria-pressed', 'true');
+    playBtn.textContent = '⏸ Orchester stoppen';
+  }
+});
+})();;
 </script>
 </body>
 </html>
