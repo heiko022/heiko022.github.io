@@ -17,7 +17,19 @@
         #overlay .go { margin-top: 22px; padding: 18px 46px; font-size: 22px; border: none; border-radius: 14px; background: #ffb300; color: #111; font-weight: 700; cursor: pointer; }
         #overlay .go:active { transform: scale(.96); }
         .kbd { display: inline-block; background: #23332b; border: 1px solid #4a5d52; border-radius: 6px; padding: 1px 8px; font-size: 13px; margin: 0 2px; }
-    </style>
+      #lbList div {
+    padding: 10px 14px; margin: 4px 0; border-radius: 8px; background: rgba(255,255,255,0.06);
+    font-size: 15px; color: #eaffe8; display: flex; justify-content: space-between;
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+  #lbList div:nth-child(1) { background: rgba(255,179,0,0.2); border-color: #ffb300; }
+  #lbList div:nth-child(2) { background: rgba(192,192,192,0.15); border-color: #c0c0c0; }
+  #lbList div:nth-child(3) { background: rgba(205,127,50,0.15); border-color: #cd7f32; }
+  #lbList span.rank { color: #ffb300; font-weight: 700; min-width: 28px; }
+  #lbList span.name { flex: 1; }
+  #lbList span.time { color: #eaffe8; font-weight: 600; }
+  #playerName::placeholder { color: #666; }
+</style>
 
   <link rel="manifest" href="/manifest.json">
   <meta name="theme-color" content="#04041a">
@@ -42,8 +54,22 @@
     <div id="overlay">
         <h1>🏎️ DRIFT RACER</h1>
         <p>Fahre auf der Strecke und kombiniere deine Kurven zu Drifts — so schnell du kannst!</p>
-        <p><b>Lenkrad</b> unten mittig: halten &amp; ziehen zum Lenken. <b>GAS</b> unten links, <b>BREMS</b> unten rechts. Am PC: <span class="kbd">↑</span><span class="kbd">W</span> Gas, <span class="kbd">↓</span><span class="kbd">S</span> Bremse, <span class="kbd">←</span><span class="kbd">→</span> / <span class="kbd">A</span><span class="kbd">D</span> Lenken, <span class="kbd">Space</span> Handbremse.</p>
+        <p><b>Lenkrad</b> unten mittig: halten &amp; ziehen zum Lenken. <b>GAS</b> unten links, <b>BREMS</b> unten rechts.</p>
         <button class="go" id="startBtn">LOS GEFAHREN ✨</button>
+        <button class="go" id="bestBtn" style="background:#eaffe8;color:#111;margin-top:10px;">🏆 BESTENLISTE</button>
+    </div>
+    <div id="lbOverlay" style="display:none;">
+        <h1 style="color:#eaffe8;">🏆 BESTENLISTE</h1>
+        <div id="lbList" style="max-height:400px;overflow-y:auto;width:90%;max-width:400px;margin:16px auto;"></div>
+        <button class="go" id="lbBack" style="background:#333;color:#eaffe8;margin-top:18px;">ZURÜCK</button>
+    </div>
+    <div id="nameOverlay" style="display:none;">
+        <h1 style="color:#ffb300;">🏁 RUNDENDE!</h1>
+        <p style="color:#eaffe8;">Deine Zeit: <b id="finalTime" style="color:#ffb300;font-size:28px;">–</b></p>
+        <p style="color:#eaffe8;">Trage deinen Namen ein:</p>
+        <input id="playerName" type="text" placeholder="Dein Name..." maxlength="16" style="padding:12px 20px;font-size:18px;border-radius:10px;border:2px solid #ffb300;background:#111;color:#eaffe8;text-align:center;width:80%;max-width:300px;outline:none;" autofocus>
+        <br><button class="go" id="saveNameBtn" style="margin-top:14px;">SPEICHERN ✨</button>
+        <button class="go" id="nameBack" style="background:#333;color:#eaffe8;margin-top:10px;">ÜBERSPRINGEN</button>
     </div>
     <script>
     (function () {
@@ -562,10 +588,88 @@
         }
         requestAnimationFrame(loop);
 
+
+        /* ---------- LEADERBOARD ---------- */
+        const LB_KEY = 'driftrace_leaderboard';
+        function getLeaderboard() {
+            try { return JSON.parse(localStorage.getItem(LB_KEY)) || []; } catch(e) { return []; }
+        }
+        function saveLeaderboard(lb) {
+            try { localStorage.setItem(LB_KEY, JSON.stringify(lb)); } catch(e) {}
+        }
+        function showLeaderboard() {
+            document.getElementById('overlay').style.display = 'none';
+            document.getElementById('lbOverlay').style.display = 'flex';
+            const lb = getLeaderboard();
+            const list = document.getElementById('lbList');
+            if (lb.length === 0) {
+                list.innerHTML = '<div style="text-align:center;opacity:.5;padding:20px;">Noch keine Zeiten gespeichert. Fahre erstmals eine Runde!</div>';
+            } else {
+                const medals = ['🥇','🥈','🥉'];
+                list.innerHTML = lb.slice(0, 10).map((entry, i) =>
+                    `<div><span class="rank">${i < 3 ? medals[i] : '#' + (i+1)}</span><span class="name">${entry.name}</span><span class="time">${fmt(entry.time)}</span></div>`
+                ).join('');
+            }
+        }
+        function hideLeaderboard() {
+            document.getElementById('lbOverlay').style.display = 'none';
+            document.getElementById('overlay').style.display = 'flex';
+        }
+        function showNameInput() {
+            document.getElementById('overlay').style.display = 'none';
+            document.getElementById('nameOverlay').style.display = 'flex';
+            document.getElementById('finalTime').textContent = fmt(bestLap);
+            setTimeout(() => document.getElementById('playerName').focus(), 100);
+        }
+        function saveAndFinish() {
+            const name = document.getElementById('playerName').value.trim() || 'Anonym';
+            const lb = getLeaderboard();
+            lb.push({ name, time: bestLap });
+            lb.sort((a, b) => a.time - b.time);
+            if (lb.length > 20) lb.length = 20;
+            saveLeaderboard(lb);
+            document.getElementById('nameOverlay').style.display = 'none';
+            document.getElementById('overlay').style.display = 'flex';
+        }
+        function skipName() {
+            document.getElementById('nameOverlay').style.display = 'none';
+            document.getElementById('overlay').style.display = 'flex';
+        }
+
+        // FERTIG-Button: Show name input after 3+ laps
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && running && lapCount >= 1) {
+                showNameInput();
+                running = false;
+            }
+        });
+        // Touch FERTIG button
+        const finishBtn = document.createElement('button');
+        finishBtn.id = 'finishBtn';
+        finishBtn.textContent = '🏁 FERTIG';
+        finishBtn.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);z-index:25;padding:12px 32px;font-size:18px;border:3px solid #ffb300;border-radius:14px;background:#ffb300;color:#111;font-weight:700;font-family:Bangers,cursive;cursor:pointer;display:none;';
+        document.body.appendChild(finishBtn);
+        finishBtn.addEventListener('click', () => { if (running && lapCount >= 1) { showNameInput(); running = false; } });
+        const finishBtn2 = document.createElement('button');
+        finishBtn2.id = 'finishBtn2';
+        finishBtn2.textContent = '🏁 FERTIG';
+        finishBtn2.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);z-index:25;padding:12px 32px;font-size:18px;border:3px solid #ffb300;border-radius:14px;background:#ffb300;color:#111;font-weight:700;font-family:Bangers,cursive;cursor:pointer;display:none;';
+        document.body.appendChild(finishBtn2);
+
         // start
         document.getElementById('startBtn').addEventListener('click', () => {
             document.getElementById('overlay').style.display='none';
             running=true;
+        });
+        // Bestenliste button
+        document.getElementById('bestBtn').addEventListener('click', () => { showLeaderboard(); });
+        document.getElementById('lbBack').addEventListener('click', () => { hideLeaderboard(); });
+        // Name input
+        document.getElementById('saveNameBtn').addEventListener('click', () => { saveAndFinish(); });
+        document.getElementById('nameBack').addEventListener('click', () => { skipName(); });
+        // Enter key on name input
+        document.getElementById('playerName').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') saveAndFinish();
         });
     })();
     </script>
