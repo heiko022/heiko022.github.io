@@ -66,7 +66,31 @@
       .section { break-inside: avoid; border: 1px solid #ddd; }
       .results.show { display: block !important; }
     }
-  </style>
+    /* --- Back Arrow (top-left, all pages except index) --- */
+  .back-arrow {
+    position: fixed;
+    top: 14px;
+    left: 14px;
+    z-index: 100;
+    font-size: 1.6rem;
+    color: var(--ink);
+    background: rgba(255,255,255,0.85);
+    border: 3px solid var(--ink);
+    border-radius: 10px;
+    padding: 4px 10px;
+    text-decoration: none;
+    box-shadow: 3px 3px 0 var(--ink);
+    transition: all 0.15s;
+    cursor: pointer;
+  }
+  .back-arrow:hover {
+    background: var(--ink);
+    color: var(--paper);
+    transform: scale(1.1);
+    box-shadow: 2px 2px 0 var(--ink);
+  }
+
+</style>
 
   <link rel="manifest" href="/manifest.json">
   <meta name="theme-color" content="#04041a">

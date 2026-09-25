@@ -266,6 +266,30 @@
     .fill { transition: none; }
     .btn { transition: none; }
   }
+  /* --- Back Arrow (top-left, all pages except index) --- */
+  .back-arrow {
+    position: fixed;
+    top: 14px;
+    left: 14px;
+    z-index: 100;
+    font-size: 1.6rem;
+    color: var(--ink);
+    background: rgba(255,255,255,0.85);
+    border: 3px solid var(--ink);
+    border-radius: 10px;
+    padding: 4px 10px;
+    text-decoration: none;
+    box-shadow: 3px 3px 0 var(--ink);
+    transition: all 0.15s;
+    cursor: pointer;
+  }
+  .back-arrow:hover {
+    background: var(--ink);
+    color: var(--paper);
+    transform: scale(1.1);
+    box-shadow: 2px 2px 0 var(--ink);
+  }
+
 </style>
 
   <link rel="manifest" href="/manifest.json">
@@ -287,6 +311,7 @@
 
 </head>
 <body>
+<a class="back-arrow" href="index.html" aria-label="Zurück zur Startseite">←</a>
 <div class="wrap">
 
   <div class="card hero">
@@ -560,7 +585,7 @@
 
   <div class="row">
     <button class="btn" id="play" type="button" aria-pressed="false">🎻 Orchester starten</button>
-    <a class="btn outline" href="index.html">⬅️ Zur Startseite</a>
+    
   </div>
 
   <div class="hinweis">Gebaut mit ♡ für Aliya · Melodie eigens komponiert &amp; lizenzfrei 🎶</div>
