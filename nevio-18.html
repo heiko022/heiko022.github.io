@@ -344,10 +344,10 @@
     .bike-tags span:nth-child(3n) { background: #cfe8ff; }
 
     /* Drehende Laufräder */
-    .bike .spin { animation: wheelspin 8s linear infinite; }
+    .bike .spin { animation: wheelspin 8s linear infinite; transform-box: view-box; }
     @keyframes wheelspin { to { transform: rotate(360deg); } }
-    .bike .spin.rear { transform-origin: 110px 160px; }
-    .bike .spin.front { transform-origin: 255px 160px; }
+    .bike .spin.rear { transform-origin: 115px 180px; }
+    .bike .spin.front { transform-origin: 258px 148px; }
 
     /* KTM-Specs-Panel */
     .specs-panel { transform: rotate(-1deg); }
