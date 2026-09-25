@@ -67,6 +67,24 @@
       .results.show { display: block !important; }
     }
   </style>
+
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#04041a">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Playground">
+  <link rel="apple-touch-icon" href="/icons/apple-touch-icon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <script>
+    if("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("/sw.js").then(function(reg) {
+        console.log("SW registered: " + reg.scope);
+      }).catch(function(err) {
+        console.log("SW registration failed: " + err);
+      });
+    }
+  </script>
+
 </head>
 <body>
   <div class="container">
