@@ -9,7 +9,19 @@
 <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet">
 <style>
   * { margin:0; padding:0; box-sizing:border-box; }
-  :root { --ink:#0b0b14; --paper:#fdf6e3; --accent:#ffd23f; --hot:#ff5c39; --cool:#63f9ff; }
+  :root { --ink:#10101a; --yellow:#ffd93d; --red:#ff3b5c; --blue:#2d7dff; --lime:#86ef1f; --rap:#a855f7; --paper:#fffdf5; }
+
+  /* Halftone-Rasterpapier */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background-image: radial-gradient(var(--ink) 1.5px, transparent 1.6px);
+    background-size: 200px 200px;
+    opacity: 0.15;
+    pointer-events: none;
+    z-index: 0;
+  }
   html, body {
     font-family: 'Comic Neue', 'Comic Sans MS', 'Trebuchet MS', sans-serif;
     background: var(--yellow);

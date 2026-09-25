@@ -6,6 +6,28 @@
   <title>Jahreskostenkalkulation – Mietimmobilie</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --ink: #10101a;
+      --yellow: #ffd93d;
+      --red: #ff3b5c;
+      --blue: #2d7dff;
+      --lime: #86ef1f;
+      --rap: #a855f7;
+      --paper: #fffdf5;
+    }
+
+    /* Halftone-Rasterpapier */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image: radial-gradient(var(--ink) 1.5px, transparent 1.6px);
+      background-size: 200px 200px;
+      opacity: 0.15;
+      pointer-events: none;
+      z-index: 0;
+    }
+
     body {
     font-family: 'Comic Neue', 'Comic Sans MS', 'Trebuchet MS', sans-serif;
     background: var(--yellow);
