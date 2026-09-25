@@ -318,18 +318,49 @@
     margin-bottom: 6px;
   }
   .bike-card { display: flex; flex-direction: column; align-items: center; gap: 6px; }
-  .bike { width: 100%; height: auto; max-width: 340px; }
-  .bike h3 {
+  /* --- Bike Card --- */
+  .bike-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    background: #fff;
+    border: 4px solid var(--ink);
+    border-radius: 14px;
+    padding: 12px;
+    box-shadow: 6px 6px 0 var(--ink);
+    max-width: 400px;
+  }
+  .bike-card h3 {
     font-family: 'Bangers', 'Comic Sans MS', cursive;
-    font-size: 1.7rem;
+    font-size: 1.6rem;
     letter-spacing: 1px;
     line-height: 1;
     color: var(--red);
     -webkit-text-stroke: 1.2px var(--ink);
     text-align: center;
+    margin: 0;
   }
-  .bike .kicker { font-weight: 700; text-align: center; font-size: 0.95rem; }
-  .bike-tags { display: flex; flex-wrap: wrap; gap: 7px; justify-content: center; }
+  .bike-card .kicker {
+    font-weight: 700;
+    text-align: center;
+    font-size: 0.9rem;
+    color: var(--ink);
+  }
+  .bike-img {
+    width: 100%;
+    max-width: 380px;
+    height: auto;
+    border-radius: 8px;
+    border: 3px solid var(--ink);
+    display: block;
+  }
+  .bike-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    justify-content: center;
+  }
   .bike-tags span {
     background: #fff;
     border: 3px solid var(--ink);
@@ -341,12 +372,9 @@
     transform: rotate(-1deg);
   }
   .bike-tags span:nth-child(2n) { transform: rotate(1deg); background: var(--lime); }
-    .bike-tags span:nth-child(3n) { background: #cfe8ff; }
+  .bike-tags span:nth-child(3n) { background: #cfe8ff; }
 
-    /* Drehende Laufräder - SVG animateTransform im DOM */
-    .bike .spin { }
-
-    /* KTM-Specs-Panel */
+  /* KTM-Specs-Panel */
     .specs-panel { transform: rotate(-1deg); }
     .specs-title {
       font-family: 'Bangers', 'Comic Sans MS', cursive;
@@ -498,12 +526,11 @@
 
   .bike-img {
     width: 100%;
-    max-width: 700px;
+    max-width: 380px;
     height: auto;
-    border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    border-radius: 8px;
+    border: 3px solid var(--ink);
     display: block;
-    margin: 0 auto;
   }
 
 </style>
