@@ -9,9 +9,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet">
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  html { overflow-x: hidden; }
-
-  :root {
+  html { overflow-x: hidden; }  :root {
     --ink: #10101a;
     --yellow: #ffd93d;
     --red: #ff3b5c;
@@ -19,6 +17,16 @@
     --lime: #86ef1f;
     --rap: #a855f7;
     --paper: #fffdf5;
+  }
+
+  body {
+    font-family: 'Comic Neue', 'Comic Sans MS', 'Trebuchet MS', sans-serif;
+    background: var(--yellow);
+    color: var(--ink);
+    min-height: 100vh;
+    padding: 16px 12px 40px;
+    position: relative;
+    overflow-x: hidden;
   }
 
   body {
@@ -555,7 +563,7 @@
     z-index: 100;
     font-size: 1.6rem;
     color: var(--ink);
-    background: rgba(255,255,255,0.85);
+    background: var(--paper);
     border: 3px solid var(--ink);
     border-radius: 10px;
     padding: 4px 10px;
@@ -563,6 +571,7 @@
     box-shadow: 3px 3px 0 var(--ink);
     transition: all 0.15s;
     cursor: pointer;
+    font-family: 'Bangers', 'Comic Sans MS', cursive;
   }
   .back-arrow:hover {
     background: var(--ink);
