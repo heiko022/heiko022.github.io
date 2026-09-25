@@ -650,11 +650,6 @@
         finishBtn.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);z-index:25;padding:12px 32px;font-size:18px;border:3px solid #ffb300;border-radius:14px;background:#ffb300;color:#111;font-weight:700;font-family:Bangers,cursive;cursor:pointer;display:none;';
         document.body.appendChild(finishBtn);
         finishBtn.addEventListener('click', () => { if (running && lapCount >= 1) { showNameInput(); running = false; } });
-        const finishBtn2 = document.createElement('button');
-        finishBtn2.id = 'finishBtn2';
-        finishBtn2.textContent = '🏁 FERTIG';
-        finishBtn2.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);z-index:25;padding:12px 32px;font-size:18px;border:3px solid #ffb300;border-radius:14px;background:#ffb300;color:#111;font-weight:700;font-family:Bangers,cursive;cursor:pointer;display:none;';
-        document.body.appendChild(finishBtn2);
 
         // start
         document.getElementById('startBtn').addEventListener('click', () => {
