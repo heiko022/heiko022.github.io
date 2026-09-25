@@ -3,6 +3,8 @@ const ASSETS = [
   '/',
   '/index.html',
   '/nevio-18.html',
+  '/images/nevio-bike.png',
+  '/images/nevio-bike-sm.png',
   '/aliya.html',
   '/robot-galaxie.html',
   '/heizkosten-oelzentralheizung.html',
