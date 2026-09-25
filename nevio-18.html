@@ -343,11 +343,8 @@
   .bike-tags span:nth-child(2n) { transform: rotate(1deg); background: var(--lime); }
     .bike-tags span:nth-child(3n) { background: #cfe8ff; }
 
-    /* Drehende Laufräder */
-    .bike .spin { animation: wheelspin 8s linear infinite; transform-box: view-box; }
-    @keyframes wheelspin { to { transform: rotate(360deg); } }
-    .bike .spin.rear { transform-origin: 115px 180px; }
-    .bike .spin.front { transform-origin: 258px 148px; }
+    /* Drehende Laufräder - SVG animateTransform im DOM */
+    .bike .spin { }
 
     /* KTM-Specs-Panel */
     .specs-panel { transform: rotate(-1deg); }
@@ -580,6 +577,7 @@
               <circle cx="115" cy="180" r="33" fill="#c9cdd4" stroke="#10101a" stroke-width="2.5"/>
               <circle cx="115" cy="180" r="29" fill="none" stroke="#10101a" stroke-width="1.5"/>
               <g class="spin rear" stroke="#10101a" stroke-width="1">
+                <animateTransform attributeName="transform" type="rotate" from="0 115 180" to="360 115 180" dur="8s" repeatCount="indefinite"/>
                 <line x1="115" y1="180" x2="143" y2="180"/>
                 <line x1="115" y1="180" x2="141" y2="191"/>
                 <line x1="115" y1="180" x2="135" y2="200"/>
@@ -605,6 +603,7 @@
               <circle cx="258" cy="148" r="33" fill="#c9cdd4" stroke="#10101a" stroke-width="2.5"/>
               <circle cx="258" cy="148" r="29" fill="none" stroke="#10101a" stroke-width="1.5"/>
               <g class="spin front" stroke="#10101a" stroke-width="1">
+                <animateTransform attributeName="transform" type="rotate" from="0 258 148" to="360 258 148" dur="8s" repeatCount="indefinite"/>
                 <line x1="258" y1="148" x2="286" y2="148"/>
                 <line x1="258" y1="148" x2="284" y2="159"/>
                 <line x1="258" y1="148" x2="278" y2="168"/>
