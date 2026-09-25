@@ -117,13 +117,15 @@
   .orchestra svg { width: 100%; max-width: 360px; height: auto; }
   .note-rise { margin-top: 10px; }
   .note-rise span { display: inline-block; margin: 0 5px; font-size: 1.3rem; opacity: 0; }
-  .note-rise span.g { animation: rise 2.4s ease-out infinite; }
-  .note-rise span.r { animation: rise 2.9s ease-out infinite 0.5s; }
-  .note-rise span.l { animation: rise 2.6s ease-out infinite 1s; }
-  @keyframes rise {
-    0% { transform: translateY(8px); opacity: 0; }
-    25% { opacity: 1; }
-    100% { transform: translateY(-18px); opacity: 0; }
+  .note-rise span { display: inline-block; margin: 0 5px; font-size: 1.5rem; opacity: 0; }
+  .note-rise span.g { animation: note-bounce 2.4s ease-out infinite; }
+  .note-rise span.r { animation: note-bounce 2.9s ease-out infinite 0.5s; }
+  .note-rise span.l { animation: note-bounce 2.6s ease-out infinite 1s; }
+  @keyframes note-bounce {
+    0% { transform: translateY(10px) scale(0.8); opacity: 0; }
+    15% { opacity: 1; transform: translateY(0) scale(1.2); }
+    30% { opacity: 1; transform: translateY(-5px) scale(1.1); }
+    100% { transform: translateY(-70px) scale(0.6); opacity: 0; }
   }
   body.play .note-rise span { animation-play-state: running; }
   body:not(.play) .note-rise span { animation-play-state: paused; }
