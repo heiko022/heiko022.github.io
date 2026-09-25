@@ -563,6 +563,17 @@
                   <stop offset="1" stop-color="#5b6068"/>
                 </linearGradient>
                 <linearGradient id="motorGrad2" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#ff3b5c"/>
+                <stop offset="25%" stop-color="#2d7dff"/>
+                <stop offset="50%" stop-color="#86ef1f"/>
+                <stop offset="75%" stop-color="#a855f7"/>
+                <stop offset="100%" stop-color="#ffd93d"/>
+              </linearGradient>
+              <radialGradient id="rainbowRim" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#c9cdd4"/>
+                <stop offset="80%" stop-color="#ff3b5c"/>
+                <stop offset="100%" stop-color="#2d7dff"/>
+              </radialGradient>
                   <stop offset="0" stop-color="#3a3f47"/>
                   <stop offset="1" stop-color="#17191d"/>
                 </linearGradient>
@@ -574,7 +585,7 @@
               <!-- ===== HINTERRAD (29", Schwalbe Smart Sam 2.5") ===== -->
               <circle cx="115" cy="182" r="38" fill="#1a1c20" stroke="#10101a" stroke-width="5"/>
               <circle cx="115" cy="182" r="38" fill="none" stroke="#2c2f35" stroke-width="2.5" stroke-dasharray="5 4"/>
-              <circle cx="115" cy="182" r="33" fill="#c9cdd4" stroke="#10101a" stroke-width="2.5"/>
+              <circle cx="115" cy="182" r="33" fill="url(#rainbowRim)" stroke="#10101a" stroke-width="2.5"/>
               <circle cx="115" cy="182" r="29" fill="none" stroke="#10101a" stroke-width="1.5"/>
               <g class="spin rear" stroke="#10101a" stroke-width="1">
                 <animateTransform attributeName="transform" type="rotate" from="0 115 180" to="360 115 180" dur="8s" repeatCount="indefinite"/>
@@ -600,7 +611,7 @@
               <!-- ===== VORDERAD (29") - ANGEHOBEN (Wheelie) ===== -->
               <circle cx="260" cy="155" r="38" fill="#1a1c20" stroke="#10101a" stroke-width="5"/>
               <circle cx="260" cy="155" r="38" fill="none" stroke="#2c2f35" stroke-width="2.5" stroke-dasharray="5 4"/>
-              <circle cx="260" cy="155" r="33" fill="#c9cdd4" stroke="#10101a" stroke-width="2.5"/>
+              <circle cx="260" cy="155" r="33" fill="url(#rainbowRim)" stroke="#10101a" stroke-width="2.5"/>
               <circle cx="260" cy="155" r="29" fill="none" stroke="#10101a" stroke-width="1.5"/>
               <g class="spin front" stroke="#10101a" stroke-width="1">
                 <animateTransform attributeName="transform" type="rotate" from="0 260 155" to="360 260 155" dur="8s" repeatCount="indefinite"/>
@@ -631,32 +642,32 @@
               <!-- ===== HINTERRAD (29" auf Boden) ===== -->
               <circle cx="115" cy="182" r="38" fill="#1a1c20" stroke="#10101a" stroke-width="5"/>
               <circle cx="115" cy="182" r="38" fill="none" stroke="#2c2f35" stroke-width="2.5" stroke-dasharray="5 4"/>
-              <circle cx="115" cy="182" r="33" fill="#c9cdd4" stroke="#10101a" stroke-width="2.5"/>
+              <circle cx="115" cy="182" r="33" fill="url(#rainbowRim)" stroke="#10101a" stroke-width="2.5"/>
               <circle cx="115" cy="182" r="29" fill="none" stroke="#10101a" stroke-width="1.5"/>
-              <g class="spin rear" stroke="#10101a" stroke-width="1">
-                <line x1="115" y1="182" x2="115" y2="150"/>
-                <line x1="115" y1="182" x2="147" y2="182"/>
-                <line x1="115" y1="182" x2="83" y2="182"/>
-                <line x1="115" y1="182" x2="96" y2="155"/>
-                <line x1="115" y1="182" x2="134" y2="209"/>
-                <line x1="115" y1="182" x2="83" y2="209"/>
-                <line x1="115" y1="182" x2="109" y2="152"/>
-                <line x1="115" y1="182" x2="121" y2="212"/>
-                <line x1="115" y1="182" x2="89" y2="170"/>
-                <line x1="115" y1="182" x2="141" y2="194"/>
-                <line x1="115" y1="182" x2="76" y2="182"/>
-                <line x1="115" y1="182" x2="154" y2="182"/>
-                <line x1="115" y1="182" x2="96" y2="209"/>
-                <line x1="115" y1="182" x2="134" y2="155"/>
-                <line x1="115" y1="182" x2="83" y2="182"/>
-                <line x1="115" y1="182" x2="147" y2="182"/>
+              <g class="spin rear">
+                <line x1="115" y1="182" x2="115" y2="150" stroke="#ff3b5c" stroke-width="1.5"/>
+                <line x1="115" y1="182" x2="147" y2="182" stroke="#2d7dff" stroke-width="1.5"/>
+                <line x1="115" y1="182" x2="83" y2="182" stroke="#86ef1f" stroke-width="1.5"/>
+                <line x1="115" y1="182" x2="96" y2="155" stroke="#a855f7" stroke-width="1.5"/>
+                <line x1="115" y1="182" x2="134" y2="209" stroke="#ffd93d" stroke-width="1.5"/>
+                <line x1="115" y1="182" x2="83" y2="209" stroke="#ff3b5c" stroke-width="1.5"/>
+                <line x1="115" y1="182" x2="109" y2="152" stroke="#2d7dff" stroke-width="1.5"/>
+                <line x1="115" y1="182" x2="121" y2="212" stroke="#86ef1f" stroke-width="1.5"/>
+                <line x1="115" y1="182" x2="89" y2="170" stroke="#a855f7" stroke-width="1.5"/>
+                <line x1="115" y1="182" x2="141" y2="194" stroke="#ffd93d" stroke-width="1.5"/>
+                <line x1="115" y1="182" x2="76" y2="182" stroke="#ff3b5c" stroke-width="1.5"/>
+                <line x1="115" y1="182" x2="154" y2="182" stroke="#2d7dff" stroke-width="1.5"/>
+                <line x1="115" y1="182" x2="96" y2="209" stroke="#86ef1f" stroke-width="1.5"/>
+                <line x1="115" y1="182" x2="134" y2="155" stroke="#a855f7" stroke-width="1.5"/>
+                <line x1="115" y1="182" x2="83" y2="182" stroke="#ffd93d" stroke-width="1.5"/>
+                <line x1="115" y1="182" x2="147" y2="182" stroke="#ff3b5c" stroke-width="1.5"/>
               </g>
               <circle cx="115" cy="182" r="6" fill="#ff7a1a" stroke="#10101a" stroke-width="2.5"/>
 
               <!-- ===== VORDERAD (29", angehoben im Wheelie) ===== -->
               <circle cx="260" cy="155" r="38" fill="#1a1c20" stroke="#10101a" stroke-width="5"/>
               <circle cx="260" cy="155" r="38" fill="none" stroke="#2c2f35" stroke-width="2.5" stroke-dasharray="5 4"/>
-              <circle cx="260" cy="155" r="33" fill="#c9cdd4" stroke="#10101a" stroke-width="2.5"/>
+              <circle cx="260" cy="155" r="33" fill="url(#rainbowRim)" stroke="#10101a" stroke-width="2.5"/>
               <circle cx="260" cy="155" r="29" fill="none" stroke="#10101a" stroke-width="1.5"/>
               <g class="spin front" stroke="#10101a" stroke-width="1">
                 <line x1="260" y1="155" x2="260" y2="123"/>
