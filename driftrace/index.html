@@ -621,6 +621,18 @@
             document.getElementById('finalTime').textContent = fmt(bestLap);
             setTimeout(() => document.getElementById('playerName').focus(), 100);
         }
+
+        function saveAndFinish() {
+            const name = document.getElementById('playerName').value.trim() || window.playerName || 'Anonym';
+            const lb = getLeaderboard();
+            lb.push({ name, time: bestLap });
+            lb.sort((a, b) => a.time - b.time);
+            if (lb.length > 20) lb.length = 20;
+            saveLeaderboard(lb);
+            document.getElementById('nameOverlay').style.display = 'none';
+            document.getElementById('overlay').style.display = 'flex';
+            document.getElementById('finishBtn').style.display = 'none';
+        }
         function saveAndFinish() {
             const name = document.getElementById('playerName').value.trim() || 'Anonym';
             const lb = getLeaderboard();
@@ -652,12 +664,52 @@
         finishBtn.addEventListener('click', () => { if (running && lapCount >= 1) { showNameInput(); running = false; } });
         finishBtn.style.display = 'none';
 
-        // start
+        // Start: ask for name first, then start game
         document.getElementById('startBtn').addEventListener('click', () => {
-            document.getElementById('overlay').style.display='none';
-            running=true;
-            document.getElementById("finishBtn").style.display="block";
+            const overlay = document.getElementById('overlay');
+            overlay.innerHTML = `
+                <h1 style="color:#ffb300;">🏎️ DRIFT RACER</h1>
+                <p style="color:#eaffe8;">Bevor du loslegst — wie heißt du?</p>
+                <input id="startName" type="text" placeholder="Dein Name..." maxlength="16"
+                    style="padding:12px 20px;font-size:18px;border-radius:10px;border:2px solid #ffb300;background:#111;color:#eaffe8;text-align:center;width:80%;max-width:300px;outline:none;" autofocus>
+                <br><button class="go" id="startNameBtn" style="margin-top:18px;">RENNEN STARTEN ✨</button>
+            `;
+            overlay.style.display = 'flex';
+            // Focus the input after rendering
+            setTimeout(() => {
+                const inp = document.getElementById('startName');
+                if (inp) inp.focus();
+                // Enter key starts game
+                inp.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        const name = document.getElementById('startName').value.trim() || 'Anonym';
+                        startGame(name);
+                    }
+                });
+            }, 100);
+            // Button click starts game
+            document.getElementById('startNameBtn').addEventListener('click', () => {
+                const name = document.getElementById('startName').value.trim() || 'Anonym';
+                startGame(name);
+            });
         });
+
+        function startGame(name) {
+            // Store name globally
+            window.playerName = name;
+            // Reset game state
+            bestLap = 0;
+            lapTime = 0;
+            lapCount = 0;
+            lastProgress = 0;
+            armed = false;
+            totalDist = 0;
+            running = true;
+            flash = 0;
+            // Hide overlay, show finish button
+            document.getElementById('overlay').style.display = 'none';
+            document.getElementById("finishBtn").style.display = "block";
+        }
         // Bestenliste button
         document.getElementById('bestBtn').addEventListener('click', () => { showLeaderboard(); });
         document.getElementById('lbBack').addEventListener('click', () => { hideLeaderboard(); });
@@ -673,8 +725,9 @@
             if (running && lapCount >= 1) {
                 e.preventDefault();
                 e.returnValue = '';
-                showNameInput();
                 running = false;
+                document.getElementById('finishBtn').style.display = 'none';
+                setTimeout(() => { showNameInput(); }, 500);
                 return '';
             }
         });
